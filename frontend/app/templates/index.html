@@ -3,9 +3,45 @@
 {% block title %} Homepage of Frontend {% endblock %}
 
 {% block content %}
-    <div class="container mt-5">
-        <h1>Hello, world!</h1>
-        <p>Date from Backend: {{ date_from_backend }}</p>
+    <!-- Jumbotron -->
+    <div class="jumbotron jumbotron-fluid">
+        <div class="container text-center">
+            <h1 class="display-4">Welcome Incoming Exchange Students!</h1>
+            <p class="lead">Explore Venice with Ca' Foscari University</p>
+        </div>
+    </div>
+    
+    <!-- Main content -->
+    <div class="container">
+        <div class="row">
+            <div class="col-md-4">
+                <div class="card">
+                    <img src="https://via.placeholder.com/300" class="card-img-top" alt="...">
+                    <div class="card-body">
+                        <h5 class="card-title">Accommodation</h5>
+                        <p class="card-text">Information about student housing options.</p>
+                    </div>
+                </div>
+            </div>
+            <div class="col-md-4">
+                <div class="card">
+                    <img src="https://via.placeholder.com/300" class="card-img-top" alt="...">
+                    <div class="card-body">
+                        <h5 class="card-title">Courses</h5>
+                        <p class="card-text">Browse available courses for exchange students.</p>
+                    </div>
+                </div>
+            </div>
+            <div class="col-md-4">
+                <div class="card">
+                    <img src="https://via.placeholder.com/300" class="card-img-top" alt="...">
+                    <div class="card-body">
+                        <h5 class="card-title">Events</h5>
+                        <p class="card-text">Check out upcoming events and activities.</p>
+                    </div>
+                </div>
+            </div>
+        </div>
     </div>
 
 {% endblock %}
