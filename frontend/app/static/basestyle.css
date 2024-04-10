@@ -1,0 +1,101 @@
+/* Custom styles */
+body {
+    font-family: Arial, sans-serif;
+    background-color: #fff; /* Background color set to white */
+    color: #000; /* Text color set to black */
+    padding-top: 20px; /* Adjusting padding for title */
+}
+
+.jumbotron {
+    background-image: url("forerunners-lspd-project/frontend/app/static/image_index/Venice.jpg");
+    background-size: cover;
+    background-position: center;
+    height: 500px; /* Adjusting height for the background image */
+    margin-bottom: 0; /* Remove margin bottom */
+}
+
+.jumbotron .container {
+    position: relative;
+    top: 50%;
+    transform: translateY(-50%);
+}
+
+.title-container {
+    background-color: rgba(255, 255, 255, 0.7); /* Adding background color for title container */
+    padding: 20px; /* Adjusting padding for title container */
+}
+
+.title-container h1 {
+    font-size: 3.5rem; /* Increasing font size of title */
+    font-weight: bold; /* Make the title bold */
+    color: #000; /* Text color set to black */
+    text-align: center; /* Aligning title to center */
+}
+
+.jumbotron p {
+    font-size: 1.5rem; /* Increasing font size of lead paragraph */
+    text-align: center; /* Aligning lead paragraph to center */
+}
+
+.main-content {
+    padding: 20px; /* Adjusting padding for main content */
+    text-align: center; /* Centering main content */
+}
+
+.session-box {
+    border: 2px solid #000;
+    padding: 20px;
+    margin-bottom: 30px;
+    text-align: justify; /* Justify text within session boxes */
+}
+
+.session-title {
+    font-size: 2rem;
+    font-weight: bold;
+    margin-bottom: 10px;
+    text-align: left; /* Align session titles to the left */
+}
+
+.session-description {
+    font-size: 1.2rem;
+    text-align: left; /* Align session descriptions to the left */
+}
+
+/* Added styles for the link */
+.schedule-link {
+    cursor: pointer; /* Change cursor to pointer */
+    color: #007bff; /* Set link color to blue */
+    text-decoration: underline; /* Add underline to link */
+}
+
+.schedule-link:hover {
+    color: #0056b3; /* Change link color on hover */
+}
+
+/* Added style for the calendar box */
+.calendar-box {
+    border: 2px solid #000;
+    padding: 20px;
+    margin-bottom: 30px;
+}
+
+.calendar-box h2 {
+    text-align: center;
+}
+
+/* Vertical alignment for lesson form elements */
+.lesson-form-group {
+    margin-bottom: 20px;
+}
+
+.lesson-form-group label {
+    display: block;
+    font-weight: bold;
+    margin-bottom: 5px;
+}
+
+/* Export button */
+.export-button {
+    text-align: center;
+    margin-top: 20px;
+}

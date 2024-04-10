@@ -1,43 +1,164 @@
 {% extends 'base.html' %}
 
-{% block title %} Homepage of Frontend {% endblock %}
+{% block title %} Homepage {% endblock %}
 
 {% block content %}
+<style>
+    /* Custom styles */
+    body {
+        font-family: Arial, sans-serif;
+        background-color: #fff; /* Background color set to white */
+        color: #000; /* Text color set to black */
+        padding-top: 20px; /* Adjusting padding for title */
+    }
+
+    .jumbotron {
+        background-image: url("../static/image_index/venice.jpg");
+        background-size: cover;
+        background-position: center;
+        height: 500px; /* Adjusting height for the background image */
+        margin-bottom: 0; /* Remove margin bottom */
+    }
+
+    .jumbotron .container {
+        position: relative;
+        top: 50%;
+        transform: translateY(-50%);
+    }
+
+    .title-container {
+        background-color: rgba(255, 255, 255, 0.7); /* Adding background color for title container */
+        padding: 20px; /* Adjusting padding for title container */
+    }
+
+    .title-container h1 {
+        font-size: 3.5rem; /* Increasing font size of title */
+        font-weight: bold; /* Make the title bold */
+        color: #000; /* Text color set to black */
+        text-align: center; /* Aligning title to center */
+    }
+
+    .jumbotron p {
+        font-size: 1.5rem; /* Increasing font size of lead paragraph */
+        text-align: center; /* Aligning lead paragraph to center */
+    }
+
+    .main-content {
+        padding: 20px; /* Adjusting padding for main content */
+        text-align: center; /* Centering main content */
+    }
+
+    .session-box {
+        border: 2px solid #000;
+        padding: 20px;
+        margin-bottom: 30px;
+        text-align: justify; /* Justify text within session boxes */
+    }
+
+    .session-title {
+        font-size: 2rem;
+        font-weight: bold;
+        margin-bottom: 10px;
+        text-align: left; /* Align session titles to the left */
+    }
+
+    .session-description {
+        font-size: 1.2rem;
+        text-align: left; /* Align session descriptions to the left */
+    }
+
+    /* Added styles for the link */
+    .schedule-link {
+        cursor: pointer; /* Change cursor to pointer */
+        color: #007bff; /* Set link color to blue */
+        text-decoration: underline; /* Add underline to link */
+    }
+
+    .schedule-link:hover {
+        color: #0056b3; /* Change link color on hover */
+    }
+
+    /* Added style for the calendar box */
+    .calendar-box {
+        border: 2px solid #000;
+        padding: 20px;
+        margin-bottom: 30px;
+    }
+
+    .calendar-box h2 {
+        text-align: center;
+    }
+
+    /* Vertical alignment for lesson form elements */
+    .lesson-form-group {
+        margin-bottom: 20px;
+    }
+
+    .lesson-form-group label {
+        display: block;
+        font-weight: bold;
+        margin-bottom: 5px;
+    }
+
+    /* Export button */
+    .export-button {
+        text-align: center;
+        margin-top: 20px;
+    }
+</style>
+
     <!-- Jumbotron -->
     <div class="jumbotron jumbotron-fluid">
-        <div class="container text-center">
-            <h1 class="display-4">Welcome Incoming Exchange Students!</h1>
+        <div class="container">
+            <div class="title-container">
+                <h1 class="display-4">Welcome Incoming Exchange Students!</h1>
+            </div>
             <p class="lead">Explore Venice with Ca' Foscari University</p>
         </div>
     </div>
-    
+
     <!-- Main content -->
-    <div class="container">
-        <div class="row">
-            <div class="col-md-4">
-                <div class="card">
-                    <img src="https://via.placeholder.com/300" class="card-img-top" alt="...">
-                    <div class="card-body">
-                        <h5 class="card-title">Accommodation</h5>
-                        <p class="card-text">Information about student housing options.</p>
+    <div class="main-content">
+        <div class="container mt-5">
+            <div class="row justify-content-center">
+                <div class="col-md-8">
+                    <!-- Session: Group Composition -->
+                    <div class="session-box">
+                        <div class="session-title">Group Composition</div>
+                        <div class="session-description">
+                            <p>Marta, Francesco, Carlo, Andrea, and Antonio, we are five students of the second year of digital management. We know what you might be thinking... Why are you doing it? The reasons are many; some of us will go on Erasmus and find difficulty in converting it, while others just need to anticipate some exams to finish earlier. We are all somehow forerunning the time!</p>
+                        </div>
                     </div>
-                </div>
-            </div>
-            <div class="col-md-4">
-                <div class="card">
-                    <img src="https://via.placeholder.com/300" class="card-img-top" alt="...">
-                    <div class="card-body">
-                        <h5 class="card-title">Courses</h5>
-                        <p class="card-text">Browse available courses for exchange students.</p>
+
+                    <!-- Session: Stress-Free Erasmus -->
+                    <div class="session-box">
+                        <div class="session-title">Stress-Free Erasmus: It's Possible!</div>
+                        <div class="session-description">
+                            <p>We have decided to develop this project since almost all of us have experienced the stress of checking and scheduling the exams to convalidate during the Exchange semester. Therefore, we want to prevent anyone else from experiencing it.</p>
+                        </div>
                     </div>
-                </div>
-            </div>
-            <div class="col-md-4">
-                <div class="card">
-                    <img src="https://via.placeholder.com/300" class="card-img-top" alt="...">
-                    <div class="card-body">
-                        <h5 class="card-title">Events</h5>
-                        <p class="card-text">Check out upcoming events and activities.</p>
+
+                    <!-- Session: Purpose -->
+                    <div class="session-box">
+                        <div class="session-title">Purpose</div>
+                        <div class="session-description">
+                            <p>We wanted to provide Ca’ Foscari with an efficient solution that may reduce the friction and somehow increase the willingness of students to come and study in Venice, granting an intrinsic benefit for our community and the overall prestige of our University.</p>
+                        </div>
+                    </div>
+
+                    <!-- Session: Planning Your Erasmus Exchange Got Easier! -->
+                    <div class="session-box">
+                        <div class="session-title">Planning Your Erasmus Exchange Got Easier!</div>
+                        <div class="session-description">
+                            <p>Our exchange student calendar will provide the user with a search bar with two preliminary filters:</p>
+                            <ol>
+                                <li>Choose among the different locations Ca’ Foscari provides (Venice, Mestre, Roncade, Treviso).</li>
+                                <li>Choose among the academic path: Bachelor/Master.</li>
+                                <li>Search for a course.</li>
+                                <li>Add it to your schedule.</li>
+                                <li>Extract the output.</li>
+                            </ol>
+                        </div>
                     </div>
                 </div>
             </div>
