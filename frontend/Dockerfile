@@ -16,7 +16,7 @@ RUN pip install --no-cache-dir -r requirements.txt
 EXPOSE 80
 
 # Command to run the application
-#CMD ["python", "app/main.py"]
+CMD ["python", "app/main.py"]
 
 # Command to keep the container running
-CMD ["tail", "-f", "/dev/null"]
+#CMD ["tail", "-f", "/dev/null"]
