@@ -1,0 +1,31 @@
+h1 {
+    text-align: center;
+    margin: 20px 0;
+}
+
+.horizontal-list {
+list-style-type: none;
+padding: 0;
+display: flex;
+flex-wrap: wrap; /* Allows the list items to wrap onto the next line if they don't fit */
+gap: 20px;
+justify-content: center; 
+}
+
+.horizontal-list li {
+margin: 0; 
+}
+
+.card {
+flex: 1; /* Each card can grow and shrink as needed */
+min-width: 250px; 
+max-width: 18rem; 
+margin: 10px; 
+}
+
+@media (max-width: 700px) {
+.card {
+max-width: none; 
+flex: 1 1 auto; /* Adds flexibility to the card width */
+}
+}
