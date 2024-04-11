@@ -24,8 +24,11 @@ def df_creating():
     # Use the function to merge the preprocessed dataframes
     merged_urls_dataframe = merge_data(preprocessed_urls_dataframes)
 
-    # Return the final dataframe
-    return merged_urls_dataframe
+    #
+    final_urls_dataframe = reorder_and_convert(merged_urls_dataframe)
+
+    return final_urls_dataframe
+
 
 
 # Retrieve JSON data from a URL and convert it to a Pandas DataFrame
@@ -120,6 +123,35 @@ def merge_data(urls_dataframes):
     final_urls_df = final_urls_df.drop(['CDS_COD', 'PDS_COD', "PDS_DES", "AR_ID", "IMPEGNO_ID", "AULA_ID", "SEDE_ID"], axis=1)
 
     return final_urls_df
+
+def reorder_and_convert(merged_urls_dataframe):
+    """
+    Reorders the columns of the DataFrame according to the provided order and converts the 'DOCENTI' column values to uppercase.
+
+    Args:
+    df (pd.DataFrame): The DataFrame to process.
+    new_column_order (list[str]): The new order of columns.
+
+    Returns:
+    pd.DataFrame: The processed DataFrame.
+    """
+    # Defining the new order of columns
+    new_column_order = ['AF_ID', 'GIORNO', 'INIZIO', 'FINE',
+                        'NOME_INSEGNAMENTO', 'CICLO', 'ANNO_CORSO', 'DOCENTI',
+                        'CODICE', 'PARTIZIONE', 'LUOGO', 'SETTORE', 'CREDITI',
+                        'PESO', 'PESO_TOTALE', 'TIPO_CORSO_COD',
+                        'TIPO_CORSO_DES', 'CDS_DES', 'TIPO_ATTIVITA', 'NOTE',
+                        'NOME_AULA', 'POSTI', 'NOME_SEDE', 'INDIRIZZO', 'COORDINATE']
+
+    # Setting the new order of the columns
+    merged_urls_dataframe = merged_urls_dataframe.reindex(columns=new_column_order)
+
+    # Converts the 'DOCENTI' column values to uppercase
+    merged_urls_dataframe['DOCENTI'] = merged_urls_dataframe['DOCENTI'].str.upper()
+
+    final_urls_dataframe = merged_urls_dataframe
+
+    return final_urls_dataframe
 
 if __name__ == "__main__":
     final_urls_dataframe = df_creating()
