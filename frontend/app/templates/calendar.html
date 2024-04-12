@@ -1,6 +1,6 @@
 {% extends 'base.html' %}
 
-{% block title %} Internal of Frontend {% endblock %}
+{% block title %} Calendar {% endblock %}
 
 {% block content %}
 
@@ -12,8 +12,8 @@
         <form method="POST" action="">
             {{ form.csrf_token }}
             <div class="form-group">
-                {{ form.person_name.label }}
-                {{ form.person_name(class="form-control", placeholder="Enter person name") }}
+                {{ form.insegnamento_name.label }}
+                {{ form.insegnamento_name(class="form-control", placeholder="Enter insegnamento_name") }}
             </div>
             {{ form.submit(class="btn btn-primary") }}
         </form>

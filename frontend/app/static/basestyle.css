@@ -1,0 +1,51 @@
+/* Set the background of the navbar to Pantone 207 C to use Ca' Foscari brand identity */
+.navbar {
+    background-color: rgb(172, 0, 51);
+}
+
+/* Set navbar element in color white */
+.navbar-toggler, .navbar-toggler-icon {
+    color: white;
+    border-color: transparent;
+}
+
+.navbar-toggler:hover {
+    border-color: white;
+}
+
+.navbar-brand, .nav-link, .nav-link svg, .widget, .copyright {
+    color: white;
+}
+
+.navbar-brand:hover, .foot-link:hover {
+    color: white !important;
+    text-decoration-color: rgb(110, 117, 124);
+    text-decoration: underline;
+    text-decoration-thickness: 2px;
+}
+
+.navbar-nav .nav-link:hover span, .navbar-nav .nav-link:hover svg {
+    color: white !important;
+    text-decoration-color: rgb(110, 117, 124);
+    text-decoration: underline;
+    text-decoration-thickness: 2px;
+}
+
+.list-unstyled .foot-link:hover span, .widget .link-secondary:hover span {
+    color: white !important;
+    text-decoration-color: rgb(110, 117, 124);
+    text-decoration: underline;
+    text-decoration-thickness: 2px;
+}
+
+.footer {
+    background-color: rgb(51, 51, 51);
+}
+
+.fas {
+    font-size: 30px;
+}
+
+.foot-link, .link-secondary {
+    color:rgb(234, 236, 239);
+}
