@@ -7,7 +7,8 @@ This module defines a simple Flask application that serves as the frontend for t
 from flask import Flask, render_template
 import requests  # Import the requests library to make HTTP requests
 from flask_wtf import FlaskForm
-from wtforms import StringField, SubmitField
+from wtforms import StringField, SubmitField, SelectMultipleField
+from wtforms.widgets import ListWidget, CheckboxInput
 
 app = Flask(__name__)
 app.config['SECRET_KEY'] = 'your_secret_key'  # Replace with a secure secret key
@@ -16,10 +17,9 @@ app.config['SECRET_KEY'] = 'your_secret_key'  # Replace with a secure secret key
 FASTAPI_BACKEND_HOST = 'http://backend'  # Replace with the actual URL of your FastAPI backend
 BACKEND_URL = f'{FASTAPI_BACKEND_HOST}/query/'
 
-
 class QueryForm(FlaskForm):
-    person_name = StringField('Person Name:')
-    submit = SubmitField('Get Birthday from FastAPI Backend')
+    insegnamento_name = StringField('Nome Insegnamento:')
+    submit = SubmitField('Visualizza le tue lezioni')
 
 
 @app.route('/')
@@ -51,10 +51,10 @@ def fetch_date_from_backend():
         return 'Date not available'
 
 
-@app.route('/internal', methods=['GET', 'POST'])
-def internal():
+@app.route('/calendar', methods=['GET', 'POST'])
+def calendar():
     """
-    Render the internal page.
+    Render the calendar page.
 
     Returns:
         str: Rendered HTML content for the index page.
@@ -63,22 +63,26 @@ def internal():
     error_message = None  # Initialize error message
 
     if form.validate_on_submit():
-        person_name = form.person_name.data
+        insegnamento_name = form.insegnamento_name.data
 
-        # Make a GET request to the FastAPI backend
-        fastapi_url = f'{FASTAPI_BACKEND_HOST}/query/{person_name}'
+        # Costruisce l'URL 
+        fastapi_url = f'{FASTAPI_BACKEND_HOST}/query/{insegnamento_name}'
         response = requests.get(fastapi_url)
 
         if response.status_code == 200:
             # Extract and display the result from the FastAPI backend
             data = response.json()
-            result = data.get('birthday', f'Error: Birthday not available for {person_name}')
-            return render_template('internal.html', form=form, result=result, error_message=error_message)
+            # result = data.get('birthday', f'Error: Birthday not available for {person_name}')
+            return render_template('calendar.html', form=form, result=data, error_message=error_message)
         else:
-            error_message = f'Error: Unable to fetch birthday for {person_name} from FastAPI Backend'
+            error_message = f'Error: Unable to fetch birthday for {insegnamento_name} from FastAPI Backend'
 
-    return render_template('internal.html', form=form, result=None, error_message=error_message)
+    return render_template('calendar.html', form=form, result=None, error_message=error_message)
 
+@app.route('/about')
+def about():
+    return render_template('about.html')
 
 if __name__ == '__main__':
     app.run(host='0.0.0.0', port=80, debug=True)
+
