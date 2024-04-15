@@ -7,30 +7,19 @@ as the backend for the project.
 
 from fastapi import FastAPI
 from fastapi import FastAPI
-from fastapi.responses import JSONResponse
-from datetime import datetime
-import pandas as pd
-
-
-from .mymodules.birthdays import return_birthday, print_birthdays_str
+from .mymodules.df_creating import df_creating
+import json
 
 app = FastAPI()
 
-# Dictionary of birthdays
-birthdays_dictionary = {
-    'Albert Einstein': '03/14/1879',
-    'Benjamin Franklin': '01/17/1706',
-    'Ada Lovelace': '12/10/1815',
-    'Donald Trump': '06/14/1946',
-    'Rowan Atkinson': '01/6/1955'
-}
 
-df = pd.read_csv('/app/app/employees.csv')
 
 @app.get('/csv_show')
-def read_and_return_csv():
-    aux = df['Age'].values
-    return{"Age": str(aux.argmin())}
+def read_and_return_df():
+    """
+    """
+    df = df_creating()
+    return df
 
 @app.get('/')
 def read_root():
@@ -42,43 +31,29 @@ def read_root():
     """
     return {"Hello": "World"}
 
-
-@app.get('/query/{person_name}')
-def read_item(person_name: str):
+@app.get("/query/{insegnamento_name}/{location_str}")
+def get_courses_taught_by_person(insegnamento_name, location_str):
     """
-    Endpoint to query birthdays based on person_name.
 
-    Args:
-        person_name (str): The name of the person.
-
-    Returns:
-        dict: Birthday information for the provided person_name.
     """
-    person_name = person_name.title()  # Convert to title case for consistency
-    birthday = birthdays_dictionary.get(person_name)
-    if birthday:
-        return {"person_name": person_name, "birthday": birthday}
-    else:
-        return {"error": "Person not found"}
 
+    # Convert to title case for consistency
 
-@app.get('/module/search/{person_name}')
-def read_item_from_module(person_name: str):
-    return {return_birthday(person_name)}
+    insegnamento_name = insegnamento_name.title()  
+    
+    # Convert the comma-separated location string into a list
+    luoghi_list = location_str.split(",") if location_str else []
+    
+    filtered_df = df_creating()
 
+    
+    if luoghi_list:
+        filtered_df = filtered_df[filtered_df['LUOGO'].isin(luoghi_list)]
+            
+    insegnamenti = filtered_df[filtered_df['NOME_INSEGNAMENTO'].str.contains(insegnamento_name, case=False, na=False)]
+    
+    insegnamenti_dict = insegnamenti.to_dict(orient='index')
 
-@app.get('/module/all')
-def dump_all_birthdays():
-    return {print_birthdays_str()}
+    subset_final_json = json.dumps(insegnamenti_dict, indent=4)
 
-
-@app.get('/get-date')
-def get_date():
-    """
-    Endpoint to get the current date.
-
-    Returns:
-        dict: Current date in ISO format.
-    """
-    current_date = datetime.now().isoformat()
-    return JSONResponse(content={"date": current_date})
+    return subset_final_json
