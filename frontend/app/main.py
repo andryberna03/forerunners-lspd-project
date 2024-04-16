@@ -18,8 +18,11 @@ FASTAPI_BACKEND_HOST = 'http://backend'  # Replace with the actual URL of your F
 BACKEND_URL = f'{FASTAPI_BACKEND_HOST}/query/'
 
 class QueryForm(FlaskForm):
-    insegnamento_name = StringField('Nome Insegnamento:')
-    submit = SubmitField('Visualizza le tue lezioni')
+    # Adding locations checkbox
+    location = SelectMultipleField('Luoghi:', choices=[('MESTRE', 'MESTRE'), ('VENEZIA', 'VENEZIA'), ('RONCADE', 'RONCADE'), ('TREVISO', 'TREVISO')],
+                                    widget=ListWidget(prefix_label=False), option_widget=CheckboxInput())
+    insegnamento_name = StringField('Enter teaching name:')
+    submit = SubmitField('View your lectures')
 
 
 @app.route('/')
@@ -31,24 +34,8 @@ def index():
         str: Rendered HTML content for the index page.
     """
     # Fetch the date from the backend
-    date_from_backend = fetch_date_from_backend()
-    return render_template('index.html', date_from_backend=date_from_backend)
+    return render_template('index.html')
 
-def fetch_date_from_backend():
-    """
-    Function to fetch the current date from the backend.
-
-    Returns:
-        str: Current date in ISO format.
-    """
-    backend_url = 'http://backend/get-date'  # Adjust the URL based on your backend configuration
-    try:
-        response = requests.get(backend_url)
-        response.raise_for_status()  # Raise an HTTPError for bad responses
-        return response.json().get('date', 'Date not available')
-    except requests.exceptions.RequestException as e:
-        print(f"Error fetching date from backend: {e}")
-        return 'Date not available'
 
 
 @app.route('/calendar', methods=['GET', 'POST'])
@@ -65,8 +52,12 @@ def calendar():
     if form.validate_on_submit():
         insegnamento_name = form.insegnamento_name.data
 
-        # Costruisce l'URL 
-        fastapi_url = f'{FASTAPI_BACKEND_HOST}/query/{insegnamento_name}'
+        selected_location = form.location.data
+        # Convert location list into string
+        location_str = ",".join(selected_location)
+        
+        # Build URL
+        fastapi_url = f'{FASTAPI_BACKEND_HOST}/query/{insegnamento_name}/{location_str}'
         response = requests.get(fastapi_url)
 
         if response.status_code == 200:
@@ -75,12 +66,14 @@ def calendar():
             # result = data.get('birthday', f'Error: Birthday not available for {person_name}')
             return render_template('calendar.html', form=form, result=data, error_message=error_message)
         else:
-            error_message = f'Error: Unable to fetch birthday for {insegnamento_name} from FastAPI Backend'
+            error_message = f'Error: Unable to fetch lesson for {insegnamento_name} from FastAPI Backend'
 
     return render_template('calendar.html', form=form, result=None, error_message=error_message)
 
 @app.route('/about')
 def about():
+    """
+    """
     return render_template('about.html')
 
 if __name__ == '__main__':
