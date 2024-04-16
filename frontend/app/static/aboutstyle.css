@@ -13,13 +13,11 @@
 
 .Github-link {
     text-align: center;
-    /* Centra orizzontalmente il contenuto */
 }
 
 .Github-link svg,
 .Github-link h1 {
     margin: 0 auto;
-    /* Centra l'SVG e l'h1 all'interno dell'elemento .Github-link */
 }
 
 .pricing8 .btn-info-gradiant, .pricing8 .btn-danger-gradiant {
@@ -30,4 +28,9 @@
 .backend {
     justify-content: center;
     text-align: left;
+}
+
+.card:hover { /* to make the card responsive when you hover over it */
+    transform: scale(1.05); 
+    transition: transform 0.3s ease-in-out; 
 }
