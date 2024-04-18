@@ -11,7 +11,6 @@ from wtforms import StringField, SubmitField, SelectMultipleField
 from wtforms.widgets import ListWidget, CheckboxInput
 
 app = Flask(__name__)
-app.config['SECRET_KEY'] = 'your_secret_key'  # Replace with a secure secret key
 
 # Configuration for the FastAPI backend URL
 FASTAPI_BACKEND_HOST = 'http://backend'  # Replace with the actual URL of your FastAPI backend
@@ -35,7 +34,6 @@ def index():
     """
     # Fetch the date from the backend
     return render_template('index.html')
-
 
 
 @app.route('/calendar', methods=['GET', 'POST'])
@@ -70,12 +68,13 @@ def calendar():
 
     return render_template('calendar.html', form=form, result=None, error_message=error_message)
 
+
 @app.route('/about')
 def about():
     """
     """
     return render_template('about.html')
 
+
 if __name__ == '__main__':
     app.run(host='0.0.0.0', port=80, debug=True)
-

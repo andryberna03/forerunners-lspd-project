@@ -17,14 +17,6 @@ import json
 app = FastAPI()
 
 
-final_urls_dataframe = df_creating()
-
-@app.get('/csv_show')
-def read_and_return_csv():
-    """
-    """
-    return final_urls_dataframe
-
 @app.get('/')
 def read_root():
     """
@@ -34,6 +26,19 @@ def read_root():
         dict: A simple greeting.
     """
     return {"Hello": "World"}
+
+
+@app.get('/df_show')
+def read_and_return_df():
+    """
+    Read and return the dataframe created with df_creating module.
+
+    Returns:
+        DataFrame: Lectures dataframe.
+    """
+    df = df_creating()
+    return df
+
 
 @app.get("/query/{insegnamento_name}/{location_str}")
 def get_courses_taught_by_person(insegnamento_name, location_str):
@@ -58,3 +63,4 @@ def get_courses_taught_by_person(insegnamento_name, location_str):
     subset_final_json = json.dumps(insegnamenti_dict, indent=4)
 
     return subset_final_json
+
