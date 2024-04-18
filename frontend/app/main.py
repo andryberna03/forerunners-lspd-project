@@ -30,26 +30,7 @@ def index():
     Returns:
         str: Rendered HTML content for the index page.
     """
-    # Fetch the date from the backend
-    date_from_backend = fetch_date_from_backend()
-    return render_template('index.html', date_from_backend=date_from_backend)
-
-def fetch_date_from_backend():
-    """
-    Function to fetch the current date from the backend.
-
-    Returns:
-        str: Current date in ISO format.
-    """
-    backend_url = 'http://backend/get-date'  # Adjust the URL based on your backend configuration
-    try:
-        response = requests.get(backend_url)
-        response.raise_for_status()  # Raise an HTTPError for bad responses
-        return response.json().get('date', 'Date not available')
-    except requests.exceptions.RequestException as e:
-        print(f"Error fetching date from backend: {e}")
-        return 'Date not available'
-
+    return render_template('index.html')
 
 @app.route('/calendar', methods=['GET', 'POST'])
 def calendar():
@@ -81,6 +62,12 @@ def calendar():
 
 @app.route('/about')
 def about():
+    """
+    Render the about page.
+
+    Returns:
+        str: Rendered HTML content for the about page.
+    """
     return render_template('about.html')
 
 if __name__ == '__main__':

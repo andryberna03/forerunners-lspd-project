@@ -4,7 +4,8 @@
 }
 
 /* Set navbar element in color white */
-.navbar-toggler, .navbar-toggler-icon {
+.navbar-toggler,
+.navbar-toggler-icon {
     color: white;
     border-color: transparent;
 }
@@ -13,25 +14,32 @@
     border-color: white;
 }
 
-.navbar-brand, .nav-link, .nav-link svg, .widget, .copyright {
+.navbar-brand, 
+.nav-link, 
+.nav-link svg, 
+.widget, 
+.copyright {
     color: white;
 }
 
-.navbar-brand:hover, .foot-link:hover {
+.navbar-brand:hover, 
+.foot-link:hover {
     color: white !important;
     text-decoration-color: rgb(110, 117, 124);
     text-decoration: underline;
     text-decoration-thickness: 2px;
 }
 
-.navbar-nav .nav-link:hover span, .navbar-nav .nav-link:hover svg {
+.navbar-nav .nav-link:hover span, 
+.navbar-nav .nav-link:hover svg {
     color: white !important;
     text-decoration-color: rgb(110, 117, 124);
     text-decoration: underline;
     text-decoration-thickness: 2px;
 }
 
-.list-unstyled .foot-link:hover span, .widget .link-secondary:hover span {
+.list-unstyled .foot-link:hover span, 
+.widget .link-secondary:hover span {
     color: white !important;
     text-decoration-color: rgb(110, 117, 124);
     text-decoration: underline;
@@ -46,6 +54,7 @@
     font-size: 30px;
 }
 
-.foot-link, .link-secondary {
+.foot-link, 
+.link-secondary {
     color:rgb(234, 236, 239);
 }

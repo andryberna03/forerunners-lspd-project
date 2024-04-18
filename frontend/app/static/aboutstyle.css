@@ -1,0 +1,36 @@
+.Github-link, 
+.Github-link-2 {
+    color: black !important;
+
+}
+
+.Github-link-2:hover,
+.btn:hover {
+    text-decoration-color: rgb(110, 117, 124);
+    text-decoration: underline;
+    text-decoration-thickness: 2px;
+}
+
+.Github-link {
+    text-align: center;
+}
+
+.Github-link svg,
+.Github-link h1 {
+    margin: 0 auto;
+}
+
+.pricing8 .btn-info-gradiant, .pricing8 .btn-danger-gradiant {
+    background: rgb(172, 0, 51);
+}
+
+.frontend,
+.backend {
+    justify-content: center;
+    text-align: left;
+}
+
+.card:hover { /* to make the card responsive when you hover over it */
+    transform: scale(1.05); 
+    transition: transform 0.3s ease-in-out; 
+}
