@@ -6,38 +6,35 @@
 <style>
     /* Custom styles */
     body {
-        font-family: Arial, sans-serif;
-        background-color: #fff; /* Background color set to white */
-        color: #000; /* Text color set to black */
-        padding-top: 20px; /* Adjusting padding for title */
+        font-family: 'Open Sans', sans-serif;
+        font-size: 16px;
+        line-height: 1.5;
+        color: #333;
     }
-
-    .jumbotron {
-        background-image: url("../static/image_index/venice.jpg");
-        background-size: cover;
-        background-position: center;
-        height: 500px; /* Adjusting height for the background image */
-        margin-bottom: 0; /* Remove margin bottom */
+    
+    .display-4{
+        padding-top: 2px;
+        padding-bottom: 2px;
+           
     }
+   
 
-    .jumbotron .container {
-        position: relative;
-        top: 50%;
-        transform: translateY(-50%);
+    .masthead {
+    font-family: 'Open Sans', sans-serif;
+    font-weight: bold;
+    position: relative;
+    width: 100%;
+    height: auto;
+    min-height: 35rem;
+    color: aliceblue;
+    padding: 15rem 0;
+    background-image: url('https://www.cpvenice.com/wp-content/uploads/sites/365/2021/10/Crowne-Plaza-Venice-East-Piazza-San-Marco_slide.jpg');
+    background-position: center;
+    background-repeat: no-repeat;
+    background-attachment: scroll;
+    background-size: cover;
     }
-
-    .title-container {
-        background-color: rgba(255, 255, 255, 0.7); /* Adding background color for title container */
-        padding: 20px; /* Adjusting padding for title container */
-    }
-
-    .title-container h1 {
-        font-size: 3.5rem; /* Increasing font size of title */
-        font-weight: bold; /* Make the title bold */
-        color: #000; /* Text color set to black */
-        text-align: center; /* Aligning title to center */
-    }
-
+    
     .jumbotron p {
         font-size: 1.5rem; /* Increasing font size of lead paragraph */
         text-align: center; /* Aligning lead paragraph to center */
@@ -78,92 +75,188 @@
         color: #0056b3; /* Change link color on hover */
     }
 
-    /* Added style for the calendar box */
-    .calendar-box {
-        border: 2px solid #000;
-        padding: 20px;
-        margin-bottom: 30px;
+    .col-xl-8{
+        flex: 0 0 auto;
+        width: 25%;
+        margin-bottom: 15px;
+        padding-top: 25px;
+    }
+    .container-px-5{
+        padding-left: 200px;
+        padding-top: 200px;
+        padding-bottom: 200px;
+        padding-top: 200px;
+
+    }
+    .bg-gradient-primary-to-secondary {
+    background:  #ac0033;
+    padding-left: 30px;
     }
 
-    .calendar-box h2 {
-        text-align: center;
+        /* Add top margin to each session-box */
+    .session-box {
+        margin-top: 50px;
+        margin-bottom: 50px;
     }
 
-    /* Vertical alignment for lesson form elements */
-    .lesson-form-group {
-        margin-bottom: 20px;
+    /* Add top margin to the title-container */
+    .title-container {
+        margin-top: 35px;
     }
 
-    .lesson-form-group label {
-        display: block;
+    /* Add top margin to the main-content */
+    .main-content {
+        margin-top: 150px;
+        margin-bottom: 150px;
+    }
+
+    /* Add top margin to the jumbotron */
+    .jumbotron {
+        margin-top: 100px;
+    }
+    
+
+    /* Add top margin to the aside element */
+    aside {
+        margin-top: 150px;
+        margin-bottom: 0%;
+    }
+    .session-box {
+    border: 2px solid #000;
+    padding: 20px;
+    margin-top: 150px;
+    
+    text-align: justify;
+    }
+    section.cta {
+    position: relative;
+    padding: 15rem 0;
+    background-image: url("https://cdn.pixabay.com/photo/2019/10/02/08/24/travel-4520383_1280.jpg");
+    background-position: center;
+    background-size: cover;
+    }
+    section.cta .cta-content {
+    position: relative;
+    z-index: 1;
+    }
+    section.cta:before {
+    content: "";
+    position: absolute;
+    top: 0;
+    left: 0;
+    width: 100%;
+    height: 100%;
+    background: rgba(0, 0, 0, 0.5);
+    }
+
+    .icon-feature {
+    font-size: 4rem;
+    }
+    
+    .container-px-5{
+        padding: 110px;
+        padding-left: 100px;
+        padding-right: 100px;
+        padding-bottom: 40px;
+
+    }
+
+    .h2-fs-1{
+        font-family:'Open Sans', sans-serif;
+        font-size: 80px;
+        line-height: 1.5;
         font-weight: bold;
-        margin-bottom: 5px;
+        color: aliceblue;
     }
-
-    /* Export button */
-    .export-button {
+    .text-mission{
+        font-family:'Open Sans', sans-serif;
+        color: white;
+        font-size: 30px;
+        font-weight: 700;
+        line-height: 40px;
         text-align: center;
-        margin-top: 20px;
-    }
-</style>
 
-    <!-- Jumbotron -->
-    <div class="jumbotron jumbotron-fluid">
-        <div class="container">
-            <div class="title-container">
-                <h1 class="display-4">Welcome Incoming Exchange Students!</h1>
+    }
+   
+</style>
+<!-- Bootstrap CSS -->
+    <link href="https://stackpath.bootstrapcdn.com/bootstrap/4.5.2/css/bootstrap.min.css" rel="stylesheet">
+          
+
+
+<!-- Jumbotron -->
+<header class="masthead">
+    <div class="container px-4 px-lg-5 d-flex h-100 align-items-center justify-content-center">
+        <div class="d-flex justify-content-center">
+            <div class="text-center">
+                <h1 class="mx-auto my-0 text-uppercase">Welcome Exchange Students!</h1>
             </div>
-            <p class="lead">Explore Venice with Ca' Foscari University</p>
         </div>
     </div>
+</header>
+<!-- Jumbotron -->
 
-    <!-- Main content -->
-    <div class="main-content">
-        <div class="container mt-5">
-            <div class="row justify-content-center">
-                <div class="col-md-8">
-                    <!-- Session: Group Composition -->
-                    <div class="session-box">
-                        <div class="session-title">Group Composition</div>
-                        <div class="session-description">
-                            <p>Marta, Francesco, Carlo, Andrea, and Antonio, we are five students of the second year of digital management. We know what you might be thinking... Why are you doing it? The reasons are many; some of us will go on Erasmus and find difficulty in converting it, while others just need to anticipate some exams to finish earlier. We are all somehow forerunning the time!</p>
-                        </div>
-                    </div>
 
-                    <!-- Session: Stress-Free Erasmus -->
-                    <div class="session-box">
-                        <div class="session-title">Stress-Free Erasmus: It's Possible!</div>
-                        <div class="session-description">
-                            <p>We have decided to develop this project since almost all of us have experienced the stress of checking and scheduling the exams to convalidate during the Exchange semester. Therefore, we want to prevent anyone else from experiencing it.</p>
-                        </div>
-                    </div>
+    
+            
 
-                    <!-- Session: Purpose -->
-                    <div class="session-box">
-                        <div class="session-title">Purpose</div>
-                        <div class="session-description">
-                            <p>We wanted to provide Ca’ Foscari with an efficient solution that may reduce the friction and somehow increase the willingness of students to come and study in Venice, granting an intrinsic benefit for our community and the overall prestige of our University.</p>
-                        </div>
-                    </div>
 
-                    <!-- Session: Planning Your Erasmus Exchange Got Easier! -->
-                    <div class="session-box">
-                        <div class="session-title">Planning Your Erasmus Exchange Got Easier!</div>
-                        <div class="session-description">
-                            <p>Our exchange student calendar will provide the user with a search bar with two preliminary filters:</p>
-                            <ol>
-                                <li>Choose among the different locations Ca’ Foscari provides (Venice, Mestre, Roncade, Treviso).</li>
-                                <li>Choose among the academic path: Bachelor/Master.</li>
-                                <li>Search for a course.</li>
-                                <li>Add it to your schedule.</li>
-                                <li>Extract the output.</li>
-                            </ol>
+    <!-- Session: Stress-Free exchange -->
+                    <!-- Basic features section-->
+                    <section class="bg-light">
+                        <div class="container-px-5">
+                            <div class="row gx-5 align-items-center justify-content-center justify-content-lg-between">
+                                <div class="col-12 col-lg-5">
+                                    <h2 class="display-4 lh-1 mb-4">Stress-Free Exchange: It's Possible!</h2>
+                                    <p class="lead fw-normal text-muted mb-5 mb-lg-0">We have decided to develop this project since almost all of us have experienced the stress of checking and scheduling the exams to convalidate during the Exchange semester. Therefore, we want to prevent anyone else from experiencing it.</p>
+                                </div>
+                                <div class="col-sm-8 col-md-6">
+                                    <div class="px-5 px-sm-0"><img class="img-fluid rounded-circle" src="https://cdn.pixabay.com/photo/2017/10/15/21/07/venice-2855269_1280.jpg" alt="..." /></div>
+                                </div>
+                            </div>
                         </div>
-                    </div>
+                    </section<div class="session-box">
+                        <aside class="text-center bg-gradient-primary-to-secondary">
+                            <div class="container px-5">
+                                <div class="row gx-5 justify-content-center">
+                                    <div class="col-xl-8">
+                                        <div class="h2-fs-1">Our Mission</div>
+                                        <p class="text-mission">
+                                            Simplify Ca' Foscari admissions to attract more students to Venice, enriching our community and university.
+                                        </p>
+                                        <img src="assets/img/tnw-logo.svg" alt="..." style="height: 3rem" />
+                                    </div>
+                                </div>
+                            </div>
+                        </aside>    
+                         <!-- Session: Stress-Free exchange -->
+                    <!-- Basic features section-->
+                    <section class="bg-light">
+                        <div class="container-px-5">
+                            <div class="row gx-5 align-items-center justify-content-center justify-content-lg-between">
+                                <div class="col-sm-8 col-md-6">
+                                    <div class="px-5 px-sm-0"><img class="img-fluid rounded-circle" src="../static/image_index/Logo_unive.png" alt="..." /></div>
+                                </div>
+                                <div class="col-12 col-lg-5">
+                                    <h2 class="display-4 lh-1 mb-4">Ca'Foscari University</h2>
+                                    <p class="lead fw-normal text-muted mb-5 mb-lg-0">The Ca' Foscari University of Venice is an Italian public university founded on August 6, 1868. It is nationally and internationally recognized for its research achievements and the quality of its teaching, which have an international and interdisciplinary approach. It attracts and supports a diverse and international community of individuals who study, teach, and conduct research in the heart of a uniquely remarkable city.</p>
+                                </div>                                
+                            </div>
+                        </div>
+                    </section<div class="session-box">
+                        
+        <!-- Call to action section-->
+        <section class="cta">
+            <div class="cta-content">
+                <div class="container px-5">
+                    <h2 class="text-white display-1 lh-1 mb-4">
+                        Stop wasting your time.
+                        <br />
+                        Start a new exprience!
+                    </h2>
+                    <a class="btn btn-outline-light py-3 px-4 rounded-pill" href="{{ url_for('calendar') }}">Start Scheduling!</a>
                 </div>
             </div>
-        </div>
-    </div>
-
+        </section>
 {% endblock %}
 
