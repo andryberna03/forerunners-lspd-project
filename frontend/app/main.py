@@ -5,12 +5,13 @@ This module defines a simple Flask application that serves as the frontend for t
 """
 
 from flask import Flask, render_template
-import requests  # Import the requests library to make HTTP requests
+import requests  
 from flask_wtf import FlaskForm
 from wtforms import StringField, SubmitField, SelectMultipleField
 from wtforms.widgets import ListWidget, CheckboxInput
 
 app = Flask(__name__)
+app.config['SECRET_KEY'] = 'any secret string'
 
 # Configuration for the FastAPI backend URL
 FASTAPI_BACKEND_HOST = 'http://backend'  # Replace with the actual URL of your FastAPI backend
@@ -18,7 +19,9 @@ BACKEND_URL = f'{FASTAPI_BACKEND_HOST}/query/'
 
 class QueryForm(FlaskForm):
     # Adding locations checkbox
-    location = SelectMultipleField('Luoghi:', choices=[('MESTRE', 'MESTRE'), ('VENEZIA', 'VENEZIA'), ('RONCADE', 'RONCADE'), ('TREVISO', 'TREVISO')],
+    location = SelectMultipleField('Location:', choices=[('VENEZIA', 'VENEZIA'), ('RONCADE', 'RONCADE'), ('TREVISO', 'TREVISO'), ('PADOVA', 'PADOVA')],
+                                    widget=ListWidget(prefix_label=False), option_widget=CheckboxInput())
+    degreetype = SelectMultipleField('Degree type:', choices=[('MASTER', 'MASTER'), ('BACHELOR', 'BACHELOR'), ('OTHER', 'OTHER')],
                                     widget=ListWidget(prefix_label=False), option_widget=CheckboxInput())
     insegnamento_name = StringField('Enter teaching name:')
     submit = SubmitField('View your lectures')
@@ -51,11 +54,13 @@ def calendar():
         insegnamento_name = form.insegnamento_name.data
 
         selected_location = form.location.data
+        selected_degreetype = form.degreetype.data
         # Convert location list into string
         location_str = ",".join(selected_location)
+        degreetype_str = ",".join(selected_degreetype)
         
         # Build URL
-        fastapi_url = f'{FASTAPI_BACKEND_HOST}/query/{insegnamento_name}/{location_str}'
+        fastapi_url = f'{FASTAPI_BACKEND_HOST}/query/{insegnamento_name}/{location_str}/{degreetype_str}'
         response = requests.get(fastapi_url)
 
         if response.status_code == 200:
