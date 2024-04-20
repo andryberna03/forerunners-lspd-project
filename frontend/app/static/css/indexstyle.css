@@ -1,0 +1,93 @@
+.masthead {
+    font-weight: bold;
+    position: relative;
+    width: 100%;
+    height: auto;
+    color: rgb(172, 0, 51);
+    padding: 7rem 0;
+    background-image: url('../img/index/picture_venice.jpg');
+    background-position: center;
+    background-repeat: no-repeat;
+    background-attachment: scroll;
+    box-shadow: 0 0 10px rgba(0, 0, 0, 0.5);
+    background-size: cover;
+    background-color: rgba(0, 0, 0, 0.3);
+}
+
+.greeting-text {
+    font-size: 400%;
+    /* Creazione di un gradiente di colore partendo da rgb(172, 0, 51) */
+    background: linear-gradient(to right, rgb(172, 0, 51), rgb(221, 70, 70));
+    /* Specifica che il testo deve essere trasparente */
+    -webkit-background-clip: text;
+    background-clip: text;
+    /* Colore di fallback per i browser che non supportano background-clip: text */
+    color: transparent;
+}
+
+.aperitivo {
+    align-content: center;
+    align-items: center;
+    padding-top: 50px;
+    padding-bottom: 50px;
+}
+
+.text-aperitivo {
+    font-size: 320%;
+    text-align: center;
+}
+
+.img_aperitivo {
+    box-shadow: 0 0 10px rgba(0, 0, 0, 0.5);
+    width: auto;
+    height: 350px;
+}
+
+.map-container {
+    margin-bottom: 50px;
+}
+
+#mapid {
+    height: 400px;
+}
+
+.mission {
+    text-align: center;
+    color: white;
+    background-color: rgb(172, 0, 51);
+}
+
+.head-mission {
+    text-align: center;
+    color: white;
+    font-size: 320%;
+}
+
+.text-mission{
+    text-align: center;
+    color: white;
+    font-size: 150%;
+}
+
+section.cta {
+    position: relative;
+    padding: 7rem 0;
+    background-image: url("../img/index/venice_sunset.jpg");
+    background-position: center;
+    background-size: cover;
+}
+
+section.cta .cta-content {
+    position: relative;
+    z-index: 1;
+}
+
+section.cta:before {
+    content: "";
+    position: absolute;
+    top: 0;
+    left: 0;
+    width: 100%;
+    height: 100%;
+    background: rgba(0, 0, 0, 0.5);
+}
