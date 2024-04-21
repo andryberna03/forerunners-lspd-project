@@ -6,11 +6,6 @@ as the backend for the project.
 """
 
 from fastapi import FastAPI
-from fastapi import FastAPI
-from fastapi.responses import JSONResponse
-from datetime import datetime
-import pandas as pd
-from fastapi import Query
 from .mymodules.df_creating import df_creating
 import json
 
@@ -39,20 +34,20 @@ def read_and_return_df():
     return final_urls_dataframe
 
 
-@app.get("/query/{insegnamento_name}/{location_str}/{degreetype_str}")
-def get_courses_taught_by_person(insegnamento_name, location_str,degreetype_str):
+@app.get("/query/{teaching}/{location_str}/{degreetype_str}")
+def get_courses_taught_by_person(teaching, location_str,degreetype_str):
     """
     """
     
-    insegnamento_name = insegnamento_name.title()  # Convert to title case for consistency
+    teaching = teaching.title()  # Convert to title case for consistency
     # Filter the DataFrame to rows where the person's name appears in the 'DOCENTI' column
     
     filtered_df = final_urls_dataframe
     
     # Filter by location: MESTRE, VENEZIA, RONCADE, TREVISO
-    luoghi_list = location_str.split(",") if location_str else []
-    if luoghi_list:
-        filtered_df = filtered_df[filtered_df['SITE'].isin(luoghi_list)]
+    site_list = location_str.split(",") if location_str else []
+    if site_list:
+        filtered_df = filtered_df[filtered_df['SITE'].isin(site_list)]
 
     # Filter by DEGREE_TYPE
     # Dictionary to map the degree types to the corresponding codes in the DataFrame
@@ -71,11 +66,11 @@ def get_courses_taught_by_person(insegnamento_name, location_str,degreetype_str)
     if code_list:
         filtered_df = filtered_df[filtered_df['DEGREE_TYPE'].isin(code_list)]
             
-    insegnamenti = filtered_df[filtered_df['TEACHING'].str.contains(insegnamento_name, case=False, na=False)]
+    teaching_select = filtered_df[filtered_df['TEACHING'].str.contains(teaching, case=False, na=False)]
     
-    insegnamenti_dict = insegnamenti.to_dict(orient='index')
+    teaching_select_dict = teaching_select.to_dict(orient='index')
 
-    subset_final_json = json.dumps(insegnamenti_dict, indent=4)
+    subset_final_json = json.dumps(teaching_select_dict, indent=4)
 
     return subset_final_json
 

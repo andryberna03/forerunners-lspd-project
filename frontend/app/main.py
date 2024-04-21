@@ -23,7 +23,7 @@ class QueryForm(FlaskForm):
                                     widget=ListWidget(prefix_label=False), option_widget=CheckboxInput())
     degreetype = SelectMultipleField('Degree type:', choices=[('MASTER', 'MASTER'), ('BACHELOR', 'BACHELOR'), ('OTHER', 'OTHER')],
                                     widget=ListWidget(prefix_label=False), option_widget=CheckboxInput())
-    insegnamento_name = StringField('Enter teaching name:')
+    teaching = StringField('Enter teaching name:')
     submit = SubmitField('View your lectures')
 
 
@@ -51,7 +51,7 @@ def calendar():
     error_message = None  # Initialize error message
 
     if form.validate_on_submit():
-        insegnamento_name = form.insegnamento_name.data
+        teaching = form.teaching.data
 
         selected_location = form.location.data
         selected_degreetype = form.degreetype.data
@@ -60,7 +60,7 @@ def calendar():
         degreetype_str = ",".join(selected_degreetype)
         
         # Build URL
-        fastapi_url = f'{FASTAPI_BACKEND_HOST}/query/{insegnamento_name}/{location_str}/{degreetype_str}'
+        fastapi_url = f'{FASTAPI_BACKEND_HOST}/query/{teaching}/{location_str}/{degreetype_str}'
         response = requests.get(fastapi_url)
 
         if response.status_code == 200:
@@ -69,7 +69,7 @@ def calendar():
             # result = data.get('birthday', f'Error: Birthday not available for {person_name}')
             return render_template('calendar.html', form=form, result=data, error_message=error_message)
         else:
-            error_message = f'Error: Unable to fetch lesson for {insegnamento_name} from FastAPI Backend'
+            error_message = f'Error: Unable to fetch lesson for {teaching} from FastAPI Backend'
 
     return render_template('calendar.html', form=form, result=None, error_message=error_message)
 
