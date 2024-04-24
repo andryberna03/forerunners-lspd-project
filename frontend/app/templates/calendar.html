@@ -43,7 +43,27 @@
             <p class="text-danger">{{ error_message }}</p>
             {% endif %}
         </div>
-    </div>
 
+
+
+
+
+        <body>
+            <div class="search-box">
+                <div class="row">
+                    <input type="text" id= "input-box", placeholder="Search teaching"
+                    autocomplete="off">
+                    <button>
+                        search
+                    </button>
+                </div>
+                <div class="result-box">
+
+                </div>
+            </div>
+            <script src="autocomplete.js"></script>
+        </body>
+
+    </div>
 
 {% endblock %}
