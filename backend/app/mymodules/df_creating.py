@@ -36,10 +36,10 @@ def df_creating():
     ordered_dataframe = rename_and_convert(merged_urls_dataframe)
 
     # Add prof URL
-    final_urls_dataframe = unive_docente_urls(ordered_dataframe)
+    final_urls_dataframe = unive_lecturer_urls(ordered_dataframe)
 
     # Add course URL
-    final_urls_dataframe = unive_insegnamento_urls(final_urls_dataframe)
+    final_urls_dataframe = unive_teaching_urls(final_urls_dataframe)
 
     return final_urls_dataframe
 
@@ -203,31 +203,24 @@ def rename_and_convert(merged_dataframe):
     return ordered_dataframe
 
 
-def unive_docente_urls(ordered_dataframe):
+def unive_lecturer_urls(ordered_dataframe):
     """
     Returns enriched "final_urls_dataframe"
     """
-    docenti_df = pd.read_json("http://apps.unive.it/sitows/didattica/docenti")
-    docenti_df['LECTURER_NAME'] = (docenti_df[
-        'COGNOME'] + ' ' + docenti_df['NOME']).str.upper()
-    docenti_df = docenti_df[['LECTURER_NAME', 'DOCENTE_ID']]
+    lecturers = pd.read_json("http://apps.unive.it/sitows/didattica/docenti")
+    lecturers['LECTURER_NAME'] = (lecturers['COGNOME'] + ' ' + lecturers['NOME']).str.upper()
+    lecturers = lecturers[['LECTURER_NAME','DOCENTE_ID']]
     # Merge of the main DataFrame with lecturer's data
-    final_urls_dataframe = pd.merge(ordered_dataframe, docenti_df,
-                                    on='LECTURER_NAME', how='left')
-    final_urls_dataframe['DOCENTE_ID'] = final_urls_dataframe[
-        'DOCENTE_ID'].fillna(-1)
+    final_urls_dataframe = pd.merge(ordered_dataframe, lecturers, on='LECTURER_NAME', how='left')
+    final_urls_dataframe['DOCENTE_ID'] = final_urls_dataframe['DOCENTE_ID'].fillna(-1)
     # Convert to integer and then to string
     url_lecturers = 'https://www.unive.it/data/persone/'
     final_urls_dataframe['URL_DOCENTE'] = url_lecturers + final_urls_dataframe[
         'DOCENTE_ID'].astype(int).astype(str)
     return final_urls_dataframe
 
-
-def unive_insegnamento_urls(final_urls_dataframe):
-    url_teaching = 'https://www.unive.it/data/insegnamento/'
-    final_urls_dataframe[
-        "URLS_INSEGNAMENTO"] = url_teaching + final_urls_dataframe[
-            'AF_ID'].astype(str)
+def unive_teaching_urls(final_urls_dataframe):
+    final_urls_dataframe["URLS_INSEGNAMENTO"] = 'https://www.unive.it/data/insegnamento/' + final_urls_dataframe['AF_ID'].astype(str)
     return final_urls_dataframe
 
 

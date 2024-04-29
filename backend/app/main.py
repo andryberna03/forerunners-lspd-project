@@ -6,31 +6,12 @@ as the backend for the project.
 """
 
 from fastapi import FastAPI
-from fastapi import FastAPI
+from .mymodules.df_creating import df_creating
+import json
 from fastapi.responses import JSONResponse
-from datetime import datetime
-import pandas as pd
-
-
-from .mymodules.birthdays import return_birthday, print_birthdays_str
 
 app = FastAPI()
 
-# Dictionary of birthdays
-birthdays_dictionary = {
-    'Albert Einstein': '03/14/1879',
-    'Benjamin Franklin': '01/17/1706',
-    'Ada Lovelace': '12/10/1815',
-    'Donald Trump': '06/14/1946',
-    'Rowan Atkinson': '01/6/1955'
-}
-
-df = pd.read_csv('/app/app/employees.csv')
-
-@app.get('/csv_show')
-def read_and_return_csv():
-    aux = df['Age'].values
-    return{"Age": str(aux.argmin())}
 
 @app.get('/')
 def read_root():
@@ -42,43 +23,56 @@ def read_root():
     """
     return {"Hello": "World"}
 
-
-@app.get('/query/{person_name}')
-def read_item(person_name: str):
+final_urls_dataframe = df_creating()
+@app.get('/df_show')
+def read_and_return_df():
     """
-    Endpoint to query birthdays based on person_name.
-
-    Args:
-        person_name (str): The name of the person.
+    Read and return the dataframe created with df_creating module.
 
     Returns:
-        dict: Birthday information for the provided person_name.
+        DataFrame: Lectures dataframe.
     """
-    person_name = person_name.title()  # Convert to title case for consistency
-    birthday = birthdays_dictionary.get(person_name)
-    if birthday:
-        return {"person_name": person_name, "birthday": birthday}
-    else:
-        return {"error": "Person not found"}
+    return final_urls_dataframe
 
 
-@app.get('/module/search/{person_name}')
-def read_item_from_module(person_name: str):
-    return {return_birthday(person_name)}
-
-
-@app.get('/module/all')
-def dump_all_birthdays():
-    return {print_birthdays_str()}
-
-
-@app.get('/get-date')
-def get_date():
+@app.get("/query/{teaching}/{location_str}/{degreetype_str}")
+def get_courses_taught_by_person(teaching, location_str,degreetype_str):
     """
-    Endpoint to get the current date.
-
-    Returns:
-        dict: Current date in ISO format.
     """
-    current_date = datetime.now().isoformat()
-    return JSONResponse(content={"date": current_date})
+    
+    teaching = teaching.title()  # Convert to title case for consistency
+    # Filter the DataFrame to rows where the person's name appears in the 'DOCENTI' column
+    
+    filtered_df = final_urls_dataframe
+    
+    # Filter by location: MESTRE, VENEZIA, RONCADE, TREVISO
+    site_list = location_str.split(",") if location_str else []
+    if site_list:
+        filtered_df = filtered_df[filtered_df['SITE'].isin(site_list)]
+
+    # Filter by DEGREE_TYPE
+    # Dictionary to map the degree types to the corresponding codes in the DataFrame
+    degree_mapping = {
+        'MASTER': 'LM',
+        'BACHELOR': 'L',
+        'OTHER': ['MINOR', 'CP', 'CF-270', 'M2-270', 'M-CR', 'D2', 'ADCO']
+    }
+
+    # Convert the degreetype_list from friendly names to codes
+    degreetype_list = degreetype_str.split(",") if degreetype_str else []
+    code_list = []
+    for degreetype in degreetype_list:
+        code_list.append(degree_mapping[degreetype])
+ 
+    if code_list:
+        filtered_df = filtered_df[filtered_df['DEGREE_TYPE'].isin(code_list)]
+            
+    teaching_select = filtered_df[filtered_df['TEACHING'].str.contains(teaching, case=False, na=False)]
+    
+    teaching_select_dict = teaching_select.to_dict(orient='index')
+
+    #subset_final_json = json.dumps(teaching_select_dict, indent=4)
+    subset_final_json = JSONResponse(content=teaching_select_dict)
+    
+    return subset_final_json
+

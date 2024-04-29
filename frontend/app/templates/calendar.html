@@ -12,23 +12,59 @@
         <form method="POST" action="">
             {{ form.csrf_token }}
             <div class="form-group">
-                {{ form.insegnamento_name.label }}
-                {{ form.insegnamento_name(class="form-control", placeholder="Enter insegnamento_name") }}
+                {{ form.location.label }}
+                {% for checkbox in form.location %}
+                <div class="form-check">
+                    {{ checkbox }} {{ checkbox.label }}
+                </div>
+                {% endfor %}
+            </div>
+            <div class="form-group">
+                {{ form.degreetype.label }}
+                {% for checkbox in form.degreetype %}
+                <div class="form-check">
+                    {{ checkbox }} {{ checkbox.label }}
+                </div>
+                {% endfor %}
+            </div>
+            <div class="form-group">
+                {{ form.teaching.label }}
+                {{ form.teaching(class="form-control", placeholder="Enter teaching") }}
             </div>
             {{ form.submit(class="btn btn-primary") }}
         </form>
 
-        <!-- Display the result here -->
-        <div id="resultContainer" class="mt-3">
-            {% if result %}
-                <p>{{ result }}</p>
-            {% endif %}
-            {% if error_message %}
-                <p class="text-danger">{{ error_message }}</p>
-            {% endif %}
-        </div>
-        
-
+    <!-- Display the result here -->
+    <div id="resultContainer" class="mt-3">
+        {% if result %}
+            {% for lecture_id, lecture in result.items() %}
+                <div class="card-mb-3">
+                    <div class="card-header">
+                        {{ lecture.TEACHING }} - {{ lecture.PARTITION }}
+                    </div>
+                    <div class="card-body">
+                        <p class="card-text">
+                            Teacher: <a href="{{ lecture.URL_DOCENTE }}">{{ lecture.LECTURER_NAME }}</a><br>
+                            Date: {{ lecture.LECTURE_DAY }}<br>
+                            Time: {{ lecture.LECTURE_START }} - {{ lecture.LECTURE_END }}<br>
+                            Classroom: {{ lecture.CLASSROOM_NAME }}<br>
+                            Address: {{ lecture.ADDRESS }}<br>
+                            Course: {{ lecture.DEGREE_NAME }}<br>
+                            Degree type: {{ lecture.DEGREE_TYPE }}<br>
+                            Study year: {{ lecture.STUDY_YEAR }}<br>
+                            Semester: {{ lecture.CYCLE }}<br>
+                            Credits: {{ lecture.CREDITS }}<br>
+                            Link to teaching page: <a href="{{ lecture.URLS_INSEGNAMENTO }}">{{ lecture.TEACHING }}</a>
+                        </p>
+                    </div>
+                </div>
+            {% endfor %}
+        {% else %}
+            <p class="text-center">Nessuna lezione disponibile.</p>
+        {% endif %}
+        {% if error_message %}
+            <p class="text-danger">{{ error_message }}</p>
+        {% endif %}
     </div>
 
 
