@@ -8,6 +8,7 @@ as the backend for the project.
 from fastapi import FastAPI
 from .mymodules.df_creating import df_creating
 import json
+from fastapi.responses import JSONResponse
 
 app = FastAPI()
 
@@ -70,7 +71,8 @@ def get_courses_taught_by_person(teaching, location_str,degreetype_str):
     
     teaching_select_dict = teaching_select.to_dict(orient='index')
 
-    subset_final_json = json.dumps(teaching_select_dict, indent=4)
-
+    #subset_final_json = json.dumps(teaching_select_dict, indent=4)
+    subset_final_json = JSONResponse(content=teaching_select_dict)
+    
     return subset_final_json
 
