@@ -6,11 +6,14 @@ as the backend for the project.
 """
 
 from fastapi import FastAPI
+import pandas as pd
 from .mymodules.df_creating import df_creating
 import json
 from fastapi.responses import JSONResponse
 
 app = FastAPI()
+
+final_urls_dataframe = df_creating()
 
 
 @app.get('/')
@@ -19,11 +22,10 @@ def read_root():
     Root endpoint for the backend.
 
     Returns:
-        dict: A simple greeting.
+        dict: A simple greeting.+
     """
     return {"Hello": "World"}
 
-final_urls_dataframe = df_creating()
 @app.get('/df_show')
 def read_and_return_df():
     """
@@ -76,3 +78,26 @@ def get_courses_taught_by_person(teaching, location_str,degreetype_str):
     
     return subset_final_json
 
+@app.get('/get_teachings')
+def get_teachings():
+    """
+    """
+    # Crea una lista per memorizzare i risultati
+    results = []
+
+    # Itera su ogni riga del DataFrame
+    for index, row in final_urls_dataframe.iterrows():
+        # Controlla se il valore nella colonna 'partition' è 'null'
+        if pd.isna(row['PARTITION']):
+            # Se 'partition' è 'null', aggiungi solo il valore di 'TEACHING' a results
+            results.append(row['TEACHING'])
+        else:
+            # Altrimenti, unisci le stringhe di 'TEACHING' e 'partition' con un trattino e aggiungi il risultato a results
+            results.append(row['TEACHING'] + ' - ' + row['PARTITION'])
+
+    # Converti la lista di risultati in un DataFrame
+    result_dataframe = pd.DataFrame({'result': results})
+    result_json = JSONResponse(content=result_dataframe)
+
+
+    return result_json
