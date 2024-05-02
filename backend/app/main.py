@@ -6,6 +6,7 @@ as the backend for the project.
 """
 
 from fastapi import FastAPI
+from fastapi.middleware.cors import CORSMiddleware
 import pandas as pd
 from .mymodules.df_creating import df_creating
 import json
@@ -13,7 +14,14 @@ from fastapi.responses import JSONResponse
 
 app = FastAPI()
 
-final_urls_dataframe = df_creating()
+# Configura CORS per consentire tutte le origini (*)
+app.add_middleware(
+    CORSMiddleware,
+    allow_origins=["*"],
+    allow_credentials=True,
+    allow_methods=["*"],
+    allow_headers=["*"],
+)
 
 
 @app.get('/')
@@ -25,6 +33,8 @@ def read_root():
         dict: A simple greeting.+
     """
     return {"Hello": "World"}
+
+final_urls_dataframe = df_creating()
 
 @app.get('/df_show')
 def read_and_return_df():
@@ -103,9 +113,11 @@ def get_teachings():
             # Altrimenti, unisci le stringhe di 'TEACHING' e 'partition' con un trattino e aggiungi il risultato a results
             results.append(row['TEACHING'] + ' - ' + row['PARTITION'])
 
+    # Elimina i duplicati dalla lista di risultati
+    results_set = set(results)
+    result_list = list(results_set)
+
     # Converti la lista di risultati in un DataFrame
-    result_dataframe = pd.DataFrame({'result': results})
-    result_json = JSONResponse(content=result_dataframe)
+    result_dataframe = pd.DataFrame({'result': result_list})
 
-
-    return result_json
+    return result_dataframe
