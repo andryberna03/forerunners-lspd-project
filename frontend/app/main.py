@@ -5,13 +5,17 @@ This module defines a simple Flask application that serves as the frontend for t
 """
 
 from flask import Flask, render_template
-import requests  
+from flask_cors import CORS
+import requests
 from flask_wtf import FlaskForm
 from wtforms import StringField, SubmitField, SelectMultipleField
 from wtforms.widgets import ListWidget, CheckboxInput
 
 app = Flask(__name__)
 app.config['SECRET_KEY'] = 'any secret string'
+
+# Configura CORS per consentire tutte le origini (*)
+CORS(app)
 
 # Configuration for the FastAPI backend URL
 FASTAPI_BACKEND_HOST = 'http://backend'  # Replace with the actual URL of your FastAPI backend
