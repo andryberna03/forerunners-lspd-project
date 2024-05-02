@@ -6,9 +6,9 @@ function fetchTeachings() {
     fetch("http://localhost:8081/get_teachings")
         .then((response) => response.json())
         .then(data => {
-            // Controlla se data contiene una proprietà result che è un oggetto
+            // Check if data contains a result property that is an object
             if (typeof data.result === 'object' && data.result !== null) {
-                // Accedi direttamente alle proprietà dell'oggetto result
+                // Access properties of the result object directly
                 teachings = Object.keys(data.result).map(key => data.result[key]);
                 teachings.sort();
                 loadData(teachings, teachingsListElements);
@@ -21,20 +21,32 @@ function loadData(data, element) {
         element.innerHTML = "";
         let innerElement = "";
         data.forEach((item) => {
-            innerElement += `
-            <li>${item}</li>`;
+            innerElement += `<li>${item}</li>`;
         });
-    element.innerHTML = innerElement;
+        element.innerHTML = innerElement;
+        
+        // Add click event listener to each option
+        const options = element.querySelectorAll('li');
+        options.forEach(option => {
+            option.addEventListener('click', function() {
+                teachingsInputElements.value = option.textContent;
+                hideDropdown();
+            });
+        });
     }
 }
 
 function filterData(data, searchText) {
-    return data.filter ((x) => x.toLowerCase().includes(searchText.toLowerCase()));
+    return data.filter((x) => x.toLowerCase().includes(searchText.toLowerCase()));
 }
 
-fetchTeacings();
+function hideDropdown() {
+    teachingsListElements.innerHTML = ""; // Clear the dropdown
+}
 
-teachingsInputElements.addEventListener ("input", function () {
-    const filteredData = filterData (teachings, teachingsInputElements.value);
+fetchTeachings();
+
+teachingsInputElements.addEventListener("input", function () {
+    const filteredData = filterData(teachings, teachingsInputElements.value);
     loadData(filteredData, teachingsListElements);
 });
