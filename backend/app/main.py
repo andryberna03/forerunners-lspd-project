@@ -118,6 +118,6 @@ def get_teachings():
     result_list = list(results_set)
 
     # Converti la lista di risultati in un DataFrame
-    result_dataframe = pd.DataFrame({'result': result_list})
+    result_dataframe = pd.DataFrame({'teachings': result_list})
 
     return result_dataframe
