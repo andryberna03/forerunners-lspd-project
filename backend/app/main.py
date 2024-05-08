@@ -112,4 +112,4 @@ def get_teachings():
     # Converti la lista di risultati in un DataFrame
     result_dataframe = pd.DataFrame({'teachings': result_list})
 
-    return result_dataframe
+    return JSONResponse(content={"teachings": result_list})
