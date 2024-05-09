@@ -1,3 +1,4 @@
+import datetime
 import requests
 import pandas as pd
 import numpy as np
@@ -40,6 +41,8 @@ def df_creating():
 
     # Add course URL
     final_urls_dataframe = unive_teaching_urls(final_urls_dataframe)
+
+    final_urls_dataframe = format_iso8601(final_urls_dataframe)
 
     return final_urls_dataframe
 
@@ -221,6 +224,19 @@ def unive_lecturer_urls(ordered_dataframe):
 
 def unive_teaching_urls(final_urls_dataframe):
     final_urls_dataframe["URLS_INSEGNAMENTO"] = 'https://www.unive.it/data/insegnamento/' + final_urls_dataframe['AF_ID'].astype(str)
+    return final_urls_dataframe
+
+def format_iso8601(final_urls_dataframe):
+    def format_to_iso8601(date_str, time_str):
+        # Create a datetime object from date and time strings
+        full_datetime = datetime.datetime.strptime(f"{date_str} {time_str}", "%Y-%m-%d %H:%M")
+        return full_datetime.isoformat()
+
+    # Apply the formatting function to create new columns for ISO 8601 formatted dates
+    final_urls_dataframe['START_ISO8601'] = final_urls_dataframe.apply(
+        lambda row: format_to_iso8601(row['LECTURE_DAY'], row['LECTURE_START']), axis=1)
+    final_urls_dataframe['END_ISO8601'] = final_urls_dataframe.apply(
+        lambda row: format_to_iso8601(row['LECTURE_DAY'], row['LECTURE_END']), axis=1)
     return final_urls_dataframe
 
 

@@ -2,70 +2,77 @@
 
 {% block title %} Calendar {% endblock %}
 
+{% block head %}
+    {{ super() }}
+    <!-- <link href='https://cdn.jsdelivr.net/npm/fullcalendar/index.global.min.css' rel='stylesheet' /> -->
+    <script src='https://cdn.jsdelivr.net/npm/fullcalendar/index.global.min.js'></script>
+{% endblock %}
+
 {% block content %}
+<div class="container mt-5">
+    <h1>Hello, Internal Page!</h1>
+    <p>This is an internal page for interacting with a FastAPI backend.</p>
 
-    <div class="container mt-5">
-        <h1>Hello, Internal Page!</h1>
-        <p>This is an internal page for interacting with a FastAPI backend.</p>
-
-        <!-- WTForms Form to get input from the user -->
-        <form method="POST" action="">
-            {{ form.csrf_token }}
-            <div class="form-group">
-                {{ form.location.label }}
-                {% for checkbox in form.location %}
-                <div class="form-check">
-                    {{ checkbox }} {{ checkbox.label }}
-                </div>
-                {% endfor %}
+    <form method="POST" action="">
+        {{ form.csrf_token }}
+        <div class="form-group">
+            {{ form.location.label }}
+            {% for checkbox in form.location %}
+            <div class="form-check">
+                {{ checkbox }} {{ checkbox.label }}
             </div>
-            <div class="form-group">
-                {{ form.degreetype.label }}
-                {% for checkbox in form.degreetype %}
-                <div class="form-check">
-                    {{ checkbox }} {{ checkbox.label }}
-                </div>
-                {% endfor %}
-            </div>
-            <div class="form-group">
-                {{ form.teaching.label }}
-                {{ form.teaching(class="form-control", placeholder="Enter teaching") }}
-            </div>
-            {{ form.submit(class="btn btn-primary") }}
-        </form>
-
-    <!-- Display the result here -->
-    <div id="resultContainer" class="mt-3">
-        {% if result %}
-            {% for lecture_id, lecture in result.items() %}
-                <div class="card-mb-3">
-                    <div class="card-header">
-                        {{ lecture.TEACHING }} - {{ lecture.PARTITION }}
-                    </div>
-                    <div class="card-body">
-                        <p class="card-text">
-                            Teacher: <a href="{{ lecture.URL_DOCENTE }}">{{ lecture.LECTURER_NAME }}</a><br>
-                            Date: {{ lecture.LECTURE_DAY }}<br>
-                            Time: {{ lecture.LECTURE_START }} - {{ lecture.LECTURE_END }}<br>
-                            Classroom: {{ lecture.CLASSROOM_NAME }}<br>
-                            Address: {{ lecture.ADDRESS }}<br>
-                            Course: {{ lecture.DEGREE_NAME }}<br>
-                            Degree type: {{ lecture.DEGREE_TYPE }}<br>
-                            Study year: {{ lecture.STUDY_YEAR }}<br>
-                            Semester: {{ lecture.CYCLE }}<br>
-                            Credits: {{ lecture.CREDITS }}<br>
-                            Link to teaching page: <a href="{{ lecture.URLS_INSEGNAMENTO }}">{{ lecture.TEACHING }}</a>
-                        </p>
-                    </div>
-                </div>
             {% endfor %}
-        {% else %}
-            <p class="text-center">Nessuna lezione disponibile.</p>
-        {% endif %}
-        {% if error_message %}
-            <p class="text-danger">{{ error_message }}</p>
-        {% endif %}
-    </div>
+        </div>
+        <div class="form-group">
+            {{ form.degreetype.label }}
+            {% for checkbox in form.degreetype %}
+            <div class="form-check">
+                {{ checkbox }} {{ checkbox.label }}
+            </div>
+            {% endfor %}
+        </div>
+        <div class="form-group">
+            {{ form.teaching.label }}
+            {{ form.teaching(class="form-control", placeholder="Enter teaching") }}
+        </div>
+        {{ form.submit(class="btn btn-primary") }}
+    </form>
 
+    <!-- Calendar container -->
+    <div id='calendar' class='mt-3'></div>
+</div>
 
+<script>
+    document.addEventListener('DOMContentLoaded', function() {
+        alert("JavaScript is loaded!");
+        var calendarEl = document.getElementById('calendar');
+        var calendar = new FullCalendar.Calendar(calendarEl, {
+            initialView: 'dayGridMonth',
+            eventClick: function(info) {
+                info.jsEvent.preventDefault(); // Don't let the browser navigate
+                if (info.event.url) {
+                    window.open(info.event.url, '_blank');
+                }
+            }
+    });
+    calendar.render();
+
+    // Attach an event handler for form submission
+    document.getElementById('query-form').addEventListener('submit', function(event) {
+        event.preventDefault(); // Prevent actual form submission
+        var teaching = document.querySelector("[name='teaching']").value;
+        var location_str = Array.from(document.querySelectorAll("[name='location']:checked")).map(el => el.value).join(",");
+        var degreetype_str = Array.from(document.querySelectorAll("[name='degreetype']:checked")).map(el => el.value).join(",");
+        
+        var url = `/query/${teaching}/${location_str}/${degreetype_str}`;
+        fetch(url)
+            .then(response => response.json())
+            .then(data => {
+                calendar.removeAllEvents(); // Clear existing events
+                calendar.addEventSource(data); // Add new data
+            })
+            .catch(error => console.error('Error loading the calendar data:', error));
+         });
+    });
+    </script>
 {% endblock %}

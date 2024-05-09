@@ -67,12 +67,20 @@ def get_courses_taught_by_person(teaching, location_str,degreetype_str):
     if code_list:
         filtered_df = filtered_df[filtered_df['DEGREE_TYPE'].isin(code_list)]
             
-    teaching_select = filtered_df[filtered_df['TEACHING'].str.contains(teaching, case=False, na=False)]
+    filtered_df = filtered_df[filtered_df['TEACHING'].str.contains(teaching, case=False, na=False)]
     
-    teaching_select_dict = teaching_select.to_dict(orient='index')
+    # Creating the JSON structure for FullCalendar
+    events = []
+    for _, row in filtered_df.iterrows():
+        event = {
+            "title": f"{row['TEACHING']} - {row['PARTITION']}",
+            "start": f"{row['LECTURE_DAY']}T{row['LECTURE_START']}",
+            "end": f"{row['LECTURE_DAY']}T{row['LECTURE_END']}",
+            "url": row['URLS_INSEGNAMENTO'],
+            # You can add more properties here as needed
+        }
+        events.append(event)
 
-    #subset_final_json = json.dumps(teaching_select_dict, indent=4)
-    subset_final_json = JSONResponse(content=teaching_select_dict)
-    
-    return subset_final_json
+    return JSONResponse(content=events)  # Send a list of event objects
+
 
