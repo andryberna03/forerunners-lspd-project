@@ -22,10 +22,8 @@ FASTAPI_BACKEND_HOST = 'http://backend'  # Replace with the actual URL of your F
 BACKEND_URL = f'{FASTAPI_BACKEND_HOST}/query/'
 
 class QueryForm(FlaskForm):
-    location = SelectMultipleField('Location:', choices=[('VENEZIA', 'VENEZIA'), ('RONCADE', 'RONCADE'), ('TREVISO', 'TREVISO'), ('PADOVA', 'PADOVA')],
-                                    widget=ListWidget(prefix_label=False), option_widget=CheckboxInput())
-    degreetype = SelectMultipleField('Degree type:', choices=[('MASTER', 'MASTER'), ('BACHELOR', 'BACHELOR'), ('OTHER', 'OTHER')],
-                                    widget=ListWidget(prefix_label=False), option_widget=CheckboxInput())
+    location = SelectField('Location:')
+    degreetype = SelectMultipleField('Degree type:')
     teaching = SelectField('Enter teaching name:')
     submit = SubmitField('View your lectures')
 
@@ -48,14 +46,36 @@ def calendar():
     error_message = None
 
     # Fetch teachings from the backend and update form choices
-    fastapi_url = f'{FASTAPI_BACKEND_HOST}/get_teachings'
+    fastapi_url = f'{FASTAPI_BACKEND_HOST}/df_show'
     response = requests.get(fastapi_url)
 
     if response.status_code == 200:
         data = response.json()
-        form.teaching.choices = [(teaching, teaching) for teaching in data['teachings']]
+        form.teaching.choices = [(teaching, teaching) for teaching in data['TEACHING'].unique()]
+        form.location.choices = [(location, location) for location in data['SITE'].unique()]
+        form.degreetype.choices = [(degreetype, degreetype) for degreetype in data['DEGREE_TYPE'].unique()]
+
+
     else:
         error_message = "Error: Unable to fetch teaching data from the backend."
+
+
+    # fastapi_url_location = f'{FASTAPI_BACKEND_HOST}/get_teachings'
+    # response_location = requests.get(fastapi_url_location)
+
+    # if response_location.status_code == 200:
+    #     data_location = response_location.json()
+    #     form.location.choices = [(location, location) for location in data_location['teachings']]
+    # form.location.choices = [(location, location) for location in datalocation['teachings']]
+
+
+    # fastapi_url_teaching = f'{FASTAPI_BACKEND_HOST}/get_teachings'
+    # response_teaching = requests.get(fastapi_url_teaching)
+
+    # if response_teaching.status_code == 200:
+    #     data_teaching = response_teaching.json()
+    #     form.teaching.choices = [(teaching, teaching) for teaching in data_teaching['teachings']]
+    # form.degreetype.choices = [(degreetype, degreetype) for degreetype in datadegreetype['teachings']]
 
     if form.validate_on_submit():
         teaching = form.teaching.data
