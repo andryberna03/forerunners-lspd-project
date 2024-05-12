@@ -9,7 +9,6 @@ from fastapi import FastAPI
 from fastapi.middleware.cors import CORSMiddleware
 import pandas as pd
 from .mymodules.df_creating import df_creating
-import json
 from fastapi.responses import JSONResponse
 
 app = FastAPI()
@@ -20,8 +19,7 @@ app.add_middleware(
     allow_origins=["*"],
     allow_credentials=True,
     allow_methods=["*"],
-    allow_headers=["*"],
-)
+    allow_headers=["*"],)
 
 
 @app.get('/')
@@ -104,7 +102,8 @@ def get_teachings():
         else:
             # Altrimenti, unisci le stringhe di 'TEACHING' e 'partition' con un trattino e aggiungi il risultato a results
             results.append(row['TEACHING'] + ' - ' + row['PARTITION'])
-
+    
+    
     # Elimina i duplicati dalla lista di risultati
     results_set = set(results)
     result_list = list(results_set)
