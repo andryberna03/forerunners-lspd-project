@@ -8,8 +8,11 @@ as the backend for the project.
 from fastapi import FastAPI
 from fastapi.middleware.cors import CORSMiddleware
 import pandas as pd
-from .mymodules.df_creating import df_creating
 from fastapi.responses import JSONResponse
+import pandas as pd
+
+from .mymodules.df_creating import df_creating
+from .mymodules.df_dropdown import df_dropdown
 
 app = FastAPI()
 
@@ -33,6 +36,7 @@ def read_root():
     return {"Hello": "World"}
 
 final_urls_dataframe = df_creating()
+dataframe_filtered = df_dropdown()
 
 @app.get('/df_show')
 def read_and_return_df():
@@ -42,7 +46,17 @@ def read_and_return_df():
     Returns:
         DataFrame: Lectures dataframe.
     """
-    return final_urls_dataframe
+    return final_urls_dataframe.to_dict(orient='records')
+
+@app.get('/df_filter_show')
+def read_and_return_df_filter():
+    """
+    Read and return the dataframe created with df_creating module.
+
+    Returns:
+        DataFrame: Lectures dataframe.
+    """
+    return dataframe_filtered.to_dict(orient='records')
 
 
 @app.get("/query/{teaching}/{location_str}/{degreetype_str}")
@@ -63,10 +77,8 @@ def get_courses_taught_by_person(teaching, location_str,degreetype_str):
     # Filter by DEGREE_TYPE
     # Dictionary to map the degree types to the corresponding codes in the DataFrame
     degree_mapping = {
-        'MASTER': 'LM',
-        'BACHELOR': 'L',
-        'OTHER': ['MINOR', 'CP', 'CF-270', 'M2-270', 'M-CR', 'D2', 'ADCO']
-    }
+        'LM': 'LM',
+        'L': 'L'}
 
     # Convert the degreetype_list from friendly names to codes
     degreetype_list = degreetype_str.split(",") if degreetype_str else []
