@@ -11,30 +11,60 @@
     <h1>Hello, Internal Page!</h1>
     <p>This is an internal page for interacting with a FastAPI backend.</p>
 
-    <form method="POST" action="">
-        {{ form.csrf_token }}
-        <div class="form-group">
-            {{ form.location.label }}
-            {% for checkbox in form.location %}
-            <div class="form-check">
-                {{ checkbox }} {{ checkbox.label }}
+        <!-- WTForms Form to get input from the user -->
+        <form method="POST">
+            {{ form.csrf_token }}
+        
+            <div class="row">
+                <div class="col-md-4">
+                    <div class="form-group">
+                        {{ form.location.label }}
+                        {{ form.location(class="form-control") }}
+                    </div>
+                </div>
+                <div class="col-md-4">
+                    <div class="form-group">
+                        {{ form.degreetype.label }}
+                        {{ form.degreetype(class="form-control") }}
+                    </div>
+                </div>
+                <div class="col-md-4">
+                    <div class="form-group">
+                        {{ form.academic_year.label }}
+                        {{ form.academic_year(class="form-control") }}
+                    </div>
+                </div>
             </div>
-            {% endfor %}
-        </div>
-        <div class="form-group">
-            {{ form.degreetype.label }}
-            {% for checkbox in form.degreetype %}
-            <div class="form-check">
-                {{ checkbox }} {{ checkbox.label }}
+        
+            <div class="row">
+                <div class="col-md-4">
+                    <div class="form-group">
+                        {{ form.cycle.label }}
+                        {{ form.cycle(class="form-control") }}
+                    </div>
+                </div>
+                <div class="col-md-4">
+                    <div class="form-group">
+                        {{ form.credits.label }}
+                        {{ form.credits(class="form-control") }}
+                    </div>
+                </div>
+                <div class="col-md-4">
+                    <div class="form-group">
+                        {{ form.teaching.label }}
+                        {{ form.teaching(class="form-control") }}
+                    </div>
+                </div>
             </div>
-            {% endfor %}
-        </div>
-        <div class="form-group">
-            {{ form.teaching.label }}
-            {{ form.teaching(class="form-control", placeholder="Enter teaching") }}
-        </div>
-        {{ form.submit(class="btn btn-primary") }}
-    </form>
+        
+            <div class="row">
+                <div class="col-md-12">
+                    <div class="form-group">
+                        {{ form.submit(class="btn btn-primary") }}
+                    </div>
+                </div>
+            </div>
+        </form>
 
     <!-- Calendar container -->
     <div id='calendar' class='mt-3'></div>

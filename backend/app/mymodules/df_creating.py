@@ -174,8 +174,7 @@ def rename_and_convert(merged_dataframe):
     and converts the 'DOCENTI' column values to uppercase.
 
     Args:
-    df (pd.DataFrame): The DataFrame to process.
-    new_column_order (list[str]): The new order of columns.
+    merged_dataframe (pd.DataFrame): The DataFrame to process.
 
     Returns:
     pd.DataFrame: The processed DataFrame.
@@ -201,9 +200,10 @@ def rename_and_convert(merged_dataframe):
     merged_dataframe['LECTURER_NAME'] = merged_dataframe[
         'LECTURER_NAME'].str.upper()
 
-    ordered_dataframe = merged_dataframe
+    # Drop rows where DEGREE_TYPE is different from 'L' or 'LM'
+    merged_dataframe = merged_dataframe[(merged_dataframe['DEGREE_TYPE'] == 'L') | (merged_dataframe['DEGREE_TYPE'] == 'LM')]
 
-    return ordered_dataframe
+    return merged_dataframe
 
 
 def unive_lecturer_urls(ordered_dataframe):
