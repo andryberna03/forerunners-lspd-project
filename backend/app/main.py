@@ -12,7 +12,6 @@ from fastapi.responses import JSONResponse
 import pandas as pd
 
 from .mymodules.df_creating import df_creating
-from .mymodules.df_dropdown import df_dropdown
 
 app = FastAPI()
 
@@ -36,7 +35,6 @@ def read_root():
     return {"Hello": "World"}
 
 final_urls_dataframe = df_creating()
-dataframe_filtered = df_dropdown()
 
 @app.get('/df_show')
 def read_and_return_df():
@@ -46,17 +44,9 @@ def read_and_return_df():
     Returns:
         DataFrame: Lectures dataframe.
     """
+    final_urls_dataframe = df_creating()
+    final_urls_dataframe = final_urls_dataframe.fillna('')
     return final_urls_dataframe.to_dict(orient='records')
-
-@app.get('/df_filter_show')
-def read_and_return_df_filter():
-    """
-    Read and return the dataframe created with df_creating module.
-
-    Returns:
-        DataFrame: Lectures dataframe.
-    """
-    return dataframe_filtered.to_dict(orient='records')
 
 
 @app.get("/query/{teaching}/{location_str}/{degreetype_str}")

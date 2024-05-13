@@ -2,23 +2,51 @@ import datetime
 import requests
 import pandas as pd
 import numpy as np
+import os
+import datetime
 
-
-# Define the main function of the module that calls all other functions
 def df_creating():
     """
     This is the general function which uses all the other functions defined
     in the file to build the final dataframe
     """
+    # Definire il percorso del file di output
+    file_path_final = 'app/final.csv'
+
+    # Controllare se il file esiste e se è stato creato nelle ultime 24 ore
+    if os.path.exists(file_path_final):
+        creation_time = os.path.getctime(file_path_final)
+        file_creation_date = datetime.datetime.fromtimestamp(creation_time)
+        current_date = datetime.datetime.now()
+        # Se è passato meno di un giorno dalla creazione del file, caricalo
+        if current_date - file_creation_date < datetime.timedelta(days=1):
+            final_urls_dataframe = pd.read_csv(file_path_final)
+            return final_urls_dataframe
+        # Altrimenti, creare un nuovo DataFrame
+        else:
+            return create_new_dataframe(file_path_final)
+    # Se il file non esiste, creare un nuovo DataFrame
+    else:
+        return create_new_dataframe(file_path_final)
+
+
+def create_new_dataframe(file_path_final):
+    """
+    Create a new DataFrame by calling the necessary functions and save it to CSV.
+
+    Args:
+    file_path_final (str): The path to the final CSV file.
+
+    Returns:
+    pd.DataFrame: The new DataFrame.
+    """
     # Define the URLs from which to retrieve data
     urls = {
         "degrees": "http://apps.unive.it/sitows/didattica/corsi",
         "teachings": "http://apps.unive.it/sitows/didattica/insegnamenti",
-        "degrees_teachings":
-        "http://apps.unive.it/sitows/didattica/corsiinsegnamenti",
+        "degrees_teachings": "http://apps.unive.it/sitows/didattica/corsiinsegnamenti",
         "lecturers": "http://apps.unive.it/sitows/didattica/docenti",
-        "teachings_lecturers":
-        "http://apps.unive.it/sitows/didattica/insegnamentidocenti",
+        "teachings_lecturers": "http://apps.unive.it/sitows/didattica/insegnamentidocenti",
         "lectures": "http://apps.unive.it/sitows/didattica/lezioni",
         "classrooms": "http://apps.unive.it/sitows/didattica/aule",
         "locations": "http://apps.unive.it/sitows/didattica/sedi",
@@ -43,6 +71,14 @@ def df_creating():
     final_urls_dataframe = unive_teaching_urls(final_urls_dataframe)
 
     final_urls_dataframe = format_iso8601(final_urls_dataframe)
+
+    final_urls_dataframe = semesters(final_urls_dataframe)
+
+    # Save the DataFrame to CSV
+    final_urls_dataframe.to_csv(file_path_final, index=False)
+
+    final_urls_dataframe = pd.read_csv(file_path_final)
+
 
     return final_urls_dataframe
 
@@ -239,6 +275,21 @@ def format_iso8601(final_urls_dataframe):
         lambda row: format_to_iso8601(row['LECTURE_DAY'], row['LECTURE_END']), axis=1)
     return final_urls_dataframe
 
+def semesters(final_urls_dataframe):
+
+
+    for index, semester in final_urls_dataframe['CYCLE'].items():
+        if semester in ['II Semestre', "3° Periodo", "4° Periodo"]:
+            new_semester = 'Spring Semester (Feb-June)'
+            final_urls_dataframe.at[index, 'CYCLE'] = new_semester
+        elif semester == 'Annuale':
+            new_semester = 'Annual'
+            final_urls_dataframe.at[index, 'CYCLE'] = new_semester
+        else:
+            new_semester = 'Fall Semester (Sep-Jen)'
+            final_urls_dataframe.at[index, 'CYCLE'] = new_semester
+
+    return final_urls_dataframe
 
 if __name__ == "__main__":
     final_urls_dataframe = df_creating()
