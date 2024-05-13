@@ -7,8 +7,7 @@
     <link rel="stylesheet" href="static/css/calendarstyle.css">
 
     <div class="container mt-5">
-        <h1>Hello, Internal Page!</h1>
-        <p>This is an internal page for interacting with a FastAPI backend.</p>
+        <p>The calendar was last updated at: fare lo script da inserire qua</p>
 
         <!-- WTForms Form to get input from the user -->
         <form method="POST">
@@ -29,19 +28,14 @@
                 </div>
                 <div class="col-md-4">
                     <div class="form-group">
-                        {{ form.academic_year.label }}
-                        {{ form.academic_year(class="form-control") }}
-                    </div>
-                </div>
-            </div>
-        
-            <div class="row">
-                <div class="col-md-4">
-                    <div class="form-group">
                         {{ form.cycle.label }}
                         {{ form.cycle(class="form-control") }}
                     </div>
                 </div>
+
+            </div>
+        
+            <div class="row">
                 <div class="col-md-4">
                     <div class="form-group">
                         {{ form.credits.label }}

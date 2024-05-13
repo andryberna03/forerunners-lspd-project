@@ -12,7 +12,6 @@ from fastapi.responses import JSONResponse
 import pandas as pd
 
 from .mymodules.df_creating import df_creating
-from .mymodules.df_dropdown import df_dropdown
 
 app = FastAPI()
 
@@ -36,7 +35,6 @@ def read_root():
     return {"Hello": "World"}
 
 final_urls_dataframe = df_creating()
-dataframe_filtered = df_dropdown()
 
 @app.get('/df_show')
 def read_and_return_df():
@@ -46,17 +44,9 @@ def read_and_return_df():
     Returns:
         DataFrame: Lectures dataframe.
     """
+    final_urls_dataframe = df_creating()
+    final_urls_dataframe = final_urls_dataframe.fillna('')
     return final_urls_dataframe.to_dict(orient='records')
-
-@app.get('/df_filter_show')
-def read_and_return_df_filter():
-    """
-    Read and return the dataframe created with df_creating module.
-
-    Returns:
-        DataFrame: Lectures dataframe.
-    """
-    return dataframe_filtered.to_dict(orient='records')
 
 
 @app.get("/query/{teaching}/{location_str}/{degreetype_str}")
@@ -97,30 +87,3 @@ def get_courses_taught_by_person(teaching, location_str,degreetype_str):
     subset_final_json = JSONResponse(content=teaching_select_dict)
     
     return subset_final_json
-
-@app.get('/get_teachings')
-def get_teachings():
-    """
-    """
-    # Crea una lista per memorizzare i risultati
-    results = []
-
-    # Itera su ogni riga del DataFrame
-    for index, row in final_urls_dataframe.iterrows():
-        # Controlla se il valore nella colonna 'partition' è 'null'
-        if pd.isna(row['PARTITION']):
-            # Se 'partition' è 'null', aggiungi solo il valore di 'TEACHING' a results
-            results.append(row['TEACHING'])
-        else:
-            # Altrimenti, unisci le stringhe di 'TEACHING' e 'partition' con un trattino e aggiungi il risultato a results
-            results.append(row['TEACHING'] + ' - ' + row['PARTITION'])
-    
-    
-    # Elimina i duplicati dalla lista di risultati
-    results_set = set(results)
-    result_list = list(results_set)
-
-    # Converti la lista di risultati in un DataFrame
-    result_dataframe = pd.DataFrame({'teachings': result_list})
-
-    return JSONResponse(content={"teachings": result_list})

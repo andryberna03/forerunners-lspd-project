@@ -24,7 +24,6 @@ class QueryForm(FlaskForm):
     location = SelectField('Location:', validators=[validators.DataRequired()])
     degreetype = SelectField('Degree type:', validators=[validators.DataRequired()])
     teaching = SelectField('Enter teaching name:', validators=[validators.DataRequired()])
-    academic_year = SelectField('Academic year:', validators=[validators.DataRequired()])
     cycle = SelectField('Cycle:', validators=[validators.DataRequired()])
     credits = SelectField('Credits:', validators=[validators.DataRequired()])
     submit = SubmitField('View your lectures')
@@ -47,7 +46,7 @@ def calendar():
     error_message = None
 
     # Fetch data from the backend and update form choices
-    fastapi_url = f'{FASTAPI_BACKEND_HOST}/df_filter_show'
+    fastapi_url = f'{FASTAPI_BACKEND_HOST}/df_show'
     response = requests.get(fastapi_url)
 
     if response.status_code == 200:
@@ -55,7 +54,6 @@ def calendar():
         form.location.choices = get_unique_values(data, 'SITE')
         form.degreetype.choices = get_unique_values(data, 'DEGREE_TYPE')
         form.teaching.choices = get_unique_values(data, 'TEACHING')
-        form.academic_year.choices = get_unique_values(data, 'ACADEMIC_YEAR')
         form.cycle.choices = get_unique_values(data, 'CYCLE')
         form.credits.choices = get_unique_values(data, 'CREDITS')
     else:
@@ -96,12 +94,13 @@ def get_unique_values(data, column_name):
     unique_values = set()
     if isinstance(data, list):
         for entry in data:
-            if column_name in entry:
+            if column_name in entry and entry[column_name] is not None:  # Aggiungi questo controllo per evitare valori None
                 unique_values.add(entry[column_name])
     elif isinstance(data, dict):
         if column_name in data:
             for entry in data[column_name]:
-                unique_values.add(entry)
+                if entry is not None:  # Aggiungi questo controllo per evitare valori None
+                    unique_values.add(entry)
     return sorted(list(unique_values))
 
 @app.route('/about')
