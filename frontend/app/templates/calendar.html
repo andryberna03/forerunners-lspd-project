@@ -8,7 +8,7 @@
 <script src='https://cdn.jsdelivr.net/npm/fullcalendar/index.global.min.js'></script>
 
     <div class="container mt-5">
-        <p>The calendar was last updated at: fare lo script da inserire qua</p>
+        <p>The calendar database was last updated at: {{ datatime_csv.datatime }}</p>
 
         <!-- WTForms Form to get input from the user -->
         <form method="POST">
@@ -17,8 +17,8 @@
             <div class="row">
                 <div class="col-md-4">
                     <div class="form-group">
-                        {{ form.location.label }}
-                        {{ form.location(class="form-control") }}
+                        {{ form.cycle.label }}
+                        {{ form.cycle(class="form-control") }}
                     </div>
                 </div>
                 <div class="col-md-4">
@@ -29,8 +29,8 @@
                 </div>
                 <div class="col-md-4">
                     <div class="form-group">
-                        {{ form.cycle.label }}
-                        {{ form.cycle(class="form-control") }}
+                        {{ form.credits.label }}
+                        {{ form.credits(class="form-control") }}
                     </div>
                 </div>
 
@@ -39,8 +39,8 @@
             <div class="row">
                 <div class="col-md-4">
                     <div class="form-group">
-                        {{ form.credits.label }}
-                        {{ form.credits(class="form-control") }}
+                        {{ form.location.label }}
+                        {{ form.location(class="form-control") }}
                     </div>
                 </div>
                 <div class="col-md-4">

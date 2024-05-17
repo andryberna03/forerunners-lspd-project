@@ -4,7 +4,7 @@ Frontend module for the Flask application.
 This module defines a simple Flask application that serves as the frontend for the project.
 """
 
-from flask import Flask, render_template
+from flask import Flask, render_template, jsonify
 from flask_cors import CORS
 import requests
 from flask_wtf import FlaskForm
@@ -19,6 +19,9 @@ CORS(app)
 # Configuration for the FastAPI backend URL
 FASTAPI_BACKEND_HOST = 'http://backend'  # Replace with the actual URL of your FastAPI backend
 BACKEND_URL = f'{FASTAPI_BACKEND_HOST}/query/'
+
+class DatatimeCSV(object):
+    datatime = None
 
 class QueryForm(FlaskForm):
     location = SelectField('Location:', validators=[validators.DataRequired()])
@@ -43,7 +46,13 @@ def index():
 @app.route('/calendar', methods=['GET', 'POST'])
 def calendar():
     form = QueryForm()
+    datatime_csv = DatatimeCSV()
     error_message = None
+
+    creation_csv = f'{FASTAPI_BACKEND_HOST}/csv_creation_date'
+    response_creation_csv = requests.get(creation_csv)
+    datatime_creation_csv = response_creation_csv.json()
+    datatime_csv.datatime = datatime_creation_csv
 
     # Fetch data from the backend and update form choices
     fastapi_url = f'{FASTAPI_BACKEND_HOST}/df_show'
@@ -51,11 +60,11 @@ def calendar():
 
     if response.status_code == 200:
         data = response.json()
-        form.location.choices = get_unique_values(data, 'SITE')
-        form.degreetype.choices = get_unique_values(data, 'DEGREE_TYPE')
-        form.teaching.choices = get_unique_values(data, 'TEACHING')
         form.cycle.choices = get_unique_values(data, 'CYCLE')
+        form.degreetype.choices = get_unique_values(data, 'DEGREE_TYPE')
         form.credits.choices = get_unique_values(data, 'CREDITS')
+        form.location.choices = get_unique_values(data, 'SITE')
+        form.teaching.choices = get_unique_values(data, 'TEACHING')
     else:
         error_message = "Error: Unable to fetch data from the backend."
 
@@ -74,11 +83,19 @@ def calendar():
 
         if response.status_code == 200:
             data = response.json()
-            return render_template('calendar.html', form=form, result=data, error_message=error_message)
+            return render_template('calendar.html', datatime_csv=datatime_csv, form=form, result=data, error_message=error_message)
         else:
             error_message = f'Error: Unable to fetch lesson for {teaching} from FastAPI Backend'
 
-    return render_template('calendar.html', form=form, result=None, error_message=error_message)
+    return render_template('calendar.html', datatime_csv=datatime_csv, form=form, result=None, error_message=error_message)
+
+
+@app.route('/about')
+def about():
+    """
+    """
+    return render_template('about.html')
+
 
 def get_unique_values(data, column_name):
     """
@@ -102,12 +119,6 @@ def get_unique_values(data, column_name):
                 if entry is not None:  # Aggiungi questo controllo per evitare valori None
                     unique_values.add(entry)
     return sorted(list(unique_values))
-
-@app.route('/about')
-def about():
-    """
-    """
-    return render_template('about.html')
 
 
 if __name__ == '__main__':

@@ -5,34 +5,43 @@ import numpy as np
 import os
 import datetime
 
+
 def df_creating():
     """
-    This is the general function which uses all the other functions defined
-    in the file to build the final dataframe
+    This is the main function which orchestrates the entire process of creating
+    the final dataframe. It checks if a file exists and is less than a day old.
+    If so, it loads the data from the file. Otherwise, it calls the create_new_dataframe
+    function to generate a new dataframe.
+
+    Returns:
+    pd.DataFrame: The final dataframe containing all the required data.
     """
-    # Definire il percorso del file di output
+    # Define the path to the final CSV file
     file_path_final = 'app/final.csv'
 
-    # Controllare se il file esiste e se è stato creato nelle ultime 24 ore
+    # Check if the file exists and was created within the last 24 hours
     if os.path.exists(file_path_final):
         creation_time = os.path.getctime(file_path_final)
         file_creation_date = datetime.datetime.fromtimestamp(creation_time)
         current_date = datetime.datetime.now()
-        # Se è passato meno di un giorno dalla creazione del file, caricalo
+
+        # If the file was created within the last 24 hours, load it
         if current_date - file_creation_date < datetime.timedelta(days=1):
             final_urls_dataframe = pd.read_csv(file_path_final)
             return final_urls_dataframe
-        # Altrimenti, creare un nuovo DataFrame
+        # If the file was not created within the last 24 hours, create a new dataframe
         else:
             return create_new_dataframe(file_path_final)
-    # Se il file non esiste, creare un nuovo DataFrame
+    # If the file does not exist, create a new dataframe
     else:
         return create_new_dataframe(file_path_final)
 
 
 def create_new_dataframe(file_path_final):
     """
-    Create a new DataFrame by calling the necessary functions and save it to CSV.
+    This function creates a new DataFrame by calling the necessary functions,
+    preprocesses the data, merges it, orders it, adds URLs, and handles problematic values.
+    It then saves the DataFrame to a CSV file and returns it.
 
     Args:
     file_path_final (str): The path to the final CSV file.
@@ -74,11 +83,14 @@ def create_new_dataframe(file_path_final):
 
     final_urls_dataframe = semesters(final_urls_dataframe)
 
+    # Handle problematic values
+    final_urls_dataframe.fillna("null", inplace=True)
+
     # Save the DataFrame to CSV
     final_urls_dataframe.to_csv(file_path_final, index=False)
 
+    # Read the DataFrame from CSV
     final_urls_dataframe = pd.read_csv(file_path_final)
-
 
     return final_urls_dataframe
 
