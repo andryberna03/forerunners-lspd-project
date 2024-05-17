@@ -5,11 +5,14 @@ This module defines a FastAPI application that serves
 as the backend for the project.
 """
 
-from fastapi import FastAPI
+from fastapi import FastAPI, HTTPException, Response
 from fastapi.middleware.cors import CORSMiddleware
 import pandas as pd
 from fastapi.responses import JSONResponse
 import pandas as pd
+import os
+import datetime
+import pytz
 
 from .mymodules.df_creating import df_creating
 
@@ -48,6 +51,33 @@ def read_and_return_df():
     final_urls_dataframe = final_urls_dataframe.fillna('')
     return final_urls_dataframe.to_dict(orient='records')
 
+# Funzione per ottenere la data di creazione del file CSV
+def get_csv_creation_date():
+    file_path_final = 'app/final.csv'
+    if os.path.exists(file_path_final):
+        creation_time = os.path.getctime(file_path_final)
+        file_creation_date = datetime.datetime.fromtimestamp(creation_time)
+        return file_creation_date
+    else:
+        return None
+
+# Endpoint per restituire la data di creazione del file CSV
+@app.get("/csv_creation_date")
+async def csv_creation_date(response: Response):
+    creation_date = get_csv_creation_date()
+    if creation_date:
+        # Impostiamo il fuso orario di Roma
+        rome_tz = pytz.timezone('Europe/Rome')
+        # Convertiamo la data nel fuso orario di Roma
+        creation_date_rome = creation_date.astimezone(rome_tz)
+        # Formattiamo la data nel formato richiesto per il cookie
+        cookie_date_format = creation_date_rome.strftime('%A, %d-%b-%Y %H:%M:%S %Z')
+        # Impostiamo il cookie con il nome 'creation_date' e il valore della data formattata
+        response.set_cookie(key='creation_date', value=cookie_date_format)
+        return cookie_date_format
+    else:
+        raise HTTPException(status_code=404, detail="File CSV non trovato")
+
 
 @app.get("/query/{teaching}/{location_str}/{degreetype_str}")
 def get_courses_taught_by_person(teaching, location_str,degreetype_str):
@@ -81,6 +111,8 @@ def get_courses_taught_by_person(teaching, location_str,degreetype_str):
             
     teaching_select = filtered_df[filtered_df['TEACHING'].str.contains(teaching, case=False, na=False)]
     
+    teaching_select.fillna("null", inplace=True)
+
     teaching_select_dict = teaching_select.to_dict(orient='index')
 
     #subset_final_json = json.dumps(teaching_select_dict, indent=4)
