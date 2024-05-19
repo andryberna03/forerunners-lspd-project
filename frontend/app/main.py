@@ -11,9 +11,14 @@ from flask_wtf import FlaskForm
 from wtforms import SubmitField, SelectField, validators
 
 app = Flask(__name__)
-app.config['SECRET_KEY'] = 'any secret string'
 
-# Configura CORS per consentire tutte le origini (*)
+"""
+Configure Cross-Origin Resource Sharing (CORS) for the Flask application.
+
+CORS is a mechanism that allows a server to indicate any other origins (domain, scheme, or port) 
+that are permitted to access the server's resources. By default, Flask does not enable CORS, 
+so this line of code is necessary to allow all origins to access the application.
+"""
 CORS(app)
 
 # Configuration for the FastAPI backend URL
@@ -21,15 +26,36 @@ FASTAPI_BACKEND_HOST = 'http://backend'  # Replace with the actual URL of your F
 BACKEND_URL = f'{FASTAPI_BACKEND_HOST}/query/'
 
 class DatatimeCSV(object):
+    """
+    A simple class to hold the date and time of a CSV file.
+
+    Attributes:
+    datatime (str): The date and time of the CSV file.
+    """
+
     datatime = None
 
+
 class QueryForm(FlaskForm):
+    """
+    A Flask-WTF form for querying lectures based on various parameters.
+
+    Attributes:
+    location (SelectField): A dropdown menu for selecting the location.
+    degreetype (SelectField): A dropdown menu for selecting the degree type.
+    teaching (SelectField): A dropdown menu for selecting the teaching name.
+    cycle (SelectField): A dropdown menu for selecting the cycle.
+    credits (SelectField): A dropdown menu for selecting the credits.
+    submit (SubmitField): A button for submitting the form.
+    """
+
     location = SelectField('Location:', validators=[validators.DataRequired()])
     degreetype = SelectField('Degree type:', validators=[validators.DataRequired()])
     teaching = SelectField('Enter teaching name:', validators=[validators.DataRequired()])
     cycle = SelectField('Cycle:', validators=[validators.DataRequired()])
     credits = SelectField('Credits:', validators=[validators.DataRequired()])
     submit = SubmitField('View your lectures')
+
 
 @app.route('/')
 def index():
@@ -41,6 +67,41 @@ def index():
     """
     # Fetch the date from the backend
     return render_template('index.html')
+
+
+@app.route('/about')
+def about():
+    """
+    Render the about page.
+
+    Returns:
+        str: Rendered HTML content for the about page.
+    """
+    return render_template('about.html')
+
+
+def get_unique_values(data, column_name):
+    """
+    Extract unique values from a specific column in JSON data.
+
+    Args:
+    data (dict or list): JSON data containing the column.
+    column_name (str): Name of the column to extract unique values from.
+
+    Returns:
+    list: Unique values from the specified column.
+    """
+    unique_values = set()
+    if isinstance(data, list):
+        for entry in data:
+            if column_name in entry and entry[column_name] is not None:  # Aggiungi questo controllo per evitare valori None
+                unique_values.add(entry[column_name])
+    elif isinstance(data, dict):
+        if column_name in data:
+            for entry in data[column_name]:
+                if entry is not None:  # Aggiungi questo controllo per evitare valori None
+                    unique_values.add(entry)
+    return sorted(list(unique_values))
 
 
 @app.route('/calendar', methods=['GET', 'POST'])
@@ -72,12 +133,11 @@ def calendar():
         teaching = form.teaching.data
         location_str = form.location.data
         degreetype_str = form.degreetype.data
-        #academic_year_str = form.academic_year.data
-        #cycle_str = form.cycle.data
-        #credits_str = form.credits.data
-        
+        cycle_str = form.cycle.data
+        credits_str = form.credits.data
+
         # Build URL
-        fastapi_url = f'{FASTAPI_BACKEND_HOST}/query/{teaching}/{location_str}/{degreetype_str}'#/{cycle_str}/{credits_str}/{academic_year_str}'
+        fastapi_url = f'{FASTAPI_BACKEND_HOST}/query/{teaching}/{location_str}/{degreetype_str}/{cycle_str}/{credits_str}'
 
         response = requests.get(fastapi_url)
 
@@ -88,37 +148,6 @@ def calendar():
             error_message = f'Error: Unable to fetch lesson for {teaching} from FastAPI Backend'
 
     return render_template('calendar.html', datatime_csv=datatime_csv, form=form, result=None, error_message=error_message)
-
-
-@app.route('/about')
-def about():
-    """
-    """
-    return render_template('about.html')
-
-
-def get_unique_values(data, column_name):
-    """
-    Extract unique values from a specific column in JSON data.
-
-    Args:
-    data (dict or list): JSON data containing the column.
-    column_name (str): Name of the column to extract unique values from.
-
-    Returns:
-    list: Unique values from the specified column.
-    """
-    unique_values = set()
-    if isinstance(data, list):
-        for entry in data:
-            if column_name in entry and entry[column_name] is not None:  # Aggiungi questo controllo per evitare valori None
-                unique_values.add(entry[column_name])
-    elif isinstance(data, dict):
-        if column_name in data:
-            for entry in data[column_name]:
-                if entry is not None:  # Aggiungi questo controllo per evitare valori None
-                    unique_values.add(entry)
-    return sorted(list(unique_values))
 
 
 if __name__ == '__main__':

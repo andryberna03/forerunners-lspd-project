@@ -5,7 +5,7 @@ import os
 import datetime
 
 
-def df_creating():
+def df_creating() -> pd.DataFrame:
     """
     This is the main function which orchestrates the entire process of creating
     the final dataframe. It checks if a file exists and is less than a day old.
@@ -36,7 +36,7 @@ def df_creating():
         return create_new_dataframe(file_path_final)
 
 
-def create_new_dataframe(file_path_final):
+def create_new_dataframe(file_path_final: str) -> pd.DataFrame:
     """
     This function creates a new DataFrame by calling the necessary functions,
     preprocesses the data, merges it, orders it, adds URLs, and handles problematic values.
@@ -93,7 +93,7 @@ def create_new_dataframe(file_path_final):
 
 
 # Retrieve JSON data from a URL and convert it to a Pandas DataFrame
-def get_data(urls):
+def get_data(urls: dict) -> dict:
     """
     Retrieve data from the URL, convert it to a Pandas DataFrame,
     modify the URLs dictionary in place, and assign it to a new variable.
@@ -103,7 +103,7 @@ def get_data(urls):
         URLs to retrieve data from.
 
     Returns:
-        (dict[str: pd.DataFrame]): Dictionary with retrieved
+        dict[str: pd.DataFrame]: Dictionary with retrieved
         data as Pandas DataFrames.
     """
     # Loop through each URL in the URLs dictionary
@@ -124,7 +124,7 @@ def get_data(urls):
 
 
 # Process data changing columns names and converting to uppercase
-def preprocess_data(urls_dataframes):
+def preprocess_data(urls_dataframes: pd.DataFrame) -> pd.DataFrame:
     """
     Preprocesses multiple DataFrames from the provided dictionary by converting
     specified columns to uppercase and renaming specific columns.
@@ -158,7 +158,7 @@ def preprocess_data(urls_dataframes):
 
 
 # Merge all dataframes in one using dictionary with dataframes
-def merge_data(urls_dataframes):
+def merge_data(urls_dataframes: pd.DataFrame) -> pd.DataFrame:
     """
     Merges multiple DataFrames from the provided dictionary
     using various columns and methods.
@@ -213,7 +213,7 @@ def merge_data(urls_dataframes):
     return final_urls_df
 
 
-def rename_and_convert(merged_dataframe):
+def rename_and_convert(merged_dataframe: pd.DataFrame) -> pd.DataFrame:
     """
     Reorders the columns of the DataFrame according to the provided order
     and converts the 'DOCENTI' column values to uppercase.
@@ -251,12 +251,27 @@ def rename_and_convert(merged_dataframe):
     return merged_dataframe
 
 
-def unive_lecturer_urls(ordered_dataframe):
+def unive_lecturer_urls(ordered_dataframe: pd.DataFrame) -> pd.DataFrame:
     """
-    Returns enriched "final_urls_dataframe"
+    Enriches the main DataFrame with URLs of lecturers.
+
+    Parameters:
+    ordered_dataframe (pd.DataFrame): The main DataFrame containing lecturer names.
+
+    Returns:
+    pd.DataFrame: The updated DataFrame with added URLs of lecturers.
+
+    The function performs the following steps:
+    1. Retrieves data about lecturers from a JSON URL.
+    2. Creates a new column 'LECTURER_NAME' by concatenating 'COGNOME' and 'NOME' columns.
+    3. Selects only 'LECTURER_NAME' and 'DOCENTE_ID' columns from the lecturers DataFrame.
+    4. Merges the main DataFrame with the lecturers DataFrame on 'LECTURER_NAME'.
+    5. Fills NaN values in 'DOCENTE_ID' column with -1.
+    6. Creates a new column 'URL_DOCENTE' by concatenating a base URL and 'DOCENTE_ID' column.
+    7. Returns the updated DataFrame.
     """
     lecturers = pd.read_json("http://apps.unive.it/sitows/didattica/docenti")
-    lecturers['LECTURER_NAME'] = (lecturers['COGNOME'] + ' ' + lecturers['NOME']).str.upper()
+    lecturers['LECTURER_NAME'] = (lecturers['COGNOME'] + '' + lecturers['NOME']).str.upper()
     lecturers = lecturers[['LECTURER_NAME','DOCENTE_ID']]
     # Merge of the main DataFrame with lecturer's data
     final_urls_dataframe = pd.merge(ordered_dataframe, lecturers, on='LECTURER_NAME', how='left')
@@ -267,25 +282,75 @@ def unive_lecturer_urls(ordered_dataframe):
         'DOCENTE_ID'].astype(int).astype(str)
     return final_urls_dataframe
 
-def unive_teaching_urls(final_urls_dataframe):
+
+def unive_teaching_urls(final_urls_dataframe: pd.DataFrame) -> pd.DataFrame:
+    """
+    This function adds a new column to the DataFrame containing URLs of teachings.
+
+    Parameters:
+    final_urls_dataframe (pd.DataFrame): The DataFrame to which the new column will be added.
+        The DataFrame should contain a column named 'AF_ID' which contains the IDs of the teachings.
+
+    Returns:
+    pd.DataFrame: The updated DataFrame with a new column 'URLS_INSEGNAMENTO' containing the URLs of teachings.
+        The URLs are constructed by concatenating the base URL 'https://www.unive.it/data/insegnamento/'
+        with the IDs from the 'AF_ID' column, converted to strings.
+
+    Raises:
+    ValueError: If the 'AF_ID' column is not found in the DataFrame.
+
+    """
+    # Check if 'AF_ID' column exists in the DataFrame
+    if 'AF_ID' not in final_urls_dataframe.columns:
+        raise ValueError("'AF_ID' column not found in the DataFrame")
+
+    # Construct the URLs by concatenating the base URL and the IDs from 'AF_ID' column
     final_urls_dataframe["URLS_INSEGNAMENTO"] = 'https://www.unive.it/data/insegnamento/' + final_urls_dataframe['AF_ID'].astype(str)
+
     return final_urls_dataframe
 
-def semesters(final_urls_dataframe):
 
+def semesters(final_urls_dataframe: pd.DataFrame) -> pd.DataFrame:
+    """
+    This function is used to convert the semester names from Italian to English.
+    It iterates over the 'CYCLE' column of the DataFrame and replaces the Italian
+    semester names with their English equivalents.
 
+    Parameters:
+    final_urls_dataframe (pd.DataFrame): The DataFrame containing the 'CYCLE' column.
+
+    Returns:
+    pd.DataFrame: The DataFrame with the updated 'CYCLE' column.
+    """
+
+    # Iterate over the DataFrame using the index and semester value
     for index, semester in final_urls_dataframe['CYCLE'].items():
+
+        # Check if the semester is in the list of Spring semesters
         if semester in ['II Semestre', "3° Periodo", "4° Periodo"]:
+            # Replace the semester name with the English equivalent
             new_semester = 'Spring Semester (Feb-June)'
-            final_urls_dataframe.at[index, 'CYCLE'] = new_semester
-        elif semester == 'Annuale':
-            new_semester = 'Annual'
-            final_urls_dataframe.at[index, 'CYCLE'] = new_semester
-        else:
-            new_semester = 'Fall Semester (Sep-Jen)'
+            # Update the DataFrame at the current index
             final_urls_dataframe.at[index, 'CYCLE'] = new_semester
 
+        # Check if the semester is 'Annuale'
+        elif semester == 'Annuale':
+            # Replace the semester name with the English equivalent
+            new_semester = 'Annual'
+            # Update the DataFrame at the current index
+            final_urls_dataframe.at[index, 'CYCLE'] = new_semester
+
+        # If the semester is not in the list of Spring or Annual semesters,
+        # it must be a Fall semester
+        else:
+            # Replace the semester name with the English equivalent
+            new_semester = 'Fall Semester (Sep-Jen)'
+            # Update the DataFrame at the current index
+            final_urls_dataframe.at[index, 'CYCLE'] = new_semester
+
+    # Return the updated DataFrame
     return final_urls_dataframe
+
 
 if __name__ == "__main__":
     final_urls_dataframe = df_creating()
