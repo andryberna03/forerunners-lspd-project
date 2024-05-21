@@ -2,13 +2,11 @@
 
 {% block title %} Calendar {% endblock %}
 
-{% block head %}
-    {{ super() }}
-    <!-- <link href='https://cdn.jsdelivr.net/npm/fullcalendar/index.global.min.css' rel='stylesheet' /> -->
-    <script src='https://cdn.jsdelivr.net/npm/fullcalendar/index.global.min.js'></script>
-{% endblock %}
 
 {% block content %}
+<link href='https://cdn.jsdelivr.net/npm/fullcalendar/index.global.min.css' rel='stylesheet' />
+<script src='https://cdn.jsdelivr.net/npm/fullcalendar/index.global.min.js'></script>
+
 <div class="container mt-5">
     <h1>Hello, Internal Page!</h1>
     <p>This is an internal page for interacting with a FastAPI backend.</p>
@@ -61,15 +59,16 @@
     document.getElementById('query-form').addEventListener('submit', function(event) {
         event.preventDefault(); // Prevent actual form submission
         var teaching = document.querySelector("[name='teaching']").value;
-        var location_str = Array.from(document.querySelectorAll("[name='location']:checked")).map(el => el.value).join(",");
+        var location_str = Array.from(document.querySelectorAll("[name='location']:checked")).map(el => el.value).join(","); // ora è drop
         var degreetype_str = Array.from(document.querySelectorAll("[name='degreetype']:checked")).map(el => el.value).join(",");
+        // var credits = 
         
-        var url = `/query/${teaching}/${location_str}/${degreetype_str}`;
+        var url = `/query/${teaching}/${location_str}/${degreetype_str}`; // update questa
         fetch(url)
             .then(response => response.json())
-            .then(data => {
+            .then(result => {
                 calendar.removeAllEvents(); // Clear existing events
-                calendar.addEventSource(data); // Add new data
+                calendar.addEventSource(result); // Add new data
             })
             .catch(error => console.error('Error loading the calendar data:', error));
          });

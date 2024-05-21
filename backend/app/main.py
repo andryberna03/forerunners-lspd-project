@@ -81,6 +81,6 @@ def get_courses_taught_by_person(teaching, location_str,degreetype_str):
         }
         events.append(event)
 
-    return JSONResponse(content=events)  # Send a list of event objects
-
+    return events  
+# dovremmo vedere json file classico con eventi nelle graffe con chiavi che vuole fullcalendar
 
