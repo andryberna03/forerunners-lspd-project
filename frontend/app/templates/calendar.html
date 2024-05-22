@@ -9,10 +9,19 @@
 
     <div class="container mt-5">
         <p>The calendar database was last updated at: {{ datatime_csv.datatime }}</p>
+        <p>The calendar database was last updated at: {{ datatime_csv.datatime }}</p>
 
         <!-- WTForms Form to get input from the user -->
         <form method="POST">
+        <form method="POST">
             {{ form.csrf_token }}
+        
+            <div class="row">
+                <div class="col-md-4">
+                    <div class="form-group">
+                        {{ form.cycle.label }}
+                        {{ form.cycle(class="form-control") }}
+                    </div>
         
             <div class="row">
                 <div class="col-md-4">
@@ -32,9 +41,35 @@
                         {{ form.credits.label }}
                         {{ form.credits(class="form-control") }}
                     </div>
+                <div class="col-md-4">
+                    <div class="form-group">
+                        {{ form.degreetype.label }}
+                        {{ form.degreetype(class="form-control") }}
+                    </div>
+                </div>
+                <div class="col-md-4">
+                    <div class="form-group">
+                        {{ form.credits.label }}
+                        {{ form.credits(class="form-control") }}
+                    </div>
                 </div>
 
+
             </div>
+        
+            <div class="row">
+                <div class="col-md-4">
+                    <div class="form-group">
+                        {{ form.location.label }}
+                        {{ form.location(class="form-control") }}
+                    </div>
+                </div>
+                <div class="col-md-4">
+                    <div class="form-group">
+                        {{ form.teaching.label }}
+                        {{ form.teaching(class="form-control") }}
+                    </div>
+                </div>
         
             <div class="row">
                 <div class="col-md-4">

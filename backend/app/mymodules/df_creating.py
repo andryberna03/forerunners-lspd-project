@@ -48,13 +48,61 @@ def create_new_dataframe(file_path_final: str) -> pd.DataFrame:
 
     Returns:
     pd.DataFrame: The new DataFrame.
+import os
+import datetime
+
+
+def df_creating() -> pd.DataFrame:
+    """
+    This is the main function which orchestrates the entire process of creating
+    the final dataframe. It checks if a file exists and is less than a day old.
+    If so, it loads the data from the file. Otherwise, it calls the create_new_dataframe
+    function to generate a new dataframe.
+
+    Returns:
+    pd.DataFrame: The final dataframe containing all the required data.
+    """
+    # Define the path to the final CSV file
+    file_path_final = 'app/final.csv'
+
+    # Check if the file exists and was created within the last 24 hours
+    if os.path.exists(file_path_final):
+        creation_time = os.path.getctime(file_path_final)
+        file_creation_date = datetime.datetime.fromtimestamp(creation_time)
+        current_date = datetime.datetime.now()
+
+        # If the file was created within the last 24 hours, load it
+        if current_date - file_creation_date < datetime.timedelta(days=1):
+            final_urls_dataframe = pd.read_csv(file_path_final)
+            return final_urls_dataframe
+        # If the file was not created within the last 24 hours, create a new dataframe
+        else:
+            return create_new_dataframe(file_path_final)
+    # If the file does not exist, create a new dataframe
+    else:
+        return create_new_dataframe(file_path_final)
+
+
+def create_new_dataframe(file_path_final: str) -> pd.DataFrame:
+    """
+    This function creates a new DataFrame by calling the necessary functions,
+    preprocesses the data, merges it, orders it, adds URLs, and handles problematic values.
+    It then saves the DataFrame to a CSV file and returns it.
+
+    Args:
+    file_path_final (str): The path to the final CSV file.
+
+    Returns:
+    pd.DataFrame: The new DataFrame.
     """
     # Define the URLs from which to retrieve data
     urls = {
         "degrees": "http://apps.unive.it/sitows/didattica/corsi",
         "teachings": "http://apps.unive.it/sitows/didattica/insegnamenti",
         "degrees_teachings": "http://apps.unive.it/sitows/didattica/corsiinsegnamenti",
+        "degrees_teachings": "http://apps.unive.it/sitows/didattica/corsiinsegnamenti",
         "lecturers": "http://apps.unive.it/sitows/didattica/docenti",
+        "teachings_lecturers": "http://apps.unive.it/sitows/didattica/insegnamentidocenti",
         "teachings_lecturers": "http://apps.unive.it/sitows/didattica/insegnamentidocenti",
         "lectures": "http://apps.unive.it/sitows/didattica/lezioni",
         "classrooms": "http://apps.unive.it/sitows/didattica/aule",
@@ -97,6 +145,7 @@ def create_new_dataframe(file_path_final: str) -> pd.DataFrame:
 
 # Retrieve JSON data from a URL and convert it to a Pandas DataFrame
 def get_data(urls: dict) -> dict:
+def get_data(urls: dict) -> dict:
     """
     Retrieve data from the URL, convert it to a Pandas DataFrame,
     modify the URLs dictionary in place, and assign it to a new variable.
@@ -106,6 +155,7 @@ def get_data(urls: dict) -> dict:
         URLs to retrieve data from.
 
     Returns:
+        dict[str: pd.DataFrame]: Dictionary with retrieved
         dict[str: pd.DataFrame]: Dictionary with retrieved
         data as Pandas DataFrames.
     """
@@ -127,6 +177,7 @@ def get_data(urls: dict) -> dict:
 
 
 # Process data changing columns names and converting to uppercase
+def preprocess_data(urls_dataframes: pd.DataFrame) -> pd.DataFrame:
 def preprocess_data(urls_dataframes: pd.DataFrame) -> pd.DataFrame:
     """
     Preprocesses multiple DataFrames from the provided dictionary by converting
@@ -161,6 +212,7 @@ def preprocess_data(urls_dataframes: pd.DataFrame) -> pd.DataFrame:
 
 
 # Merge all dataframes in one using dictionary with dataframes
+def merge_data(urls_dataframes: pd.DataFrame) -> pd.DataFrame:
 def merge_data(urls_dataframes: pd.DataFrame) -> pd.DataFrame:
     """
     Merges multiple DataFrames from the provided dictionary
@@ -217,11 +269,13 @@ def merge_data(urls_dataframes: pd.DataFrame) -> pd.DataFrame:
 
 
 def rename_and_convert(merged_dataframe: pd.DataFrame) -> pd.DataFrame:
+def rename_and_convert(merged_dataframe: pd.DataFrame) -> pd.DataFrame:
     """
     Reorders the columns of the DataFrame according to the provided order
     and converts the 'DOCENTI' column values to uppercase.
 
     Args:
+    merged_dataframe (pd.DataFrame): The DataFrame to process.
     merged_dataframe (pd.DataFrame): The DataFrame to process.
 
     Returns:
@@ -250,12 +304,32 @@ def rename_and_convert(merged_dataframe: pd.DataFrame) -> pd.DataFrame:
 
     # Drop rows where DEGREE_TYPE is different from 'L' or 'LM'
     merged_dataframe = merged_dataframe[(merged_dataframe['DEGREE_TYPE'] == 'L') | (merged_dataframe['DEGREE_TYPE'] == 'LM')]
+    # Drop rows where DEGREE_TYPE is different from 'L' or 'LM'
+    merged_dataframe = merged_dataframe[(merged_dataframe['DEGREE_TYPE'] == 'L') | (merged_dataframe['DEGREE_TYPE'] == 'LM')]
 
+    return merged_dataframe
     return merged_dataframe
 
 
 def unive_lecturer_urls(ordered_dataframe: pd.DataFrame) -> pd.DataFrame:
+def unive_lecturer_urls(ordered_dataframe: pd.DataFrame) -> pd.DataFrame:
     """
+    Enriches the main DataFrame with URLs of lecturers.
+
+    Parameters:
+    ordered_dataframe (pd.DataFrame): The main DataFrame containing lecturer names.
+
+    Returns:
+    pd.DataFrame: The updated DataFrame with added URLs of lecturers.
+
+    The function performs the following steps:
+    1. Retrieves data about lecturers from a JSON URL.
+    2. Creates a new column 'LECTURER_NAME' by concatenating 'COGNOME' and 'NOME' columns.
+    3. Selects only 'LECTURER_NAME' and 'DOCENTE_ID' columns from the lecturers DataFrame.
+    4. Merges the main DataFrame with the lecturers DataFrame on 'LECTURER_NAME'.
+    5. Fills NaN values in 'DOCENTE_ID' column with -1.
+    6. Creates a new column 'URL_DOCENTE' by concatenating a base URL and 'DOCENTE_ID' column.
+    7. Returns the updated DataFrame.
     Enriches the main DataFrame with URLs of lecturers.
 
     Parameters:
@@ -275,6 +349,7 @@ def unive_lecturer_urls(ordered_dataframe: pd.DataFrame) -> pd.DataFrame:
     """
     lecturers = pd.read_json("http://apps.unive.it/sitows/didattica/docenti")
     lecturers['LECTURER_NAME'] = (lecturers['COGNOME'] + '' + lecturers['NOME']).str.upper()
+    lecturers['LECTURER_NAME'] = (lecturers['COGNOME'] + '' + lecturers['NOME']).str.upper()
     lecturers = lecturers[['LECTURER_NAME','DOCENTE_ID']]
     # Merge of the main DataFrame with lecturer's data
     final_urls_dataframe = pd.merge(ordered_dataframe, lecturers, on='LECTURER_NAME', how='left')
@@ -285,6 +360,29 @@ def unive_lecturer_urls(ordered_dataframe: pd.DataFrame) -> pd.DataFrame:
         'DOCENTE_ID'].astype(int).astype(str)
     return final_urls_dataframe
 
+
+def unive_teaching_urls(final_urls_dataframe: pd.DataFrame) -> pd.DataFrame:
+    """
+    This function adds a new column to the DataFrame containing URLs of teachings.
+
+    Parameters:
+    final_urls_dataframe (pd.DataFrame): The DataFrame to which the new column will be added.
+        The DataFrame should contain a column named 'AF_ID' which contains the IDs of the teachings.
+
+    Returns:
+    pd.DataFrame: The updated DataFrame with a new column 'URLS_INSEGNAMENTO' containing the URLs of teachings.
+        The URLs are constructed by concatenating the base URL 'https://www.unive.it/data/insegnamento/'
+        with the IDs from the 'AF_ID' column, converted to strings.
+
+    Raises:
+    ValueError: If the 'AF_ID' column is not found in the DataFrame.
+
+    """
+    # Check if 'AF_ID' column exists in the DataFrame
+    if 'AF_ID' not in final_urls_dataframe.columns:
+        raise ValueError("'AF_ID' column not found in the DataFrame")
+
+    # Construct the URLs by concatenating the base URL and the IDs from 'AF_ID' column
 
 def unive_teaching_urls(final_urls_dataframe: pd.DataFrame) -> pd.DataFrame:
     """
