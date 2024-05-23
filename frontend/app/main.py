@@ -11,6 +11,7 @@ from flask_wtf import FlaskForm
 from wtforms import SubmitField, SelectField, validators
 
 app = Flask(__name__)
+app.config['SECRET_KEY'] = 'your_secret_key'  # Replace with a secure secret key
 
 """
 Configure Cross-Origin Resource Sharing (CORS) for the Flask application.
