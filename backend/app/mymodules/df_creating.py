@@ -48,6 +48,7 @@ def create_new_dataframe(file_path_final: str) -> pd.DataFrame:
 
     Returns:
     pd.DataFrame: The new DataFrame.
+    """
 import os
 import datetime
 
@@ -145,7 +146,6 @@ def create_new_dataframe(file_path_final: str) -> pd.DataFrame:
 
 # Retrieve JSON data from a URL and convert it to a Pandas DataFrame
 def get_data(urls: dict) -> dict:
-def get_data(urls: dict) -> dict:
     """
     Retrieve data from the URL, convert it to a Pandas DataFrame,
     modify the URLs dictionary in place, and assign it to a new variable.
@@ -177,7 +177,6 @@ def get_data(urls: dict) -> dict:
 
 
 # Process data changing columns names and converting to uppercase
-def preprocess_data(urls_dataframes: pd.DataFrame) -> pd.DataFrame:
 def preprocess_data(urls_dataframes: pd.DataFrame) -> pd.DataFrame:
     """
     Preprocesses multiple DataFrames from the provided dictionary by converting
@@ -212,7 +211,6 @@ def preprocess_data(urls_dataframes: pd.DataFrame) -> pd.DataFrame:
 
 
 # Merge all dataframes in one using dictionary with dataframes
-def merge_data(urls_dataframes: pd.DataFrame) -> pd.DataFrame:
 def merge_data(urls_dataframes: pd.DataFrame) -> pd.DataFrame:
     """
     Merges multiple DataFrames from the provided dictionary
@@ -269,7 +267,6 @@ def merge_data(urls_dataframes: pd.DataFrame) -> pd.DataFrame:
 
 
 def rename_and_convert(merged_dataframe: pd.DataFrame) -> pd.DataFrame:
-def rename_and_convert(merged_dataframe: pd.DataFrame) -> pd.DataFrame:
     """
     Reorders the columns of the DataFrame according to the provided order
     and converts the 'DOCENTI' column values to uppercase.
@@ -312,24 +309,7 @@ def rename_and_convert(merged_dataframe: pd.DataFrame) -> pd.DataFrame:
 
 
 def unive_lecturer_urls(ordered_dataframe: pd.DataFrame) -> pd.DataFrame:
-def unive_lecturer_urls(ordered_dataframe: pd.DataFrame) -> pd.DataFrame:
     """
-    Enriches the main DataFrame with URLs of lecturers.
-
-    Parameters:
-    ordered_dataframe (pd.DataFrame): The main DataFrame containing lecturer names.
-
-    Returns:
-    pd.DataFrame: The updated DataFrame with added URLs of lecturers.
-
-    The function performs the following steps:
-    1. Retrieves data about lecturers from a JSON URL.
-    2. Creates a new column 'LECTURER_NAME' by concatenating 'COGNOME' and 'NOME' columns.
-    3. Selects only 'LECTURER_NAME' and 'DOCENTE_ID' columns from the lecturers DataFrame.
-    4. Merges the main DataFrame with the lecturers DataFrame on 'LECTURER_NAME'.
-    5. Fills NaN values in 'DOCENTE_ID' column with -1.
-    6. Creates a new column 'URL_DOCENTE' by concatenating a base URL and 'DOCENTE_ID' column.
-    7. Returns the updated DataFrame.
     Enriches the main DataFrame with URLs of lecturers.
 
     Parameters:
@@ -351,13 +331,16 @@ def unive_lecturer_urls(ordered_dataframe: pd.DataFrame) -> pd.DataFrame:
     lecturers['LECTURER_NAME'] = (lecturers['COGNOME'] + '' + lecturers['NOME']).str.upper()
     lecturers['LECTURER_NAME'] = (lecturers['COGNOME'] + '' + lecturers['NOME']).str.upper()
     lecturers = lecturers[['LECTURER_NAME','DOCENTE_ID']]
+
     # Merge of the main DataFrame with lecturer's data
     final_urls_dataframe = pd.merge(ordered_dataframe, lecturers, on='LECTURER_NAME', how='left')
     final_urls_dataframe['DOCENTE_ID'] = final_urls_dataframe['DOCENTE_ID'].fillna(-1)
+    
     # Convert to integer and then to string
     url_lecturers = 'https://www.unive.it/data/persone/'
     final_urls_dataframe['URL_DOCENTE'] = url_lecturers + final_urls_dataframe[
         'DOCENTE_ID'].astype(int).astype(str)
+    
     return final_urls_dataframe
 
 
