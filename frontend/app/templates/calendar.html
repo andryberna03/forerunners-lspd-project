@@ -62,6 +62,7 @@
     <br>
 
     <script>
+        // This first block of code displays an empty calendar
         document.addEventListener('DOMContentLoaded', function() {
             alert("JavaScript is loaded!");
             var calendarEl = document.getElementById('calendar');
@@ -73,26 +74,53 @@
                         window.open(info.event.url, '_blank');
                     }
                 }
-        });
-        calendar.render();
+            });
+            calendar.render();
 
-        // Attach an event handler for form submission
-        document.getElementById('query-form').addEventListener('submit', function(event) {
-            event.preventDefault(); // Prevent actual form submission
-            var teaching = document.querySelector("[name='teaching']").value;
-            var location_str = Array.from(document.querySelectorAll("[name='location']:checked")).map(el => el.value).join(","); // ora è drop
-            var degreetype_str = Array.from(document.querySelectorAll("[name='degreetype']:checked")).map(el => el.value).join(",");
-            // var credits = 
-            
-            var url = `/query/${teaching}/${location_str}/${degreetype_str}`; // update questa
-            fetch(url)
-                .then(response => response.json())
-                .then(result => {
+            // This second block populates it 
+            // Attach an event handler for form submission
+            document.getElementById('query-form').addEventListener('submit', function(event) {
+                event.preventDefault(); // Prevent actual form submission
+                
+                // Retrieve form values
+                var teaching = document.querySelector('[name="teaching"]').value;
+                var location_str = document.querySelector('[name="location"]').value;
+                var degreetype_str = document.querySelector('[name="degreetype"]').value;
+                var cycle_str = document.querySelector('[name="cycle"]').value;
+                var credits_str = document.querySelector('[name="credits"]').value;
+
+                var url = `/query/{teaching}/{location_str}/{degreetype_str}/{cycle_str}/{credits_str}`; // query from main
+                fetch(url)
+                    // .then(response => response.json()) // data è gia in json
+                    .then(data => {
+                    // Convert JSON into the format FullCalendar expects
+                    var events = [];
+                    for (var key in data) {
+                        if (data.hasOwnProperty(key)) {
+                            var lesson = data[key];
+                            events.push({
+                                title: lesson.TEACHING + ' - ' + lesson.PARTITION,
+                                start: lesson.START_ISO8601,
+                                end: lesson.END_ISO8601,
+                                description: lesson.DESCRIPTION || '',
+                                url: lesson.URLS_INSEGNAMENTO,
+                                extendedProps: {
+                                    lecturer: lesson.LECTURER_NAME,
+                                    classromm: lesson.CLASSROOM_NAME,
+                                    location: lesson.LOCATION_NAME,
+                                    address: lesson.ADDRESS,
+                                    credits: lesson.CREDITS,
+                                    degreeType: lesson.DEGREE_TYPE,
+                                    cycle: lesson.CYCLE
+                                }
+                            });
+                        }
+                    }
                     calendar.removeAllEvents(); // Clear existing events
-                    calendar.addEventSource(result); // Add new data
+                    calendar.addEventSource(events); // Add new data
                 })
                 .catch(error => console.error('Error loading the calendar data:', error));
             });
         });
-        </script>
+    </script>
 {% endblock %}

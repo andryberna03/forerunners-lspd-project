@@ -5,7 +5,7 @@ This module defines a simple Flask application that serves as the frontend for t
 """
 
 from flask import Flask, render_template, jsonify
-from flask_cors import CORS
+from flask_cors import CORS # type: ignore
 import requests
 from flask_wtf import FlaskForm
 from wtforms import SubmitField, SelectField, validators
@@ -143,7 +143,8 @@ def calendar():
         response = requests.get(fastapi_url)
 
         if response.status_code == 200:
-            data = response.json()
+            # Extract and display the result from the FastAPI backend
+            data = response.json() # data è nel formato che ci piace
             return render_template('calendar.html', datatime_csv=datatime_csv, form=form, result=data, error_message=error_message)
         else:
             error_message = f'Error: Unable to fetch lesson for {teaching} from FastAPI Backend'
