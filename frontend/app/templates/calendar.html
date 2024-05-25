@@ -2,7 +2,6 @@
 
 {% block title %} Calendar {% endblock %}
 
-
 {% block content %}
     <link href='https://cdn.jsdelivr.net/npm/fullcalendar/index.global.min.css' rel='stylesheet' />
     <script src='https://cdn.jsdelivr.net/npm/fullcalendar/index.global.min.js'></script>
@@ -11,7 +10,7 @@
         <p>The calendar database was last updated at: {{ datatime_csv.datatime }}</p>
 
         <!-- WTForms Form to get input from the user -->
-        <form method="POST">
+        <form method="POST" id="query-form">
             {{ form.csrf_token }}
             <div class="row">
                 <div class="col-md-4">
@@ -56,71 +55,85 @@
             </div>
         </form>
 
-    <!-- Calendar container -->
-    <div id='calendar' class='mt-3'></div>
-    <br>
-    <br>
+        <!-- Calendar container -->
+        <div id='calendar' class='mt-3'></div>
+        <br>
+        <br>
 
-    <script>
-        // This first block of code displays an empty calendar
-        document.addEventListener('DOMContentLoaded', function() {
-            alert("JavaScript is loaded!");
-            var calendarEl = document.getElementById('calendar');
-            var calendar = new FullCalendar.Calendar(calendarEl, {
-                initialView: 'dayGridMonth',
-                eventClick: function(info) {
-                    info.jsEvent.preventDefault(); // Don't let the browser navigate
-                    if (info.event.url) {
-                        window.open(info.event.url, '_blank');
-                    }
-                }
-            });
-            calendar.render();
-
-            // This second block populates it 
-            // Attach an event handler for form submission
-            document.getElementById('query-form').addEventListener('submit', function(event) {
-                event.preventDefault(); // Prevent actual form submission
-                
-                // Retrieve form values
-                var teaching = document.querySelector('[name="teaching"]').value;
-                var location_str = document.querySelector('[name="location"]').value;
-                var degreetype_str = document.querySelector('[name="degreetype"]').value;
-                var cycle_str = document.querySelector('[name="cycle"]').value;
-                var credits_str = document.querySelector('[name="credits"]').value;
-
-                var url = `/query/{teaching}/{location_str}/{degreetype_str}/{cycle_str}/{credits_str}`; // query from main
-                fetch(url)
-                    // .then(response => response.json()) // data è gia in json
-                    .then(data => {
-                    // Convert JSON into the format FullCalendar expects
-                    var events = [];
-                    for (var key in data) {
-                        if (data.hasOwnProperty(key)) {
-                            var lesson = data[key];
-                            events.push({
-                                title: lesson.TEACHING + ' - ' + lesson.PARTITION,
-                                start: lesson.START_ISO8601,
-                                end: lesson.END_ISO8601,
-                                description: lesson.DESCRIPTION || '',
-                                url: lesson.URLS_INSEGNAMENTO,
-                                extendedProps: {
-                                    lecturer: lesson.LECTURER_NAME,
-                                    classromm: lesson.CLASSROOM_NAME,
-                                    location: lesson.LOCATION_NAME,
-                                    address: lesson.ADDRESS,
-                                    credits: lesson.CREDITS,
-                                    degreeType: lesson.DEGREE_TYPE,
-                                    cycle: lesson.CYCLE
-                                }
-                            });
+        <script>
+            // Visualize the calendar
+            document.addEventListener('DOMContentLoaded', function() {
+                var calendarEl = document.getElementById('calendar');
+                var calendar = new FullCalendar.Calendar(calendarEl, {
+                    initialView: 'dayGridMonth',
+                    eventClick: function(info) {
+                        info.jsEvent.preventDefault(); // Don't let the browser navigate
+                        if (info.event.url) {
+                            window.open(info.event.url, '_blank');
                         }
                     }
-                    calendar.removeAllEvents(); // Clear existing events
-                    calendar.addEventSource(events); // Add new data
-                })
-                .catch(error => console.error('Error loading the calendar data:', error));
+                });
+                calendar.render();
+
+                // Populate the calendar
+                document.getElementById('query-form').addEventListener('submit', function(event) {
+                    event.preventDefault(); // Prevent actual form submission
+
+                    // Retrieve form values
+                    var teaching = encodeURIComponent(document.querySelector('[name="teaching"]').value);
+                    var location_str = encodeURIComponent(document.querySelector('[name="location"]').value);
+                    var degreetype_str = encodeURIComponent(document.querySelector('[name="degreetype"]').value);
+                    var cycle_str = encodeURIComponent(document.querySelector('[name="cycle"]').value);
+                    var credits_str = encodeURIComponent(document.querySelector('[name="credits"]').value);
+
+                    var url = `/query/${teaching}/${location_str}/${degreetype_str}/${cycle_str}/${credits_str}`; // query from main
+
+                    console.log(url); // Debug URL
+
+                    fetch(url)
+                        .then(response => {
+                            // Check if the response is JSON
+                            if (!response.ok) {
+                                throw new Error('Network response was not ok ' + response.statusText); // si blocca qui
+                            }
+                            return response.json();
+                        })
+                        .then(data => {
+                            console.log(data);
+
+                            if (data && Object.keys(data).length > 0) {
+                                // Convert JSON into the format FullCalendar expects
+                                var events = [];
+                                for (var key in data) {
+                                    if (data.hasOwnProperty(key)) {
+                                        var lesson = data[key];
+                                        events.push({
+                                            title: lesson.TEACHING,
+                                            start: lesson.START_ISO8601,
+                                            end: lesson.END_ISO8601,
+                                            description: lesson.DESCRIPTION || '',
+                                            url: lesson.URLS_INSEGNAMENTO,
+                                            extendedProps: {
+                                                lecturer: lesson.LECTURER_NAME,
+                                                classroom: lesson.CLASSROOM_NAME,
+                                                location: lesson.LOCATION_NAME,
+                                                address: lesson.ADDRESS,
+                                                credits: lesson.CREDITS,
+                                                degreeType: lesson.DEGREE_TYPE,
+                                                cycle: lesson.CYCLE
+                                            }
+                                        });
+                                    }
+                                }
+                                calendar.removeAllEvents(); // Clear existing events
+                                calendar.addEventSource(events); // Add new data
+                            } else {
+                                console.error('No data found');
+                            }
+                        })
+                        .catch(error => console.error('Error loading the calendar data:', error));
+                });
             });
-        });
-    </script>
+        </script>
+    </div>
 {% endblock %}
