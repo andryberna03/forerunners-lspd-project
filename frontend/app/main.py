@@ -4,11 +4,12 @@ Frontend module for the Flask application.
 This module defines a simple Flask application that serves as the frontend for the project.
 """
 
-from flask import Flask, render_template, jsonify
+from flask import Flask, render_template, send_file, abort
 from flask_cors import CORS
 import requests
 from flask_wtf import FlaskForm
 from wtforms import SubmitField, SelectField, validators
+import os
 
 app = Flask(__name__)
 app.config['SECRET_KEY'] = 'your_secret_key'  # Replace with a secure secret key
@@ -104,6 +105,16 @@ def get_unique_values(data, column_name):
                     unique_values.add(entry)
     return sorted(list(unique_values))
 
+@app.route('/download_ics')
+def export_ics():
+    base_dir = os.path.abspath(os.path.dirname(__file__))
+    calendar_path = os.path.join(base_dir, 'backend', 'app', 'calendar.ics')
+
+    if not os.path.exists(calendar_path):
+        return abort(404)  # File non trovato
+
+    return send_file(calendar_path, as_attachment=True)
+
 
 @app.route('/calendar', methods=['GET', 'POST'])
 def calendar():
@@ -142,9 +153,11 @@ def calendar():
 
         response = requests.get(fastapi_url)
 
+        ical_file = f'{FASTAPI_BACKEND_HOST}/export_calendar'
+
         if response.status_code == 200:
             data = response.json()
-            return render_template('calendar.html', datatime_csv=datatime_csv, form=form, result=data, error_message=error_message)
+            return render_template('calendar.html', datatime_csv=datatime_csv, form=form, result=data, ical=ical_file, error_message=error_message)
         else:
             error_message = f'Error: Unable to fetch lesson for {teaching} from FastAPI Backend'
 

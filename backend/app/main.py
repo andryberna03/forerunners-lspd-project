@@ -8,17 +8,18 @@ as the backend for the project.
 from fastapi import FastAPI, HTTPException, Response
 from fastapi.middleware.cors import CORSMiddleware
 import pandas as pd
-from fastapi.responses import JSONResponse
+from fastapi.responses import JSONResponse, FileResponse
 import pandas as pd
 import os
-import datetime
 import pytz
+import json
+from datetime import datetime
+from ics import Calendar, Event
 
 from .mymodules.df_creating import df_creating
 
 app = FastAPI()
 
-# Configura CORS per consentire tutte le origini (*)
 # Add Cross-Origin Resource Sharing (CORS) middleware to the FastAPI application.
 # This middleware allows all origins to access the API endpoints.
 # It also allows credentials, all HTTP methods, and all headers.
@@ -37,7 +38,7 @@ def read_root():
     Root endpoint for the backend.
 
     Returns:
-        dict: A simple greeting.+
+        dict: A simple greeting.
     """
     return {"Hello": "World"}
 
@@ -55,6 +56,7 @@ def read_and_return_df():
     final_urls_dataframe = df_creating()
     final_urls_dataframe = final_urls_dataframe.fillna('null')
     return final_urls_dataframe.to_dict(orient='records')
+
 
 # Funzione per ottenere la data di creazione del file CSV
 def get_csv_creation_date():
@@ -78,7 +80,7 @@ def get_csv_creation_date():
     file_path_final = 'app/final.csv'
     if os.path.exists(file_path_final):
         creation_time = os.path.getctime(file_path_final)
-        file_creation_date = datetime.datetime.fromtimestamp(creation_time)
+        file_creation_date = datetime.fromtimestamp(creation_time)
         return file_creation_date
     else:
         return None
@@ -118,6 +120,41 @@ async def csv_creation_date(response: Response):
         return cookie_date_format
     else:
         raise HTTPException(status_code=404, detail="File CSV non trovato")
+
+
+@app.get("/export_calendar")
+def export_calendar(response):
+    """
+    Endpoint per esportare il calendario delle lezioni in formato ICS
+    """
+    lessons = response.body.decode("utf-8")
+    lessons_dict = json.loads(lessons)
+
+    # Crea il calendario ICS
+    calendar = Calendar()
+
+    for key, lesson in lessons_dict.items():
+        event = Event()
+        event.name = lesson.get("TEACHING", "No Title")
+        event.begin = f"{lesson['LECTURE_DAY']} {lesson['LECTURE_START']}"
+        event.end = f"{lesson['LECTURE_DAY']} {lesson['LECTURE_END']}"
+        event.location = lesson.get("LOCATION_NAME", "No Location")
+        event.description = (
+            f"Lecturer: {lesson.get('LECTURER_NAME', 'No Lecturer')}\n"
+            f"Classroom: {lesson.get('CLASSROOM_NAME', 'No Classroom')}\n"
+            f"Degree Name: {lesson.get('DEGREE_NAME', 'No Degree Name')}\n"
+            f"URL Docente: {lesson.get('URL_DOCENTE', 'No URL')}\n"
+            f"URL Insegnamento: {lesson.get('URLS_INSEGNAMENTO', 'No URL')}"
+        )
+        calendar.events.add(event)
+
+    # Specifica il percorso del file
+    ical_path = 'app/calendar.ics'
+    if os.path.exists(ical_path):
+       with open(ical_path, 'w') as f:
+        f.writelines(calendar)
+
+    return FileResponse('calendar.ics', media_type='text/calendar', filename='calendar.ics')
 
 
 @app.get("/query/{teaching}/{location_str}/{degreetype_str}/{cycle_str}/{credits_str}")
@@ -161,5 +198,7 @@ def get_courses_taught_by_person(teaching, location_str, degreetype_str, cycle_s
     filtered_dict = filtered_df.to_dict(orient='index')
 
     subset_final_json = JSONResponse(content=filtered_dict)
+
+    export_calendar(subset_final_json)
 
     return subset_final_json
