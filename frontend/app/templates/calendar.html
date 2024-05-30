@@ -89,10 +89,9 @@
                             <strong>Classroom:</strong> ${info.event.extendedProps.classroom}<br>
                             <strong>Location:</strong> ${info.event.extendedProps.location}<br>
                             <strong>Address:</strong> ${info.event.extendedProps.address}<br>
+                            <strong>Start time:</strong> ${info.event.extendedProps.start_time}<br>
+                            <strong>End time:</strong> ${info.event.extendedProps.end_time}<br>
                             <strong>Credits:</strong> ${info.event.extendedProps.credits}<br>
-                            <strong>Degree Type:</strong> ${info.event.extendedProps.degreeType}<br>
-                            <strong>Cycle:</strong> ${info.event.extendedProps.cycle}<br>
-                            <strong>Description:</strong> ${info.event.extendedProps.description}
                         `;
                         tippy(info.el, {
                             content: tooltipContent,
@@ -142,16 +141,15 @@
                                             title: lesson.TEACHING,
                                             start: lesson.START_ISO8601,
                                             end: lesson.END_ISO8601,
-                                            description: lesson.DESCRIPTION || '',
                                             url: lesson.URLS_INSEGNAMENTO,
                                             extendedProps: {
                                                 lecturer: lesson.LECTURER_NAME,
                                                 classroom: lesson.CLASSROOM_NAME,
                                                 location: lesson.LOCATION_NAME,
                                                 address: lesson.ADDRESS,
+                                                start_time: lesson.LECTURE_START,
+                                                end_time: lesson.LECTURE_END,
                                                 credits: lesson.CREDITS,
-                                                degreeType: lesson.DEGREE_TYPE,
-                                                cycle: lesson.CYCLE
                                             }
                                         });
                                     }

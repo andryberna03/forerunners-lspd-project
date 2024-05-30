@@ -82,12 +82,7 @@ def create_new_dataframe(file_path_final: str) -> pd.DataFrame:
 
     final_urls_dataframe = format_iso8601(final_urls_dataframe)
 
-    final_urls_dataframe = semesters(final_urls_dataframe)
-
-    final_urls_dataframe['SITE'] = final_urls_dataframe['SITE'].fillna("Not defined yet")
-
-    # Handle problematic values
-    final_urls_dataframe.fillna("null", inplace=True)
+    final_urls_dataframe = modify_values(final_urls_dataframe)
 
     # Save the DataFrame to CSV
     final_urls_dataframe.to_csv(file_path_final, index=False)
@@ -234,18 +229,18 @@ def rename_and_convert(merged_dataframe: pd.DataFrame) -> pd.DataFrame:
     """
     drop_columns = [
         'CODICE', 'SETTORE', 'CREDITI', 'PESO_TOTALE',
-        'TIPO_CORSO_DES', 'TIPO_ATTIVITA', 'POSTI', 'NOTE']
+        'TIPO_CORSO_DES', 'TIPO_ATTIVITA', 'POSTI', 
+        'NOTE', 'ANNO_CORSO', 'CDS_DES','COORDINATE']
 
     merged_dataframe.drop(columns=drop_columns, inplace=True)
 
     new_column_names = {'CICLO': "CYCLE", 'CODICE': 'CODE',
-                        'ANNO_CORSO': 'STUDY_YEAR', 'PARTIZIONE': 'PARTITION',
+                        'PARTIZIONE': 'PARTITION',
                         'SETTORE': "SECTOR", 'PESO': "CREDITS",
                         'TIPO_CORSO_COD': "DEGREE_TYPE",
-                        'CDS_DES': 'DEGREE_NAME',
                         'GIORNO': "LECTURE_DAY", 'INIZIO': "LECTURE_START",
                         'FINE': "LECTURE_END", 'DOCENTI': 'LECTURER_NAME',
-                        'INDIRIZZO': 'ADDRESS', 'COORDINATE': 'COORDINATES'}
+                        'INDIRIZZO': 'ADDRESS'}
 
     merged_dataframe.rename(columns=new_column_names, inplace=True)
 
@@ -334,18 +329,14 @@ def format_iso8601(final_urls_dataframe):
     return final_urls_dataframe
 
 
-def semesters(final_urls_dataframe: pd.DataFrame) -> pd.DataFrame:
-    """
-    This function is used to convert the semester names from Italian to English.
-    It iterates over the 'CYCLE' column of the DataFrame and replaces the Italian
-    semester names with their English equivalents.
+def modify_values(final_urls_dataframe: pd.DataFrame) -> pd.DataFrame:
+    final_urls_dataframe['DEGREE_TYPE'] = final_urls_dataframe['DEGREE_TYPE'].replace({'L': 'Bachelor', 'LM': 'Master'})
 
-    Parameters:
-    final_urls_dataframe (pd.DataFrame): The DataFrame containing the 'CYCLE' column.
+    final_urls_dataframe['SITE'] = final_urls_dataframe['SITE'].replace({'PADOVA': 'VENEZIA'})
 
-    Returns:
-    pd.DataFrame: The DataFrame with the updated 'CYCLE' column.
-    """
+    final_urls_dataframe['SITE'] = final_urls_dataframe['SITE'].fillna("Not defined yet")
+
+    final_urls_dataframe['PARTITION'] = final_urls_dataframe['PARTITION'].fillna("")
 
     final_urls_dataframe = final_urls_dataframe[final_urls_dataframe['CYCLE'] != 'Precorsi']
 
@@ -370,11 +361,10 @@ def semesters(final_urls_dataframe: pd.DataFrame) -> pd.DataFrame:
         # it must be a Fall semester
         else:
             # Replace the semester name with the English equivalent
-            new_semester = 'Fall Semester (Sep-Jen)'
+            new_semester = 'Fall Semester (Sep-Jan)'
             # Update the DataFrame at the current index
             final_urls_dataframe.at[index, 'CYCLE'] = new_semester
 
-    # Return the updated DataFrame
     return final_urls_dataframe
 
 
