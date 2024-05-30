@@ -105,16 +105,15 @@ def get_unique_values(data, column_name):
                     unique_values.add(entry)
     return sorted(list(unique_values))
 
-@app.route('/download_ics')
+@app.route('/export_ics')
 def export_ics():
     base_dir = os.path.abspath(os.path.dirname(__file__))
     calendar_path = os.path.join(base_dir, 'backend', 'app', 'calendar.ics')
-
+    print(f"Checking for file at: {calendar_path}")
     if not os.path.exists(calendar_path):
         return abort(404)  # File non trovato
 
     return send_file(calendar_path, as_attachment=True)
-
 
 @app.route('/calendar', methods=['GET', 'POST'])
 def calendar():
