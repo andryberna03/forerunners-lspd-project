@@ -95,7 +95,8 @@
         });
     </script>
 
-    <!-- Bottone Export in iCal come link -->
-    <a href="{{ url_for('export_ics') }}" class="btn btn-primary">Export in iCal</a>
-
+    <!-- Bottone Export in iCal -->
+    <button>
+        <a href="{{ url_for('get_ics') }}">Export in iCal</a>
+    </button>
 {% endblock %}

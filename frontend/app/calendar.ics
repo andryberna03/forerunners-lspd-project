@@ -1,0 +1,109 @@
+BEGIN:VCALENDAR
+VERSION:2.0
+PRODID:ics.py - http://git.io/lLljaA
+BEGIN:VEVENT
+DESCRIPTION:Lecturer: CROSATO LISA\nClassroom: Aula 2\nDegree Name: DIGITAL MANAGEMENT\nURL Lecturer: https://www.unive.it/data/persone/-1\nURL Teaching: https://www.unive.it/data/insegnamento/386292
+DTEND:20240213T130000Z
+DTSTART:20240213T113000Z
+SUMMARY:DATA ANALYTICS
+UID:246b67a4-eaec-4d76-b7b8-0ecc00244e1c@246b.org
+END:VEVENT
+BEGIN:VEVENT
+DESCRIPTION:Lecturer: CROSATO LISA\nClassroom: Aula 2\nDegree Name: DIGITAL MANAGEMENT\nURL Lecturer: https://www.unive.it/data/persone/-1\nURL Teaching: https://www.unive.it/data/insegnamento/386292
+DTEND:20240206T110000Z
+DTSTART:20240206T093000Z
+SUMMARY:DATA ANALYTICS
+UID:74cec132-53d6-4616-891e-87b186947e7a@74ce.org
+END:VEVENT
+BEGIN:VEVENT
+DESCRIPTION:Lecturer: CROSATO LISA\nClassroom: Aula 2\nDegree Name: DIGITAL MANAGEMENT\nURL Lecturer: https://www.unive.it/data/persone/-1\nURL Teaching: https://www.unive.it/data/insegnamento/386292
+DTEND:20240213T110000Z
+DTSTART:20240213T093000Z
+SUMMARY:DATA ANALYTICS
+UID:74848e55-2173-43cc-9d6b-bebe41e8a9a8@7484.org
+END:VEVENT
+BEGIN:VEVENT
+DESCRIPTION:Lecturer: CROSATO LISA\nClassroom: Aula 2\nDegree Name: DIGITAL MANAGEMENT\nURL Lecturer: https://www.unive.it/data/persone/-1\nURL Teaching: https://www.unive.it/data/insegnamento/386292
+DTEND:20240219T130000Z
+DTSTART:20240219T113000Z
+SUMMARY:DATA ANALYTICS
+UID:b8e10c63-0161-443a-8c5a-cfb786f5a507@b8e1.org
+END:VEVENT
+BEGIN:VEVENT
+DESCRIPTION:Lecturer: CROSATO LISA\nClassroom: Aula 2\nDegree Name: DIGITAL MANAGEMENT\nURL Lecturer: https://www.unive.it/data/persone/-1\nURL Teaching: https://www.unive.it/data/insegnamento/386292
+DTEND:20240226T130000Z
+DTSTART:20240226T113000Z
+SUMMARY:DATA ANALYTICS
+UID:865511a1-8ed8-4d1b-be7b-20af99a0ff49@8655.org
+END:VEVENT
+BEGIN:VEVENT
+DESCRIPTION:Lecturer: CROSATO LISA\nClassroom: Aula 2\nDegree Name: DIGITAL MANAGEMENT\nURL Lecturer: https://www.unive.it/data/persone/-1\nURL Teaching: https://www.unive.it/data/insegnamento/386292
+DTEND:20240212T130000Z
+DTSTART:20240212T113000Z
+SUMMARY:DATA ANALYTICS
+UID:97fd83dc-2a97-48e8-94df-5b3434ae4e74@97fd.org
+END:VEVENT
+BEGIN:VEVENT
+DESCRIPTION:Lecturer: CROSATO LISA\nClassroom: Aula 2\nDegree Name: DIGITAL MANAGEMENT\nURL Lecturer: https://www.unive.it/data/persone/-1\nURL Teaching: https://www.unive.it/data/insegnamento/386292
+DTEND:20240205T130000Z
+DTSTART:20240205T113000Z
+SUMMARY:DATA ANALYTICS
+UID:2b610458-ae04-4f0b-a307-1bcf6bc9ac0a@2b61.org
+END:VEVENT
+BEGIN:VEVENT
+DESCRIPTION:Lecturer: CROSATO LISA\nClassroom: Aula 2\nDegree Name: DIGITAL MANAGEMENT\nURL Lecturer: https://www.unive.it/data/persone/-1\nURL Teaching: https://www.unive.it/data/insegnamento/386292
+DTEND:20240227T130000Z
+DTSTART:20240227T113000Z
+SUMMARY:DATA ANALYTICS
+UID:0b1161d0-c94b-42bb-8381-1b74c9f1420c@0b11.org
+END:VEVENT
+BEGIN:VEVENT
+DESCRIPTION:Lecturer: CROSATO LISA\nClassroom: Aula 2\nDegree Name: DIGITAL MANAGEMENT\nURL Lecturer: https://www.unive.it/data/persone/-1\nURL Teaching: https://www.unive.it/data/insegnamento/386292
+DTEND:20240305T110000Z
+DTSTART:20240305T093000Z
+SUMMARY:DATA ANALYTICS
+UID:8b2f4f47-3dd2-4ed9-ac04-fac266c54cdc@8b2f.org
+END:VEVENT
+BEGIN:VEVENT
+DESCRIPTION:Lecturer: CROSATO LISA\nClassroom: Aula 2\nDegree Name: DIGITAL MANAGEMENT\nURL Lecturer: https://www.unive.it/data/persone/-1\nURL Teaching: https://www.unive.it/data/insegnamento/386292
+DTEND:20240206T130000Z
+DTSTART:20240206T113000Z
+SUMMARY:DATA ANALYTICS
+UID:65cb196b-936d-47aa-88a4-85c8fefb5663@65cb.org
+END:VEVENT
+BEGIN:VEVENT
+DESCRIPTION:Lecturer: CROSATO LISA\nClassroom: Aula 2\nDegree Name: DIGITAL MANAGEMENT\nURL Lecturer: https://www.unive.it/data/persone/-1\nURL Teaching: https://www.unive.it/data/insegnamento/386292
+DTEND:20240220T110000Z
+DTSTART:20240220T093000Z
+SUMMARY:DATA ANALYTICS
+UID:74ae1e33-786f-4ded-8bd2-255fc56c10a2@74ae.org
+END:VEVENT
+BEGIN:VEVENT
+DESCRIPTION:Lecturer: CROSATO LISA\nClassroom: Aula 2\nDegree Name: DIGITAL MANAGEMENT\nURL Lecturer: https://www.unive.it/data/persone/-1\nURL Teaching: https://www.unive.it/data/insegnamento/386292
+DTEND:20240304T130000Z
+DTSTART:20240304T113000Z
+SUMMARY:DATA ANALYTICS
+UID:bdea2dc6-d455-4016-8481-7d30785feb32@bdea.org
+END:VEVENT
+BEGIN:VEVENT
+DESCRIPTION:Lecturer: CROSATO LISA\nClassroom: Aula 2\nDegree Name: DIGITAL MANAGEMENT\nURL Lecturer: https://www.unive.it/data/persone/-1\nURL Teaching: https://www.unive.it/data/insegnamento/386292
+DTEND:20240220T130000Z
+DTSTART:20240220T113000Z
+SUMMARY:DATA ANALYTICS
+UID:aac9702f-1910-4c76-b47b-8227f8d63d83@aac9.org
+END:VEVENT
+BEGIN:VEVENT
+DESCRIPTION:Lecturer: CROSATO LISA\nClassroom: Aula 2\nDegree Name: DIGITAL MANAGEMENT\nURL Lecturer: https://www.unive.it/data/persone/-1\nURL Teaching: https://www.unive.it/data/insegnamento/386292
+DTEND:20240227T110000Z
+DTSTART:20240227T093000Z
+SUMMARY:DATA ANALYTICS
+UID:7df989c2-34b1-4dfd-a757-862bc2654326@7df9.org
+END:VEVENT
+BEGIN:VEVENT
+DESCRIPTION:Lecturer: CROSATO LISA\nClassroom: Aula 2\nDegree Name: DIGITAL MANAGEMENT\nURL Lecturer: https://www.unive.it/data/persone/-1\nURL Teaching: https://www.unive.it/data/insegnamento/386292
+DTEND:20240305T130000Z
+DTSTART:20240305T113000Z
+SUMMARY:DATA ANALYTICS
+UID:c22ecd2f-d5b6-44c5-93d7-ddb416ff323e@c22e.org
+END:VEVENT
+END:VCALENDAR

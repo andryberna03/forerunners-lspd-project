@@ -4,12 +4,14 @@ Frontend module for the Flask application.
 This module defines a simple Flask application that serves as the frontend for the project.
 """
 
-from flask import Flask, render_template, send_file, abort
+from flask import Flask, render_template, send_file
 from flask_cors import CORS
 import requests
 from flask_wtf import FlaskForm
 from wtforms import SubmitField, SelectField, validators
 import os
+from ics import Calendar, Event
+from fastapi.responses import FileResponse
 
 app = Flask(__name__)
 app.config['SECRET_KEY'] = 'your_secret_key'  # Replace with a secure secret key
@@ -105,15 +107,36 @@ def get_unique_values(data, column_name):
                     unique_values.add(entry)
     return sorted(list(unique_values))
 
-@app.route('/export_ics')
-def export_ics():
-    base_dir = os.path.abspath(os.path.dirname(__file__))
-    calendar_path = os.path.join(base_dir, 'backend', 'app', 'calendar.ics')
-    print(f"Checking for file at: {calendar_path}")
-    if not os.path.exists(calendar_path):
-        return abort(404)  # File non trovato
+@app.route('/create_ics')
+def export_ics(response):
+    # Crea il calendario ICS
+    calendar = Calendar()
 
-    return send_file(calendar_path, as_attachment=True)
+    for key, lesson in response.items():
+        event = Event()
+        event.name = lesson.get("TEACHING")
+        event.begin = f"{lesson['LECTURE_DAY']} {lesson['LECTURE_START']}:00"
+        event.end = f"{lesson['LECTURE_DAY']} {lesson['LECTURE_END']}:00"
+        event.description = (
+            f"Lecturer: {lesson.get('LECTURER_NAME', 'No Lecturer')}\n"
+            f"Classroom: {lesson.get('CLASSROOM_NAME', 'No Classroom')}\n"
+            f"Degree Name: {lesson.get('DEGREE_NAME', 'No Degree Name')}\n"
+            f"URL Lecturer: {lesson.get('URL_DOCENTE', 'No URL')}\n"
+            f"URL Teaching: {lesson.get('URLS_INSEGNAMENTO', 'No URL')}"
+        )
+        calendar.events.add(event)
+
+    # Specifica il percorso del file
+    ical_path = 'app/calendar.ics'
+    if os.path.exists(ical_path):
+       with open(ical_path, 'w') as f:
+        f.writelines(calendar.serialize_iter())
+
+    return FileResponse('calendar.ics', media_type='text/calendar', filename='calendar.ics')
+
+@app.route('/download_ics')
+def get_ics():
+    return send_file('calendar.ics', as_attachment=True)
 
 @app.route('/calendar', methods=['GET', 'POST'])
 def calendar():
@@ -152,11 +175,11 @@ def calendar():
 
         response = requests.get(fastapi_url)
 
-        ical_file = f'{FASTAPI_BACKEND_HOST}/export_calendar'
+        export_ics(response.json())
 
         if response.status_code == 200:
             data = response.json()
-            return render_template('calendar.html', datatime_csv=datatime_csv, form=form, result=data, ical=ical_file, error_message=error_message)
+            return render_template('calendar.html', datatime_csv=datatime_csv, form=form, result=data, error_message=error_message)
         else:
             error_message = f'Error: Unable to fetch lesson for {teaching} from FastAPI Backend'
 

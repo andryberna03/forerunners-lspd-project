@@ -8,13 +8,11 @@ as the backend for the project.
 from fastapi import FastAPI, HTTPException, Response
 from fastapi.middleware.cors import CORSMiddleware
 import pandas as pd
-from fastapi.responses import JSONResponse, FileResponse
+from fastapi.responses import JSONResponse
 import pandas as pd
 import os
 import pytz
-import json
 from datetime import datetime
-from ics import Calendar, Event
 
 from .mymodules.df_creating import df_creating
 
@@ -122,41 +120,6 @@ async def csv_creation_date(response: Response):
         raise HTTPException(status_code=404, detail="File CSV non trovato")
 
 
-@app.get("/export_calendar")
-def export_calendar(response):
-    """
-    Endpoint per esportare il calendario delle lezioni in formato ICS
-    """
-    lessons = response.body.decode("utf-8")
-    lessons_dict = json.loads(lessons)
-
-    # Crea il calendario ICS
-    calendar = Calendar()
-
-    for key, lesson in lessons_dict.items():
-        event = Event()
-        event.name = lesson.get("TEACHING", "No Title")
-        event.begin = f"{lesson['LECTURE_DAY']} {lesson['LECTURE_START']}"
-        event.end = f"{lesson['LECTURE_DAY']} {lesson['LECTURE_END']}"
-        event.location = lesson.get("LOCATION_NAME", "No Location")
-        event.description = (
-            f"Lecturer: {lesson.get('LECTURER_NAME', 'No Lecturer')}\n"
-            f"Classroom: {lesson.get('CLASSROOM_NAME', 'No Classroom')}\n"
-            f"Degree Name: {lesson.get('DEGREE_NAME', 'No Degree Name')}\n"
-            f"URL Docente: {lesson.get('URL_DOCENTE', 'No URL')}\n"
-            f"URL Insegnamento: {lesson.get('URLS_INSEGNAMENTO', 'No URL')}"
-        )
-        calendar.events.add(event)
-
-    # Specifica il percorso del file
-    ical_path = 'app/calendar.ics'
-    if os.path.exists(ical_path):
-       with open(ical_path, 'w') as f:
-        f.writelines(calendar)
-
-    return FileResponse('calendar.ics', media_type='text/calendar', filename='calendar.ics')
-
-
 @app.get("/query/{teaching}/{location_str}/{degreetype_str}/{cycle_str}/{credits_str}")
 def get_courses_taught_by_person(teaching, location_str, degreetype_str, cycle_str, credits_str):
     """
@@ -198,7 +161,5 @@ def get_courses_taught_by_person(teaching, location_str, degreetype_str, cycle_s
     filtered_dict = filtered_df.to_dict(orient='index')
 
     subset_final_json = JSONResponse(content=filtered_dict)
-
-    export_calendar(subset_final_json)
 
     return subset_final_json
