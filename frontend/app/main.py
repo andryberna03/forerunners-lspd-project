@@ -12,6 +12,8 @@ from wtforms import SubmitField, SelectField, validators
 import os
 from ics import Calendar, Event
 from fastapi.responses import FileResponse
+from datetime import datetime
+import pytz
 
 app = Flask(__name__)
 app.config['SECRET_KEY'] = 'your_secret_key'  # Replace with a secure secret key
@@ -109,14 +111,44 @@ def get_unique_values(data, column_name):
 
 @app.route('/create_ics')
 def export_ics(response):
-    # Crea il calendario ICS
+    """
+    Exports the provided lesson data into an ICS calendar file.
+
+    Parameters:
+    response (dict): A dictionary containing lesson data. Each lesson is represented as a dictionary with keys such as 'TEACHING', 'LECTURE_DAY', 'LECTURE_START', 'LECTURE_END', etc.
+
+    Returns:
+    flask.Response: A Flask response object containing the ICS file as an attachment.
+
+    Raises:
+    None
+
+    """
+    # Create an ICS calendar
     calendar = Calendar()
 
+    # Iterate over each lesson in the response
     for key, lesson in response.items():
+        # Create a new event for the lesson
         event = Event()
+
+        # Set the event name to the teaching name
         event.name = lesson.get("TEACHING")
-        event.begin = f"{lesson['LECTURE_DAY']} {lesson['LECTURE_START']}:00"
-        event.end = f"{lesson['LECTURE_DAY']} {lesson['LECTURE_END']}:00"
+
+        # Parse the lecture day and time
+        year, month, day = lesson['LECTURE_DAY'].split('-')
+        hour_start, minute_start = lesson['LECTURE_START'].split(':')
+
+        # Set the event start time with CET timezone
+        event.begin = str(datetime(int(year), int(month), int(day), int(hour_start), int(minute_start), 0, tzinfo=pytz.timezone("CET")))
+        
+        # Parse the lecture end time
+        hour_end, minute_end = lesson['LECTURE_END'].split(':')
+
+        # Set the event end time with CET timezone
+        event.end = str(datetime(int(year), int(month), int(day), int(hour_end), int(minute_end), 0, tzinfo=pytz.timezone("CET")))
+        
+        # Set the event description with relevant lesson details
         event.description = (
             f"Lecturer: {lesson.get('LECTURER_NAME', 'No Lecturer')}\n"
             f"Classroom: {lesson.get('CLASSROOM_NAME', 'No Classroom')}\n"
@@ -124,18 +156,36 @@ def export_ics(response):
             f"URL Lecturer: {lesson.get('URL_DOCENTE', 'No URL')}\n"
             f"URL Teaching: {lesson.get('URLS_INSEGNAMENTO', 'No URL')}"
         )
+
+        # Add the event to the calendar
         calendar.events.add(event)
 
-    # Specifica il percorso del file
+    # Specify the path for the ICS file
     ical_path = 'app/calendar.ics'
+
+    # Check if the file already exists
     if os.path.exists(ical_path):
+       # Open the file in write mode and write the calendar data
        with open(ical_path, 'w') as f:
         f.writelines(calendar.serialize_iter())
 
+    # Return the ICS file as a Flask response
     return FileResponse('calendar.ics', media_type='text/calendar', filename='calendar.ics')
 
 @app.route('/download_ics')
 def get_ics():
+    """
+    This function is responsible for downloading the generated ICS file.
+
+    The function uses Flask's send_file method to send the 'calendar.ics' file to the client.
+    The file is sent as an attachment, which means the client will be prompted to download it.
+
+    Parameters:
+    None
+
+    Returns:
+    flask.Response: A Flask response object containing the ICS file as an attachment.
+    """
     return send_file('calendar.ics', as_attachment=True)
 
 @app.route('/calendar', methods=['GET', 'POST'])
