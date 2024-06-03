@@ -1,16 +1,24 @@
-// Initialise calendar but show only after submit
+/**
+ * Event listener for DOMContentLoaded event.
+ * Initializes the calendar and handles form submission.
+ */
 document.addEventListener('DOMContentLoaded', function() {
+
+    // Set the maximum height of the calendar element
+    document.getElementById('calendar').style.maxHeight = '350px';
+
+    // Initialize the FullCalendar instance
     var calendarEl = document.getElementById('calendar');
     var calendar = new FullCalendar.Calendar(calendarEl, {
-        initialView: 'dayGridWeek',
+        initialView: 'dayGridWeek', // Initial view of the calendar
         eventClick: function(info) {
-            info.jsEvent.preventDefault(); 
+            info.jsEvent.preventDefault(); // Prevent the default event behavior
             if (info.event.url) {
-                window.open(info.event.url, '_blank');
+                window.open(info.event.url, '_blank'); // Open the event URL in a new tab
             }
         },
         eventDidMount: function(info) {
-            // Add tooltip
+            // Add tooltip to the event element
             var tooltipContent = `
                 <strong>${info.event.title}</strong><br>
                 <strong>Lecturer:</strong> ${info.event.extendedProps.lecturer}<br>
@@ -29,14 +37,15 @@ document.addEventListener('DOMContentLoaded', function() {
         }
     });
 
-    // Populate the calendar
+    // Event listener for form submission
     document.getElementById('query-form').addEventListener('submit', function(event) {
-        event.preventDefault(); // Prevent actual form submission
+        event.preventDefault(); // Prevent the actual form submission
 
         // Show the calendar container
         document.getElementById('calendar-container').style.display = 'block';
+        document.getElementById('calendar-container').style.height = '350px';
 
-        // Retrieve form values
+        // Retrieve form values and encode them for URL usage
         var teaching = encodeURIComponent(document.querySelector('[name="teaching"]').value);
         var location_str = encodeURIComponent(document.querySelector('[name="location"]').value);
         var degreetype_str = encodeURIComponent(document.querySelector('[name="degreetype"]').value);
@@ -48,14 +57,15 @@ document.addEventListener('DOMContentLoaded', function() {
 
         console.log(url); // Debug URL
 
+        // Fetch data from the server
         fetch(url)
-            .then(response => {
+           .then(response => {
                 if (!response.ok) {
-                    throw new Error('Network response was not ok ' + response.statusText);
+                    throw new Error('Network response was not ok ' response.statusText);
                 }
                 return response.json();
             })
-            .then(data => {
+           .then(data => {
                 console.log(data);
 
                 var errorMessageEl = document.getElementById('error-message');
@@ -65,6 +75,7 @@ document.addEventListener('DOMContentLoaded', function() {
                     for (var key in data) {
                         if (data.hasOwnProperty(key)) {
                             var lesson = data[key];
+                            // Create an event object for each lesson
                             events.push({
                                 title: lesson.TEACHING,
                                 start: lesson.START_ISO8601,
@@ -87,26 +98,28 @@ document.addEventListener('DOMContentLoaded', function() {
 
                     // Find the earliest event date and move the calendar to that date
                     var earliestEvent = events.reduce((earliest, event) => {
-                        return !earliest || new Date(event.start) < new Date(earliest.start) ? event : earliest;
+                        return!earliest || new Date(event.start) < new Date(earliest.start)? event : earliest;
                     }, null);
                     if (earliestEvent) {
                         calendar.gotoDate(new Date(earliestEvent.start));
                     }
+
+                    // Render the calendar after setting the container height
+                    calendar.render();
                 } else {
                     // Show error if filters yield empty set
                     var errorMessageEl = document.getElementById('error-message')
                     errorMessageEl.textContent = 'Filter combination is not right';
                     console.error('Filter combination is not right');
-                        // Hide the calendar container if filters are wrong                                
-                        document.getElementById('calendar-container').style.display = 'none';
+                    // Hide the calendar container if filters are wrong                                
+                    document.getElementById('calendar-container').style.display = 'none';
                 }
             })
-            .catch(error => {
+           .catch(error => {
                 var errorMessageEl = document.getElementById('error-message');
-                errorMessageEl.textContent = 'Error loading the calendar data: ' + error.message;
+                errorMessageEl.textContent = 'Error loading the calendar data: ' error.message;
                 console.error('Error loading the calendar data:', error);
             });
     });
 
-    calendar.render();
 });
