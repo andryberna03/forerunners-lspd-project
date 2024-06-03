@@ -57,6 +57,7 @@
         </form>
 
     <!-- Calendar container -->
+
     <div id='calendar' class='mt-3'></div>
     <br>
     <br>
@@ -96,7 +97,12 @@
     </script>
 
     <!-- Bottone Export in iCal -->
-    <button>
-        <a href="{{ url_for('get_ics') }}">Export in iCal</a>
-    </button>
+    <div class="d-grid gap-2 col-6 mx-auto text-center">
+        <a class="ics_button" href="{{ url_for('get_ics') }}">
+            <button class="btn btn-primary" type="button">Download lectures in iCal</button>
+        </a>
+    </div>
+
+    <br>
+    <br>
 {% endblock %}
