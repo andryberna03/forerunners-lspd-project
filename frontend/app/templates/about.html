@@ -11,7 +11,7 @@
             <div class="row justify-content-center">
                 <div class="col-12 d-flex align-items-center justify-content-center">
                     <a class="Github-link align-items-center" href="https://github.com/andryberna03/forerunners-lspd-project" target="_blank"
-                        title="GitHub">
+                        title="GitHub Repo">
                         <svg xmlns="http://www.w3.org/2000/svg" width="48" height="48" fill="currentColor"
                             class="bi bi-github text-black align-middle" viewBox="0 0 16 16">
                             <path
@@ -24,141 +24,237 @@
         </div>
     </div>
 
+    <!-- About The Project section -->
     <div class="container justify-content-center align-items-center">
         <h2 class="text-center mt-5 mb-4">About The Project</h2>
-        <p class="lead">We are five students of the second year of digital management. We know what you might be thinking... Why are you doing it? The reasons are many; some of us will go on Erasmus and find difficulty in converting it, while others just need to anticipate some exams to finish earlier. We are all somehow forerunning the time!</p>
+        <p class="lead">The idea for this project originated from our personal experiences. Some of us will have the pleasure of doing an
+        exchange in different parts of the world, and we found it very useful to have an academic calendar planner.
+        Noticing that Ca' Foscari does not offer this opportunity for exchange
+        students, we thought it would be a great way to help our incoming colleagues in Venice!</p>
     </div> 
 
+    <!-- Our Goal section -->
     <div class="container justify-content-center align-items-center">
         <h2 class="text-center mt-5 mb-4">Our Goal</h2>
-        <p class="lead">We wanted to provide Ca’ Foscari with an efficient solution that may reduce the friction and somehow increase the willingness of students to come and study in Venice, granting an intrinsic benefit for our community and the overall prestige of our University.</p>
+        <p class="lead">We wanted to provide Ca’ Foscari with an efficient solution that may reduce the friction and somehow increase the willingness of international students to come and study in Venice, granting an intrinsic benefit for our community and the overall prestige of our University.</p>
     </div>
 
+    <!-- Features section -->
     <div class="container justify-content-center align-items-center">
         <h2 class="text-center mt-5 mb-4">Features</h2>
-        <p class="lead">We wanted to provide Ca’ Foscari with an efficient solution that may reduce the friction and somehow
-            increase the willingness of students to come and study in Venice, granting an intrinsic benefit for our
-            community and the overall prestige of our University.</p>
+        <p class="lead">Our website offers three main sections: Home, About the Project, and Calendar. The Home and About the Project pages provide a clear
+        overview of the project's purpose and functionality. The Calendar page serves as user interactive hub, allowing to
+        directly submit queries to the project's backend:</p>
+        <ul class="lead">
+            <li>
+                <strong>User-friendly Interface:</strong> Enjoy a seamless user experience with an intuitive design that makes
+                navigation and information retrieval straightforward and efficient.
+            </li>
+            <li>
+                <strong>Advanced Filtering:</strong> Filter teachings based on specific criteria such as the degree type and the semester in which the teaching occurs.
+            </li>
+            <li>
+                <strong>DYNAMIC FILTERING → DA IMPLEMENTARE E SAREBBE MOLTO FIGO AVERLO (SE METTO RONCADE MI ESCONO SOLO CORSI DI FARM)</strong>
+
+            </li>
+            <li>
+                <strong>Calendar download:</strong> After filtering the relevant teaching, the user can download the information
+                in .ics format to add it directly to their preferred calendar client.
+            </li>
+        </ul>
     </div>
 
+    <!-- Technology and ​​Architecture section -->
     <div class="container justify-content-center align-items-center">
         <h2 class="text-center mt-5 mb-4">Technology and ​​Architecture</h2>
-        <p class="lead">We wanted to provide Ca’ Foscari with an efficient solution that may reduce the friction and somehow
-            increase the willingness of students to come and study in Venice, granting an intrinsic benefit for our
-            community and the overall prestige of our University.</p>
+        <p class="lead">The project was developed using HTML/CSS/JavaScript for frontend and Python for backend.
+            To quickly and effectively make the website responsive, Bootstrap was also implemented.
+            To safely and efficiently deploy the website, Docker was set up.
+        </p>
+        <p class="lead">The project follows a simple client-server architecture:</p>
+        <ol class="lead">
+            <li>
+                <strong>Frontend (Flask)</strong>:
+                <ul>
+                    <li>Represents the user interface or client side.</li>
+                    <li>Built with Flask, a lightweight web framework for Python.</li>
+                    <li>Responsible for rendering web pages and user interaction, including the form for querying the backend.
+                    </li>
+                </ul>
+            </li>
+            <li>
+                <strong>Backend (FastAPI)</strong>:
+                <ul>
+                    <li>Represents the server or backend of the application.</li>
+                    <li>Built with FastAPI, a modern web framework for building APIs with Python.</li>
+                    <li>Handles requests from the frontend, including querying teachings and providing last calendar database
+                        updates.</li>
+                </ul>
+            </li>
+            <li>
+                <strong>Docker Compose</strong>:
+                <ul>
+                    <li>Orchestrates the deployment of both frontend and backend as separate containers.</li>
+                    <li>Ensures seamless communication between frontend and backend containers.</li>
+                    <li>Simplifies the deployment and management of the entire application.</li>
+                </ul>
+            </li>
+        </ol>
+        <p class="lead">Bidirectional communication is established between the Frontend (Flask) and Backend (FastAPI). Docker Compose
+        facilitates this communication, allowing the components to work together seamlessly.
+        </p>
     </div>
 
+    <!-- Example Data Flow section -->
     <div class="container justify-content-center align-items-center">
-        <h2 class="text-center mt-5 mb-4">Project Structure</h2>
-        <p class="lead">We wanted to provide Ca’ Foscari with an efficient solution that may reduce the friction and somehow
-            increase the willingness of students to come and study in Venice, granting an intrinsic benefit for our
-            community and the overall prestige of our University.</p>
-    </div>
+        <h2 class="text-center mt-5 mb-4">Example Data Flow</h2>
+            <ol class="lead" type="A">
+                <li>
+                    <strong>User accesses the calendar webpage</strong>:
+                    <ol>
+                        <li>calendar.html template is rendered while dataset creation time is checked.</li>
+                        <li>If more than 24 hours have passed, FastAPI updates the dataset with new data from Ca' Foscari's open data.</li>
+                        <li>The last update date of the dataset is refreshed.</li>
+                        <li>calendar.html template is completly and correctly rendered.</li>
+                    </ol>
+                </li>
+                <li>
+                    <strong>User’s query</strong>:
+                    <ol>
+                        <li>User uses filters to prepare their query and sends it.</li>
+                        <li>Flask receives a request from the user.</li>
+                        <li>Flask sends a request to the FastAPI to obtain data.</li>
+                        <li>FastAPI responds with the requested data in JSON format.</li>
+                        <li>Flask extracts and transforms the data as needed and prepares it for the template.</li>
+                    </ol>
+                </li>
+                <li>
+                    <strong>Calendar display</strong>:
+                    <ol>
+                        <li>Flask passes the JSON data to the calendar.html template.</li>
+                        <li>JavaScript code in the calendar.html makes further HTTP requests directly from the browser to the FastAPI bypassing Flask.</li>
+                        <li>The calendar is rendered with the provided data.</li>
+                    </ol>
+                </li>
+                <li>
+                    <strong>User download teaching in .ical format</strong>:
+                    <ol>
+                        <li>User clicks on download button.</li>
+                        <li>calendar.ics file is created based on their most recent query.</li>
+                        <li>As soon as the file is created, it is immediately downloaded using timezone CET.</li>
+                        <li>Now user can add lectures directly to their preferred calendar client.</li>
+                    </ol>
+                </li>
+            </ol>
 
+    <!-- Team Member section -->
     <div class="container justify-content-center align-items-center">
         <h2 class="text-center mt-5 mb-4">Our Team</h2>
         <div class="row justify-content-center">
             <div class="col-md-4 mb-4">
                 <!-- Team Member 1: Bernardo Andrea -->
-                <div class="card">
-                    <img class="card-img-top" src="../static/fotoandreabernardo.jpeg" alt="Andrea Bernardo"
-                        style="object-fit: cover; height: 400px;">
-                    <div class="card-body">
-                        <h5 class="card-title">Bernardo Andrea</h5>
-                        <p class="card-text">
-                            <a class="about-link" href="https://www.linkedin.com/in/ab2003-andrea-bernardo/" target="_blank" title="LinkedIn">
-                                <svg xmlns="http://www.w3.org/2000/svg" width="24" height="24" fill="currentColor" class="bi bi-linkedin"
-                                    viewBox="0 0 16 16">
-                                    <path
-                                        d="M0 1.146C0 .513.526 0 1.175 0h13.65C15.474 0 16 .513 16 1.146v13.708c0 .633-.526 1.146-1.175 1.146H1.175C.526 16 0 15.487 0 14.854zm4.943 12.248V6.169H2.542v7.225zm-1.2-8.212c.837 0 1.358-.554 1.358-1.248-.015-.709-.52-1.248-1.342-1.248S2.4 3.226 2.4 3.934c0 .694.521 1.248 1.327 1.248zm4.908 8.212V9.359c0-.216.016-.432.08-.586.173-.431.568-.878 1.232-.878.869 0 1.216.662 1.216 1.634v3.865h2.401V9.25c0-2.22-1.184-3.252-2.764-3.252-1.274 0-1.845.7-2.165 1.193v.025h-.016l.016-.025V6.169h-2.4c.03.678 0 7.225 0 7.225z" />
-                                </svg>
-                            </a> - Student ID 894305
-                        </p>
+                <a class="about-link" href="https://www.linkedin.com/in/ab2003-andrea-bernardo/" target="_blank" title="LinkedIn Andrea Bernardo">
+                    <div class="card">
+                        <img class="card-img-top" src="../static/fotoandreabernardo.jpeg" alt="Andrea Bernardo"
+                            style="object-fit: cover; height: 400px;">
+                        <div class="card-body">
+                            <h5 class="card-title">Bernardo Andrea</h5>
+                            <p class="card-text">
+                                    <svg xmlns="http://www.w3.org/2000/svg" width="24" height="24" fill="currentColor" class="bi bi-linkedin"
+                                        viewBox="0 0 16 16">
+                                        <path
+                                            d="M0 1.146C0 .513.526 0 1.175 0h13.65C15.474 0 16 .513 16 1.146v13.708c0 .633-.526 1.146-1.175 1.146H1.175C.526 16 0 15.487 0 14.854zm4.943 12.248V6.169H2.542v7.225zm-1.2-8.212c.837 0 1.358-.554 1.358-1.248-.015-.709-.52-1.248-1.342-1.248S2.4 3.226 2.4 3.934c0 .694.521 1.248 1.327 1.248zm4.908 8.212V9.359c0-.216.016-.432.08-.586.173-.431.568-.878 1.232-.878.869 0 1.216.662 1.216 1.634v3.865h2.401V9.25c0-2.22-1.184-3.252-2.764-3.252-1.274 0-1.845.7-2.165 1.193v.025h-.016l.016-.025V6.169h-2.4c.03.678 0 7.225 0 7.225z" />
+                                    </svg>
+                                - Student ID 894305
+                            </p>
+                        </div>
                     </div>
-                </div>
+                </a>
             </div>
             <div class="col-md-4 mb-4">
                 <!-- Team Member 2: Gnoni Mavarelli Antonio -->
-                <div class="card">
-                    <img class="card-img-top" src="../static/fotoantoniognoni.jpeg" alt="Antonio Gnoni Mavarelli"
-                        style="object-fit: cover; height: 400px;">
-                    <div class="card-body">
-                        <h5 class="card-title">Gnoni Mavarelli Antonio</h5>
-                        <p class="card-text">
-                            <a class="about-link" href="https://www.linkedin.com/in/antonio-gnoni-mavarelli/" target="_blank" title="LinkedIn">
-                                <svg xmlns="http://www.w3.org/2000/svg" width="24" height="24" fill="currentColor" class="bi bi-linkedin"
-                                    viewBox="0 0 16 16">
-                                    <path
-                                        d="M0 1.146C0 .513.526 0 1.175 0h13.65C15.474 0 16 .513 16 1.146v13.708c0 .633-.526 1.146-1.175 1.146H1.175C.526 16 0 15.487 0 14.854zm4.943 12.248V6.169H2.542v7.225zm-1.2-8.212c.837 0 1.358-.554 1.358-1.248-.015-.709-.52-1.248-1.342-1.248S2.4 3.226 2.4 3.934c0 .694.521 1.248 1.327 1.248zm4.908 8.212V9.359c0-.216.016-.432.08-.586.173-.431.568-.878 1.232-.878.869 0 1.216.662 1.216 1.634v3.865h2.401V9.25c0-2.22-1.184-3.252-2.764-3.252-1.274 0-1.845.7-2.165 1.193v.025h-.016l.016-.025V6.169h-2.4c.03.678 0 7.225 0 7.225z" />
-                                </svg>
-                            </a> - Student ID 894314
-                        </p>
+                <a class="about-link" href="https://www.linkedin.com/in/antonio-gnoni-mavarelli/" target="_blank" title="LinkedIn Antonio Gnoni Mavarelli">
+                    <div class="card">
+                        <img class="card-img-top" src="../static/fotoantoniognoni.jpeg" alt="Antonio Gnoni Mavarelli"
+                            style="object-fit: cover; height: 400px;">
+                        <div class="card-body">
+                            <h5 class="card-title">Gnoni Mavarelli Antonio</h5>
+                            <p class="card-text">
+                                    <svg xmlns="http://www.w3.org/2000/svg" width="24" height="24" fill="currentColor" class="bi bi-linkedin"
+                                        viewBox="0 0 16 16">
+                                        <path
+                                            d="M0 1.146C0 .513.526 0 1.175 0h13.65C15.474 0 16 .513 16 1.146v13.708c0 .633-.526 1.146-1.175 1.146H1.175C.526 16 0 15.487 0 14.854zm4.943 12.248V6.169H2.542v7.225zm-1.2-8.212c.837 0 1.358-.554 1.358-1.248-.015-.709-.52-1.248-1.342-1.248S2.4 3.226 2.4 3.934c0 .694.521 1.248 1.327 1.248zm4.908 8.212V9.359c0-.216.016-.432.08-.586.173-.431.568-.878 1.232-.878.869 0 1.216.662 1.216 1.634v3.865h2.401V9.25c0-2.22-1.184-3.252-2.764-3.252-1.274 0-1.845.7-2.165 1.193v.025h-.016l.016-.025V6.169h-2.4c.03.678 0 7.225 0 7.225z" />
+                                    </svg>
+                                - Student ID 894314
+                            </p>
+                        </div>
                     </div>
-                </div>
+                </a>
             </div>
             <div class="col-md-4 mb-4">
                 <!-- Team Member 3: Griselin Marta -->
-                <div class="card">
-                    <img class="card-img-top" src="../static/fotomartagriselin.jpeg" alt="Marta Griselin"
-                        style="object-fit: cover; height: 400px;">
-                    <div class="card-body">
-                        <h5 class="card-title">Griselin Marta</h5>
-                        <p class="card-text">
-                            <a class="about-link" href="https://www.linkedin.com/in/marta-griselin-ba876325a/" target="_blank" title="LinkedIn">
-                                <svg xmlns="http://www.w3.org/2000/svg" width="24" height="24" fill="currentColor" class="bi bi-linkedin"
-                                    viewBox="0 0 16 16">
-                                    <path
-                                        d="M0 1.146C0 .513.526 0 1.175 0h13.65C15.474 0 16 .513 16 1.146v13.708c0 .633-.526 1.146-1.175 1.146H1.175C.526 16 0 15.487 0 14.854zm4.943 12.248V6.169H2.542v7.225zm-1.2-8.212c.837 0 1.358-.554 1.358-1.248-.015-.709-.52-1.248-1.342-1.248S2.4 3.226 2.4 3.934c0 .694.521 1.248 1.327 1.248zm4.908 8.212V9.359c0-.216.016-.432.08-.586.173-.431.568-.878 1.232-.878.869 0 1.216.662 1.216 1.634v3.865h2.401V9.25c0-2.22-1.184-3.252-2.764-3.252-1.274 0-1.845.7-2.165 1.193v.025h-.016l.016-.025V6.169h-2.4c.03.678 0 7.225 0 7.225z" />
-                                </svg>
-                            </a> - Student ID 894571
-                        </p>
+                <a class="about-link" href="https://www.linkedin.com/in/marta-griselin-ba876325a/" target="_blank" title="LinkedIn Marta Griselin">
+                    <div class="card">
+                        <img class="card-img-top" src="../static/fotomartagriselin.jpeg" alt="Marta Griselin"
+                            style="object-fit: cover; height: 400px;">
+                        <div class="card-body">
+                            <h5 class="card-title">Griselin Marta</h5>
+                            <p class="card-text">
+                                    <svg xmlns="http://www.w3.org/2000/svg" width="24" height="24" fill="currentColor" class="bi bi-linkedin"
+                                        viewBox="0 0 16 16">
+                                        <path
+                                            d="M0 1.146C0 .513.526 0 1.175 0h13.65C15.474 0 16 .513 16 1.146v13.708c0 .633-.526 1.146-1.175 1.146H1.175C.526 16 0 15.487 0 14.854zm4.943 12.248V6.169H2.542v7.225zm-1.2-8.212c.837 0 1.358-.554 1.358-1.248-.015-.709-.52-1.248-1.342-1.248S2.4 3.226 2.4 3.934c0 .694.521 1.248 1.327 1.248zm4.908 8.212V9.359c0-.216.016-.432.08-.586.173-.431.568-.878 1.232-.878.869 0 1.216.662 1.216 1.634v3.865h2.401V9.25c0-2.22-1.184-3.252-2.764-3.252-1.274 0-1.845.7-2.165 1.193v.025h-.016l.016-.025V6.169h-2.4c.03.678 0 7.225 0 7.225z" />
+                                    </svg>
+                                - Student ID 894571
+                            </p>
+                        </div>
                     </div>
-                </div>
+                </a>
             </div>
         </div>
     </div>
     <div class="container">
         <div class="row justify-content-center">
             <div class="col-md-4 mb-4">
-                <div class="card">
-                    <!-- Team Member 4: Piscopello Francesco -->
-                    <img class="card-img-top" src="../static/fotofrancescopiscopello.jpeg" alt="Francesco Piscopello"
-                        style="object-fit: cover; height: 400px;">
-                    <div class="card-body">
-                        <h5 class="card-title">Piscopello Francesco</h5>
-                        <p class="card-text">
-                            <a class="about-link" href="https://www.linkedin.com/in/francescopiscopello/" target="_blank" title="LinkedIn">
-                                <svg xmlns="http://www.w3.org/2000/svg" width="24" height="24" fill="currentColor" class="bi bi-linkedin"
-                                    viewBox="0 0 16 16">
-                                    <path
-                                        d="M0 1.146C0 .513.526 0 1.175 0h13.65C15.474 0 16 .513 16 1.146v13.708c0 .633-.526 1.146-1.175 1.146H1.175C.526 16 0 15.487 0 14.854zm4.943 12.248V6.169H2.542v7.225zm-1.2-8.212c.837 0 1.358-.554 1.358-1.248-.015-.709-.52-1.248-1.342-1.248S2.4 3.226 2.4 3.934c0 .694.521 1.248 1.327 1.248zm4.908 8.212V9.359c0-.216.016-.432.08-.586.173-.431.568-.878 1.232-.878.869 0 1.216.662 1.216 1.634v3.865h2.401V9.25c0-2.22-1.184-3.252-2.764-3.252-1.274 0-1.845.7-2.165 1.193v.025h-.016l.016-.025V6.169h-2.4c.03.678 0 7.225 0 7.225z" />
-                                </svg>
-                            </a> - Student ID 893994
-                        </p>
+                <!-- Team Member 4: Piscopello Francesco -->
+                <a class="about-link" href="https://www.linkedin.com/in/francescopiscopello/" target="_blank" title="LinkedIn Francesco Piscopello">
+                    <div class="card">
+                        <img class="card-img-top" src="../static/fotofrancescopiscopello.jpeg" alt="Francesco Piscopello"
+                            style="object-fit: cover; height: 400px;">
+                        <div class="card-body">
+                            <h5 class="card-title">Piscopello Francesco</h5>
+                            <p class="card-text">
+                                    <svg xmlns="http://www.w3.org/2000/svg" width="24" height="24" fill="currentColor" class="bi bi-linkedin"
+                                        viewBox="0 0 16 16">
+                                        <path
+                                            d="M0 1.146C0 .513.526 0 1.175 0h13.65C15.474 0 16 .513 16 1.146v13.708c0 .633-.526 1.146-1.175 1.146H1.175C.526 16 0 15.487 0 14.854zm4.943 12.248V6.169H2.542v7.225zm-1.2-8.212c.837 0 1.358-.554 1.358-1.248-.015-.709-.52-1.248-1.342-1.248S2.4 3.226 2.4 3.934c0 .694.521 1.248 1.327 1.248zm4.908 8.212V9.359c0-.216.016-.432.08-.586.173-.431.568-.878 1.232-.878.869 0 1.216.662 1.216 1.634v3.865h2.401V9.25c0-2.22-1.184-3.252-2.764-3.252-1.274 0-1.845.7-2.165 1.193v.025h-.016l.016-.025V6.169h-2.4c.03.678 0 7.225 0 7.225z" />
+                                    </svg>
+                                - Student ID 893994
+                            </p>
+                        </div>
                     </div>
-                </div>
+                </a>
             </div>
             <div class="col-md-4 mb-4">
-                <div class="card">
-                    <!-- Team Member 4: Sartori Carlo Alberto -->
-                    <img class="card-img-top" src="../static/fotocarlosartori.jpeg" alt="Francesco Piscopello"
-                        style="object-fit: cover; height: 400px;">
-                    <div class="card-body">
-                        <h5 class="card-title">Sartori Carlo Alberto</h5>
-                        <p class="card-text">
-                            <a class="about-link" href="https://www.linkedin.com/in/carlo-alberto-sartori-79a048292" target="_blank"
-                                title="LinkedIn">
-                                <svg xmlns="http://www.w3.org/2000/svg" width="24" height="24" fill="currentColor"
-                                    class="bi bi-linkedin" viewBox="0 0 16 16">
-                                    <path
-                                        d="M0 1.146C0 .513.526 0 1.175 0h13.65C15.474 0 16 .513 16 1.146v13.708c0 .633-.526 1.146-1.175 1.146H1.175C.526 16 0 15.487 0 14.854zm4.943 12.248V6.169H2.542v7.225zm-1.2-8.212c.837 0 1.358-.554 1.358-1.248-.015-.709-.52-1.248-1.342-1.248S2.4 3.226 2.4 3.934c0 .694.521 1.248 1.327 1.248zm4.908 8.212V9.359c0-.216.016-.432.08-.586.173-.431.568-.878 1.232-.878.869 0 1.216.662 1.216 1.634v3.865h2.401V9.25c0-2.22-1.184-3.252-2.764-3.252-1.274 0-1.845.7-2.165 1.193v.025h-.016l.016-.025V6.169h-2.4c.03.678 0 7.225 0 7.225z" />
-                                </svg>
-                            </a> - Student ID 893994
-                        </p>
+                <!-- Team Member 4: Sartori Carlo Alberto -->
+                <a class="about-link" href="https://www.linkedin.com/in/carlo-alberto-sartori-79a048292" target="_blank" title="LinkedIn Carlo Alberto Sartori">
+                    <div class="card">
+                        <img class="card-img-top" src="../static/fotocarlosartori.jpeg" alt="Carlo Alberto Sartori"
+                            style="object-fit: cover; height: 400px;">
+                        <div class="card-body">
+                            <h5 class="card-title">Sartori Carlo Alberto</h5>
+                            <p class="card-text">
+                                    <svg xmlns="http://www.w3.org/2000/svg" width="24" height="24" fill="currentColor"
+                                        class="bi bi-linkedin" viewBox="0 0 16 16">
+                                        <path
+                                            d="M0 1.146C0 .513.526 0 1.175 0h13.65C15.474 0 16 .513 16 1.146v13.708c0 .633-.526 1.146-1.175 1.146H1.175C.526 16 0 15.487 0 14.854zm4.943 12.248V6.169H2.542v7.225zm-1.2-8.212c.837 0 1.358-.554 1.358-1.248-.015-.709-.52-1.248-1.342-1.248S2.4 3.226 2.4 3.934c0 .694.521 1.248 1.327 1.248zm4.908 8.212V9.359c0-.216.016-.432.08-.586.173-.431.568-.878 1.232-.878.869 0 1.216.662 1.216 1.634v3.865h2.401V9.25c0-2.22-1.184-3.252-2.764-3.252-1.274 0-1.845.7-2.165 1.193v.025h-.016l.016-.025V6.169h-2.4c.03.678 0 7.225 0 7.225z" />
+                                    </svg>
+                                - Student ID 893994
+                            </p>
+                        </div>
                     </div>
-                </div>
+                </a>
             </div>
         </div>
     </div> 
-
-{% endblock %}
+    {% endblock %}

@@ -20,14 +20,12 @@
     margin: 0 auto;
 }
 
-.pricing8 .btn-info-gradiant, .pricing8 .btn-danger-gradiant {
-    background: rgb(172, 0, 51);
+.about-link {
+    color: rgb(172, 0, 51) !important;
 }
 
-.frontend,
-.backend {
-    justify-content: center;
-    text-align: left;
+.pricing8 .btn-info-gradiant, .pricing8 .btn-danger-gradiant {
+    background: rgb(172, 0, 51);
 }
 
 .card:hover { /* to make the card responsive when you hover over it */
