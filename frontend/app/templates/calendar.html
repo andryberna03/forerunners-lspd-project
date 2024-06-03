@@ -11,7 +11,7 @@
 
     <!-- Import specific CSS -->
     <link rel="stylesheet" href="static/css/calendarstyle.css">
-    
+
     <!-- Greeting header -->
     <div style="margin-top: 75px;">
         <header class="masthead">
@@ -32,11 +32,11 @@
             <div class="align-items-center">
                 <div>
                     <p class="lead fw-normal text-muted mb-5 mb-lg-0">
-                        <ol class="lead">
-                            <li>Prepare your query using all filters and send it to find more about a teaching.</li>
-                            <li>Check the calendar to discover lecture scheduling.</li>
-                            <li>Download information in .ics to add lectures to your preferred calendar client.</li>
-                        </ol>
+                    <ol class="lead">
+                        <li>Prepare your query using all filters and send it to find more about a teaching.</li>
+                        <li>Check the calendar to discover lecture scheduling.</li>
+                        <li>Download information in .ics to add lectures to your preferred calendar client.</li>
+                    </ol>
                     </p>
                     <p class="lead fw-normal text-muted mb-lg-0">
                         NOTE: It is not possible to search for more than one teaching at a time.
@@ -50,9 +50,9 @@
 
     <!-- Database updating section -->
     <section class="database">
-            <p class="text-database py-3 align-items-center">
-                The calendar database was last updated at: {{ datatime_csv.datatime }}
-            </p>
+        <p class="text-database py-3 align-items-center">
+            The calendar database was last updated at: {{ datatime_csv.datatime }}
+        </p>
     </section>
 
     <div class="container mt-5">
@@ -117,4 +117,14 @@
 
         <script src="../static/js/display_calendar.js"></script>
     </div>
+
+    <!-- Bottone Export in iCal -->
+    <div class="d-grid gap-2 col-6 mx-auto text-center">
+        <a class="ics_button" href="{{ url_for('get_ics') }}">
+            <button class="btn btn-primary" type="button">Download lectures in iCal</button>
+        </a>
+    </div>
+
+    <br>
+    <br>
 {% endblock %}

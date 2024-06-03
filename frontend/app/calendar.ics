@@ -2,108 +2,108 @@ BEGIN:VCALENDAR
 VERSION:2.0
 PRODID:ics.py - http://git.io/lLljaA
 BEGIN:VEVENT
-DESCRIPTION:Lecturer: CAIAZZA GIANLUCA\nClassroom: Aula 1\nDegree Name: DIGITAL MANAGEMENT\nURL Lecturer: https://www.unive.it/data/persone/-1\nURL Teaching: https://www.unive.it/data/insegnamento/358389
+DESCRIPTION:Lecturer: MASSARO MAURIZIO\nClassroom: Aula 3\nDegree Name: No Degree Name\nURL Lecturer: https://www.unive.it/data/persone/-1\nURL Teaching: https://www.unive.it/data/insegnamento/386291
+DTEND:20231128T143000Z
+DTSTART:20231128T130000Z
+SUMMARY:PLANNING AND MANAGEMENT CONTROL SYSTEMS
+UID:07c6ea56-b741-4e72-849e-7abde912535c@07c6.org
+END:VEVENT
+BEGIN:VEVENT
+DESCRIPTION:Lecturer: MASSARO MAURIZIO\nClassroom: Aula 2\nDegree Name: No Degree Name\nURL Lecturer: https://www.unive.it/data/persone/-1\nURL Teaching: https://www.unive.it/data/insegnamento/386291
 DTEND:20231122T120000Z
 DTSTART:20231122T103000Z
-SUMMARY:LAB OF SOFTWARE PROJECT DEVELOPMENT
-UID:37c89bc7-b8f3-4734-9f30-0c98f36fbba2@37c8.org
+SUMMARY:PLANNING AND MANAGEMENT CONTROL SYSTEMS
+UID:559eb2e0-3143-4eb5-b56d-12535c894487@559e.org
 END:VEVENT
 BEGIN:VEVENT
-DESCRIPTION:Lecturer: CAIAZZA GIANLUCA\nClassroom: Aula 1\nDegree Name: DIGITAL MANAGEMENT\nURL Lecturer: https://www.unive.it/data/persone/-1\nURL Teaching: https://www.unive.it/data/insegnamento/358389
-DTEND:20231031T144500Z
-DTSTART:20231031T131500Z
-SUMMARY:LAB OF SOFTWARE PROJECT DEVELOPMENT
-UID:c50fea70-b146-49b1-9ce9-7c05e812c82e@c50f.org
+DESCRIPTION:Lecturer: MASSARO MAURIZIO\nClassroom: Aula 3\nDegree Name: No Degree Name\nURL Lecturer: https://www.unive.it/data/persone/-1\nURL Teaching: https://www.unive.it/data/insegnamento/386291
+DTEND:20231031T143000Z
+DTSTART:20231031T130000Z
+SUMMARY:PLANNING AND MANAGEMENT CONTROL SYSTEMS
+UID:ceffa3e9-88c5-48eb-a613-19732704f665@ceff.org
 END:VEVENT
 BEGIN:VEVENT
-DESCRIPTION:Lecturer: CAIAZZA GIANLUCA\nClassroom: Aula 1\nDegree Name: DIGITAL MANAGEMENT\nURL Lecturer: https://www.unive.it/data/persone/-1\nURL Teaching: https://www.unive.it/data/insegnamento/358389
-DTEND:20231107T144500Z
-DTSTART:20231107T131500Z
-SUMMARY:LAB OF SOFTWARE PROJECT DEVELOPMENT
-UID:7738516a-d06c-43c4-9fff-39a3d71e3b00@7738.org
+DESCRIPTION:Lecturer: MASSARO MAURIZIO\nClassroom: Aula 1\nDegree Name: No Degree Name\nURL Lecturer: https://www.unive.it/data/persone/-1\nURL Teaching: https://www.unive.it/data/insegnamento/386291
+DTEND:20231113T143000Z
+DTSTART:20231113T130000Z
+SUMMARY:PLANNING AND MANAGEMENT CONTROL SYSTEMS
+UID:682ece22-fa54-40ad-97c0-67d564a4aa84@682e.org
 END:VEVENT
 BEGIN:VEVENT
-DESCRIPTION:Lecturer: CAIAZZA GIANLUCA\nClassroom: Aula 1\nDegree Name: DIGITAL MANAGEMENT\nURL Lecturer: https://www.unive.it/data/persone/-1\nURL Teaching: https://www.unive.it/data/insegnamento/358389
-DTEND:20231114T144500Z
-DTSTART:20231114T131500Z
-SUMMARY:LAB OF SOFTWARE PROJECT DEVELOPMENT
-UID:3d71d989-eb15-4cf4-8cad-c8671159b85a@3d71.org
+DESCRIPTION:Lecturer: MASSARO MAURIZIO\nClassroom: Aula 3\nDegree Name: No Degree Name\nURL Lecturer: https://www.unive.it/data/persone/-1\nURL Teaching: https://www.unive.it/data/insegnamento/386291
+DTEND:20231114T143000Z
+DTSTART:20231114T130000Z
+SUMMARY:PLANNING AND MANAGEMENT CONTROL SYSTEMS
+UID:711bf0db-5d4e-4ff5-9b8a-12c996b73cbc@711b.org
 END:VEVENT
 BEGIN:VEVENT
-DESCRIPTION:Lecturer: CAIAZZA GIANLUCA\nClassroom: Aula 1\nDegree Name: DIGITAL MANAGEMENT\nURL Lecturer: https://www.unive.it/data/persone/-1\nURL Teaching: https://www.unive.it/data/insegnamento/358389
+DESCRIPTION:Lecturer: MASSARO MAURIZIO\nClassroom: Aula 2\nDegree Name: No Degree Name\nURL Lecturer: https://www.unive.it/data/persone/-1\nURL Teaching: https://www.unive.it/data/insegnamento/386291
 DTEND:20231108T120000Z
 DTSTART:20231108T103000Z
-SUMMARY:LAB OF SOFTWARE PROJECT DEVELOPMENT
-UID:33c5a189-d27f-4ec0-ab73-15ff39aa8c64@33c5.org
+SUMMARY:PLANNING AND MANAGEMENT CONTROL SYSTEMS
+UID:07c3ff52-d987-424d-894d-97d5ce78b9b2@07c3.org
 END:VEVENT
 BEGIN:VEVENT
-DESCRIPTION:Lecturer: CAIAZZA GIANLUCA\nClassroom: Aula 1\nDegree Name: DIGITAL MANAGEMENT\nURL Lecturer: https://www.unive.it/data/persone/-1\nURL Teaching: https://www.unive.it/data/insegnamento/358389
-DTEND:20231128T144500Z
-DTSTART:20231128T131500Z
-SUMMARY:LAB OF SOFTWARE PROJECT DEVELOPMENT
-UID:769cbc09-1c53-4ec1-9329-4ec1dd412162@769c.org
-END:VEVENT
-BEGIN:VEVENT
-DESCRIPTION:Lecturer: CAIAZZA GIANLUCA\nClassroom: Aula 3\nDegree Name: DIGITAL MANAGEMENT\nURL Lecturer: https://www.unive.it/data/persone/-1\nURL Teaching: https://www.unive.it/data/insegnamento/358389
-DTEND:20231129T144500Z
-DTSTART:20231129T131500Z
-SUMMARY:LAB OF SOFTWARE PROJECT DEVELOPMENT
-UID:c4637b43-d8b6-4fb4-a522-074e95654d23@c463.org
-END:VEVENT
-BEGIN:VEVENT
-DESCRIPTION:Lecturer: CAIAZZA GIANLUCA\nClassroom: Aula 3\nDegree Name: DIGITAL MANAGEMENT\nURL Lecturer: https://www.unive.it/data/persone/-1\nURL Teaching: https://www.unive.it/data/insegnamento/358389
-DTEND:20231206T144500Z
-DTSTART:20231206T131500Z
-SUMMARY:LAB OF SOFTWARE PROJECT DEVELOPMENT
-UID:a4395e98-f5b4-43f8-b282-9ebdb52d6e47@a439.org
-END:VEVENT
-BEGIN:VEVENT
-DESCRIPTION:Lecturer: CAIAZZA GIANLUCA\nClassroom: Aula 3\nDegree Name: DIGITAL MANAGEMENT\nURL Lecturer: https://www.unive.it/data/persone/-1\nURL Teaching: https://www.unive.it/data/insegnamento/358389
-DTEND:20231121T144500Z
-DTSTART:20231121T131500Z
-SUMMARY:LAB OF SOFTWARE PROJECT DEVELOPMENT
-UID:7657c7fa-d749-4d29-ac99-e870c00c5a32@7657.org
-END:VEVENT
-BEGIN:VEVENT
-DESCRIPTION:Lecturer: CAIAZZA GIANLUCA\nClassroom: Aula 1\nDegree Name: DIGITAL MANAGEMENT\nURL Lecturer: https://www.unive.it/data/persone/-1\nURL Teaching: https://www.unive.it/data/insegnamento/358389
-DTEND:20231206T120000Z
-DTSTART:20231206T103000Z
-SUMMARY:LAB OF SOFTWARE PROJECT DEVELOPMENT
-UID:9f8ced0c-350d-4935-bb83-269aac4a8c4f@9f8c.org
-END:VEVENT
-BEGIN:VEVENT
-DESCRIPTION:Lecturer: CAIAZZA GIANLUCA\nClassroom: Aula 3\nDegree Name: DIGITAL MANAGEMENT\nURL Lecturer: https://www.unive.it/data/persone/-1\nURL Teaching: https://www.unive.it/data/insegnamento/358389
-DTEND:20231115T144500Z
-DTSTART:20231115T131500Z
-SUMMARY:LAB OF SOFTWARE PROJECT DEVELOPMENT
-UID:29fe48c5-478b-4e0e-95f6-c255ab5e640d@29fe.org
-END:VEVENT
-BEGIN:VEVENT
-DESCRIPTION:Lecturer: CAIAZZA GIANLUCA\nClassroom: Aula 3\nDegree Name: DIGITAL MANAGEMENT\nURL Lecturer: https://www.unive.it/data/persone/-1\nURL Teaching: https://www.unive.it/data/insegnamento/358389
-DTEND:20231108T144500Z
-DTSTART:20231108T131500Z
-SUMMARY:LAB OF SOFTWARE PROJECT DEVELOPMENT
-UID:6635cb0b-fc41-432c-bd7f-aeeaa016a59b@6635.org
-END:VEVENT
-BEGIN:VEVENT
-DESCRIPTION:Lecturer: CAIAZZA GIANLUCA\nClassroom: Aula 3\nDegree Name: DIGITAL MANAGEMENT\nURL Lecturer: https://www.unive.it/data/persone/-1\nURL Teaching: https://www.unive.it/data/insegnamento/358389
-DTEND:20231122T144500Z
-DTSTART:20231122T131500Z
-SUMMARY:LAB OF SOFTWARE PROJECT DEVELOPMENT
-UID:1e1b43cb-5963-48ac-9215-a30f37f793af@1e1b.org
-END:VEVENT
-BEGIN:VEVENT
-DESCRIPTION:Lecturer: CAIAZZA GIANLUCA\nClassroom: Aula 1\nDegree Name: DIGITAL MANAGEMENT\nURL Lecturer: https://www.unive.it/data/persone/-1\nURL Teaching: https://www.unive.it/data/insegnamento/358389
-DTEND:20231115T120000Z
-DTSTART:20231115T103000Z
-SUMMARY:LAB OF SOFTWARE PROJECT DEVELOPMENT
-UID:9d293d36-c045-4505-b8ca-9ff9d66a0e45@9d29.org
-END:VEVENT
-BEGIN:VEVENT
-DESCRIPTION:Lecturer: CAIAZZA GIANLUCA\nClassroom: Aula 1\nDegree Name: DIGITAL MANAGEMENT\nURL Lecturer: https://www.unive.it/data/persone/-1\nURL Teaching: https://www.unive.it/data/insegnamento/358389
+DESCRIPTION:Lecturer: MASSARO MAURIZIO\nClassroom: Aula 2\nDegree Name: No Degree Name\nURL Lecturer: https://www.unive.it/data/persone/-1\nURL Teaching: https://www.unive.it/data/insegnamento/386291
 DTEND:20231129T120000Z
 DTSTART:20231129T103000Z
-SUMMARY:LAB OF SOFTWARE PROJECT DEVELOPMENT
-UID:25601d1b-e0d8-407c-91b6-5a419d2bc5b9@2560.org
+SUMMARY:PLANNING AND MANAGEMENT CONTROL SYSTEMS
+UID:6bd4d295-3de4-4b41-a0d8-30dd912122de@6bd4.org
+END:VEVENT
+BEGIN:VEVENT
+DESCRIPTION:Lecturer: MASSARO MAURIZIO\nClassroom: Aula 2\nDegree Name: No Degree Name\nURL Lecturer: https://www.unive.it/data/persone/-1\nURL Teaching: https://www.unive.it/data/insegnamento/386291
+DTEND:20231204T143000Z
+DTSTART:20231204T130000Z
+SUMMARY:PLANNING AND MANAGEMENT CONTROL SYSTEMS
+UID:47ffccf9-07d3-42c7-ad45-cef2087d4e2b@47ff.org
+END:VEVENT
+BEGIN:VEVENT
+DESCRIPTION:Lecturer: MASSARO MAURIZIO\nClassroom: Aula 2\nDegree Name: No Degree Name\nURL Lecturer: https://www.unive.it/data/persone/-1\nURL Teaching: https://www.unive.it/data/insegnamento/386291
+DTEND:20231121T143000Z
+DTSTART:20231121T130000Z
+SUMMARY:PLANNING AND MANAGEMENT CONTROL SYSTEMS
+UID:5e197e2b-a8b5-4059-a6a5-bd488bcc4222@5e19.org
+END:VEVENT
+BEGIN:VEVENT
+DESCRIPTION:Lecturer: MASSARO MAURIZIO\nClassroom: Aula 1\nDegree Name: No Degree Name\nURL Lecturer: https://www.unive.it/data/persone/-1\nURL Teaching: https://www.unive.it/data/insegnamento/386291
+DTEND:20231106T143000Z
+DTSTART:20231106T130000Z
+SUMMARY:PLANNING AND MANAGEMENT CONTROL SYSTEMS
+UID:262b162a-b49b-44ba-81f3-2f27f5e325b0@262b.org
+END:VEVENT
+BEGIN:VEVENT
+DESCRIPTION:Lecturer: MASSARO MAURIZIO\nClassroom: Aula 3\nDegree Name: No Degree Name\nURL Lecturer: https://www.unive.it/data/persone/-1\nURL Teaching: https://www.unive.it/data/insegnamento/386291
+DTEND:20231107T143000Z
+DTSTART:20231107T130000Z
+SUMMARY:PLANNING AND MANAGEMENT CONTROL SYSTEMS
+UID:353f9980-893b-461a-a9f1-b894f3c46758@353f.org
+END:VEVENT
+BEGIN:VEVENT
+DESCRIPTION:Lecturer: MASSARO MAURIZIO\nClassroom: Aula 2\nDegree Name: No Degree Name\nURL Lecturer: https://www.unive.it/data/persone/-1\nURL Teaching: https://www.unive.it/data/insegnamento/386291
+DTEND:20231115T120000Z
+DTSTART:20231115T103000Z
+SUMMARY:PLANNING AND MANAGEMENT CONTROL SYSTEMS
+UID:a0a1a25d-a4b8-4775-968b-2f11cbb51be5@a0a1.org
+END:VEVENT
+BEGIN:VEVENT
+DESCRIPTION:Lecturer: MASSARO MAURIZIO\nClassroom: Aula 2\nDegree Name: No Degree Name\nURL Lecturer: https://www.unive.it/data/persone/-1\nURL Teaching: https://www.unive.it/data/insegnamento/386291
+DTEND:20231120T143000Z
+DTSTART:20231120T130000Z
+SUMMARY:PLANNING AND MANAGEMENT CONTROL SYSTEMS
+UID:8cce38c0-e1c5-4dc4-a962-a8b55cdb9752@8cce.org
+END:VEVENT
+BEGIN:VEVENT
+DESCRIPTION:Lecturer: MASSARO MAURIZIO\nClassroom: Aula 1\nDegree Name: No Degree Name\nURL Lecturer: https://www.unive.it/data/persone/-1\nURL Teaching: https://www.unive.it/data/insegnamento/386291
+DTEND:20231127T143000Z
+DTSTART:20231127T130000Z
+SUMMARY:PLANNING AND MANAGEMENT CONTROL SYSTEMS
+UID:a425cd29-3574-438b-adda-89eb8d292f25@a425.org
+END:VEVENT
+BEGIN:VEVENT
+DESCRIPTION:Lecturer: MASSARO MAURIZIO\nClassroom: Aula 1\nDegree Name: No Degree Name\nURL Lecturer: https://www.unive.it/data/persone/-1\nURL Teaching: https://www.unive.it/data/insegnamento/386291
+DTEND:20231030T143000Z
+DTSTART:20231030T130000Z
+SUMMARY:PLANNING AND MANAGEMENT CONTROL SYSTEMS
+UID:a90d2a7c-a815-4fb7-a7b0-75d58ce71f06@a90d.org
 END:VEVENT
 END:VCALENDAR

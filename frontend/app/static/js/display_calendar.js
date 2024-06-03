@@ -61,7 +61,7 @@ document.addEventListener('DOMContentLoaded', function() {
         fetch(url)
            .then(response => {
                 if (!response.ok) {
-                    throw new Error('Network response was not ok ' response.statusText);
+                    throw new Error('Network response was not ok ', response.statusText);
                 }
                 return response.json();
             })
@@ -117,7 +117,7 @@ document.addEventListener('DOMContentLoaded', function() {
             })
            .catch(error => {
                 var errorMessageEl = document.getElementById('error-message');
-                errorMessageEl.textContent = 'Error loading the calendar data: ' error.message;
+                errorMessageEl.textContent = 'Error loading the calendar data: ', error.message;
                 console.error('Error loading the calendar data:', error);
             });
     });
