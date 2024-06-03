@@ -57,7 +57,7 @@ class QueryForm(FlaskForm):
 
     location = SelectField('Location:', validators=[validators.DataRequired()])
     degreetype = SelectField('Degree type:', validators=[validators.DataRequired()])
-    teaching = SelectField('Enter teaching name:', validators=[validators.DataRequired()])
+    teaching = SelectField('Enter teaching name:') #, validators=[validators.DataRequired()]
     cycle = SelectField('Cycle:', validators=[validators.DataRequired()])
     credits = SelectField('Credits:', validators=[validators.DataRequired()])
     submit = SubmitField('View your lectures')
@@ -100,14 +100,32 @@ def get_unique_values(data, column_name):
     unique_values = set()
     if isinstance(data, list):
         for entry in data:
-            if column_name in entry and entry[column_name] is not None:  # Aggiungi questo controllo per evitare valori None
+            if column_name in entry and entry[column_name] is not None:  
                 unique_values.add(entry[column_name])
     elif isinstance(data, dict):
         if column_name in data:
             for entry in data[column_name]:
-                if entry is not None:  # Aggiungi questo controllo per evitare valori None
+                if entry is not None:  
                     unique_values.add(entry)
     return sorted(list(unique_values))
+
+def get_teaching_values(location_str, degreetype_str, cycle_str, credits_str, data, column_name):
+    # Filter the data based on the given parameters
+    filtered_data = [
+        item for item in data
+        if location_str in item.get('SITE', '') and
+           degreetype_str in item.get('DEGREE_TYPE', '') and
+           cycle_str in item.get('CYCLE', '') and
+           credits_str in item.get('CREDITS', '')
+    ]
+    
+    # Extract the unique values from the specified column, ignoring None values
+    unique_values = {item[column_name] for item in filtered_data if column_name in item and item[column_name] is not None}
+    
+    # Return the sorted list of unique values
+    return sorted(list(unique_values))
+    
+
 
 @app.route('/create_ics')
 def export_ics(response):
@@ -209,16 +227,18 @@ def calendar():
         form.degreetype.choices = get_unique_values(data, 'DEGREE_TYPE')
         form.credits.choices = get_unique_values(data, 'CREDITS')
         form.location.choices = get_unique_values(data, 'SITE')
-        form.teaching.choices = get_unique_values(data, 'TEACHING')
     else:
         error_message = "Error: Unable to fetch data from the backend."
 
     if form.validate_on_submit():
-        teaching = form.teaching.data
         location_str = form.location.data
         degreetype_str = form.degreetype.data
         cycle_str = form.cycle.data
         credits_str = form.credits.data
+
+        form.teaching.choices = get_teaching_values(location_str, degreetype_str, cycle_str, credits_str, data, 'TEACHING')
+        teaching = form.teaching.data
+
 
         # Build URL
         fastapi_url = f'{FASTAPI_BACKEND_HOST}/query/{teaching}/{location_str}/{degreetype_str}/{cycle_str}/{credits_str}'

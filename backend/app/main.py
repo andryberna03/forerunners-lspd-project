@@ -150,7 +150,7 @@ def get_courses_taught_by_person(teaching, location_str, degreetype_str, cycle_s
     if code_list:
         filtered_df = filtered_df[filtered_df['DEGREE_TYPE'].isin(code_list)]
 
-    filtered_df = filtered_df[filtered_df['TEACHING'].str.contains(teaching, case=False, na=False)]
+    # filtered_df = filtered_df[filtered_df['TEACHING'].str.contains(teaching, case=False, na=False)]
 
     filtered_df = filtered_df[filtered_df['CYCLE']==cycle_str]
     
