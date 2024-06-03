@@ -138,8 +138,8 @@ def get_courses_taught_by_person(teaching, location_str, degreetype_str, cycle_s
     # Filter by DEGREE_TYPE
     # Dictionary to map the degree types to the corresponding codes in the DataFrame
     degree_mapping = {
-        'LM': 'LM',
-        'L': 'L'}
+        'Bachelor': 'Bachelor',
+        'Master': 'Master'}
 
     # Convert the degreetype_list from friendly names to codes
     degreetype_list = degreetype_str.split(",") if degreetype_str else []

@@ -228,7 +228,8 @@ def calendar():
         export_ics(response.json())
 
         if response.status_code == 200:
-            data = response.json()
+            # Extract and display the result from the FastAPI backend
+            data = response.json() # data è nel formato che ci piace
             return render_template('calendar.html', datatime_csv=datatime_csv, form=form, result=data, error_message=error_message)
         else:
             error_message = f'Error: Unable to fetch lesson for {teaching} from FastAPI Backend'

@@ -1,3 +1,19 @@
+.masthead {
+    font-weight: bold;
+    position: relative;
+    width: 100%;
+    height: auto;
+    color: rgb(172, 0, 51);
+    padding: 7rem 0;
+    background-image: url('../img/about/programming.png');
+    background-position: center;
+    background-repeat: no-repeat;
+    background-attachment: scroll;
+    box-shadow: 0 0 10px rgba(0, 0, 0, 0.5);
+    background-size: cover;
+    background-color: rgba(0, 0, 0, 0.3);
+}
+
 .Github-link, 
 .Github-link-2 {
     color: black !important;

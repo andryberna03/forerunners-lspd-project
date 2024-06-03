@@ -1,49 +1,60 @@
-html, body {
-    margin: 0;
-    padding: 0;
-}
-
-body {
-    width: 100%;
-    height: 100vh;
-    background-color: white;
-}
-
-.container {
+.masthead {
+    font-weight: bold;
     position: relative;
-
-}
-
-.autocomplete-input {
-    padding: 25px 15px;
-    width: calc(100%);
-    border-radius: 3px;
-    border: none;
-    outline: none;
-    background-color: azure;
-}
-
-.autocomplete-list {
-    list-style-type: none;
-    margin: 0;
-    padding: 0;
-    background-color: white;
-    max-height: 200px;
-    overflow-y: auto;
-}
-
-.autocomplete-list li {
-    padding: 15px;
     width: 100%;
-    cursor: pointer;
+    height: auto;
+    color: rgb(172, 0, 51);
+    padding: 7rem 0;
+    background-image: url('../img/calendar/planning.png');
+    background-position: center;
+    background-repeat: no-repeat;
+    background-attachment: scroll;
+    box-shadow: 0 0 10px rgba(0, 0, 0, 0.5);
+    background-size: cover;
+    background-color: rgba(0, 0, 0, 0.3);
 }
 
-.ics_button {
-    color: white !important;
+.greeting-text {
+    font-size: 400%;
+    /* Creazione di un gradiente di colore partendo da rgb(172, 0, 51) */
+    background: linear-gradient(to right, rgb(172, 0, 51), rgb(221, 70, 70));
+    /* Specifica che il testo deve essere trasparente */
+    -webkit-background-clip: text;
+    background-clip: text;
+    /* Colore di fallback per i browser che non supportano background-clip: text */
+    color: transparent;
 }
 
-.ics_button-2:hover {
-    text-decoration-color: rgb(110, 117, 124);
-    text-decoration: underline;
-    text-decoration-thickness: 2px;
+.how_to {
+    align-content: center;
+    align-items: center;
+    padding-top: 50px;
+    padding-bottom: 50px;
+}
+
+.text-how_to {
+    font-size: 300%;
+    text-align: center;
+}
+
+.database {
+    background-color: rgb(172, 0, 51);
+}
+
+.text-database {
+    text-align: center;
+    color: white;
+    font-size: 100%;
+}
+
+#error-message {
+    color: red;
+    font-weight: bold;
+    margin-top: 20px;
+}
+
+.fc-event-title,
+.fc-event-time {
+    white-space: normal;
+    display: block;
 }

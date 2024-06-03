@@ -1,54 +1,6 @@
 import datetime
 import requests
 import pandas as pd
-import numpy as np
-import os
-import datetime
-
-
-def df_creating() -> pd.DataFrame:
-    """
-    This is the main function which orchestrates the entire process of creating
-    the final dataframe. It checks if a file exists and is less than a day old.
-    If so, it loads the data from the file. Otherwise, it calls the create_new_dataframe
-    function to generate a new dataframe.
-
-    Returns:
-    pd.DataFrame: The final dataframe containing all the required data.
-    """
-    # Define the path to the final CSV file
-    file_path_final = 'app/final.csv'
-
-    # Check if the file exists and was created within the last 24 hours
-    if os.path.exists(file_path_final):
-        creation_time = os.path.getctime(file_path_final)
-        file_creation_date = datetime.datetime.fromtimestamp(creation_time)
-        current_date = datetime.datetime.now()
-
-        # If the file was created within the last 24 hours, load it
-        if current_date - file_creation_date < datetime.timedelta(days=1):
-            final_urls_dataframe = pd.read_csv(file_path_final)
-            return final_urls_dataframe
-        # If the file was not created within the last 24 hours, create a new dataframe
-        else:
-            return create_new_dataframe(file_path_final)
-    # If the file does not exist, create a new dataframe
-    else:
-        return create_new_dataframe(file_path_final)
-
-
-def create_new_dataframe(file_path_final: str) -> pd.DataFrame:
-    """
-    This function creates a new DataFrame by calling the necessary functions,
-    preprocesses the data, merges it, orders it, adds URLs, and handles problematic values.
-    It then saves the DataFrame to a CSV file and returns it.
-
-    Args:
-    file_path_final (str): The path to the final CSV file.
-
-    Returns:
-    pd.DataFrame: The new DataFrame.
-    """
 import os
 import datetime
 
@@ -130,10 +82,7 @@ def create_new_dataframe(file_path_final: str) -> pd.DataFrame:
 
     final_urls_dataframe = format_iso8601(final_urls_dataframe)
 
-    final_urls_dataframe = semesters(final_urls_dataframe)
-
-    # Handle problematic values
-    final_urls_dataframe.fillna("null", inplace=True)
+    final_urls_dataframe = modify_values(final_urls_dataframe)
 
     # Save the DataFrame to CSV
     final_urls_dataframe.to_csv(file_path_final, index=False)
@@ -280,18 +229,18 @@ def rename_and_convert(merged_dataframe: pd.DataFrame) -> pd.DataFrame:
     """
     drop_columns = [
         'CODICE', 'SETTORE', 'CREDITI', 'PESO_TOTALE',
-        'TIPO_CORSO_DES', 'TIPO_ATTIVITA', 'POSTI', 'NOTE']
+        'TIPO_CORSO_DES', 'TIPO_ATTIVITA', 'POSTI', 
+        'NOTE', 'ANNO_CORSO', 'CDS_DES','COORDINATE']
 
     merged_dataframe.drop(columns=drop_columns, inplace=True)
 
     new_column_names = {'CICLO': "CYCLE", 'CODICE': 'CODE',
-                        'ANNO_CORSO': 'STUDY_YEAR', 'PARTIZIONE': 'PARTITION',
+                        'PARTIZIONE': 'PARTITION',
                         'SETTORE': "SECTOR", 'PESO': "CREDITS",
                         'TIPO_CORSO_COD': "DEGREE_TYPE",
-                        'CDS_DES': 'DEGREE_NAME',
                         'GIORNO': "LECTURE_DAY", 'INIZIO': "LECTURE_START",
                         'FINE': "LECTURE_END", 'DOCENTI': 'LECTURER_NAME',
-                        'INDIRIZZO': 'ADDRESS', 'COORDINATE': 'COORDINATES'}
+                        'INDIRIZZO': 'ADDRESS'}
 
     merged_dataframe.rename(columns=new_column_names, inplace=True)
 
@@ -301,10 +250,7 @@ def rename_and_convert(merged_dataframe: pd.DataFrame) -> pd.DataFrame:
 
     # Drop rows where DEGREE_TYPE is different from 'L' or 'LM'
     merged_dataframe = merged_dataframe[(merged_dataframe['DEGREE_TYPE'] == 'L') | (merged_dataframe['DEGREE_TYPE'] == 'LM')]
-    # Drop rows where DEGREE_TYPE is different from 'L' or 'LM'
-    merged_dataframe = merged_dataframe[(merged_dataframe['DEGREE_TYPE'] == 'L') | (merged_dataframe['DEGREE_TYPE'] == 'LM')]
 
-    return merged_dataframe
     return merged_dataframe
 
 
@@ -329,7 +275,6 @@ def unive_lecturer_urls(ordered_dataframe: pd.DataFrame) -> pd.DataFrame:
     """
     lecturers = pd.read_json("http://apps.unive.it/sitows/didattica/docenti")
     lecturers['LECTURER_NAME'] = (lecturers['COGNOME'] + '' + lecturers['NOME']).str.upper()
-    lecturers['LECTURER_NAME'] = (lecturers['COGNOME'] + '' + lecturers['NOME']).str.upper()
     lecturers = lecturers[['LECTURER_NAME','DOCENTE_ID']]
 
     # Merge of the main DataFrame with lecturer's data
@@ -343,29 +288,6 @@ def unive_lecturer_urls(ordered_dataframe: pd.DataFrame) -> pd.DataFrame:
     
     return final_urls_dataframe
 
-
-def unive_teaching_urls(final_urls_dataframe: pd.DataFrame) -> pd.DataFrame:
-    """
-    This function adds a new column to the DataFrame containing URLs of teachings.
-
-    Parameters:
-    final_urls_dataframe (pd.DataFrame): The DataFrame to which the new column will be added.
-        The DataFrame should contain a column named 'AF_ID' which contains the IDs of the teachings.
-
-    Returns:
-    pd.DataFrame: The updated DataFrame with a new column 'URLS_INSEGNAMENTO' containing the URLs of teachings.
-        The URLs are constructed by concatenating the base URL 'https://www.unive.it/data/insegnamento/'
-        with the IDs from the 'AF_ID' column, converted to strings.
-
-    Raises:
-    ValueError: If the 'AF_ID' column is not found in the DataFrame.
-
-    """
-    # Check if 'AF_ID' column exists in the DataFrame
-    if 'AF_ID' not in final_urls_dataframe.columns:
-        raise ValueError("'AF_ID' column not found in the DataFrame")
-
-    # Construct the URLs by concatenating the base URL and the IDs from 'AF_ID' column
 
 def unive_teaching_urls(final_urls_dataframe: pd.DataFrame) -> pd.DataFrame:
     """
@@ -407,18 +329,16 @@ def format_iso8601(final_urls_dataframe):
     return final_urls_dataframe
 
 
-def semesters(final_urls_dataframe: pd.DataFrame) -> pd.DataFrame:
-    """
-    This function is used to convert the semester names from Italian to English.
-    It iterates over the 'CYCLE' column of the DataFrame and replaces the Italian
-    semester names with their English equivalents.
+def modify_values(final_urls_dataframe: pd.DataFrame) -> pd.DataFrame:
+    final_urls_dataframe['DEGREE_TYPE'] = final_urls_dataframe['DEGREE_TYPE'].replace({'L': 'Bachelor', 'LM': 'Master'})
 
-    Parameters:
-    final_urls_dataframe (pd.DataFrame): The DataFrame containing the 'CYCLE' column.
+    final_urls_dataframe['SITE'] = final_urls_dataframe['SITE'].replace({'PADOVA': 'VENEZIA'})
 
-    Returns:
-    pd.DataFrame: The DataFrame with the updated 'CYCLE' column.
-    """
+    final_urls_dataframe['SITE'] = final_urls_dataframe['SITE'].fillna("Not defined yet")
+
+    final_urls_dataframe['PARTITION'] = final_urls_dataframe['PARTITION'].fillna("")
+
+    final_urls_dataframe = final_urls_dataframe[final_urls_dataframe['CYCLE'] != 'Precorsi']
 
     # Iterate over the DataFrame using the index and semester value
     for index, semester in final_urls_dataframe['CYCLE'].items():
@@ -441,11 +361,10 @@ def semesters(final_urls_dataframe: pd.DataFrame) -> pd.DataFrame:
         # it must be a Fall semester
         else:
             # Replace the semester name with the English equivalent
-            new_semester = 'Fall Semester (Sep-Jen)'
+            new_semester = 'Fall Semester (Sep-Jan)'
             # Update the DataFrame at the current index
             final_urls_dataframe.at[index, 'CYCLE'] = new_semester
 
-    # Return the updated DataFrame
     return final_urls_dataframe
 
 

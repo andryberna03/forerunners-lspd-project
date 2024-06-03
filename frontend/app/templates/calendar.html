@@ -2,16 +2,62 @@
 
 {% block title %} Calendar {% endblock %}
 
-
 {% block content %}
     <link href='https://cdn.jsdelivr.net/npm/fullcalendar/index.global.min.css' rel='stylesheet' />
     <script src='https://cdn.jsdelivr.net/npm/fullcalendar/index.global.min.js'></script>
+    <link rel="stylesheet" href="https://unpkg.com/tippy.js@6/dist/tippy.css" />
+    <script src="https://unpkg.com/@popperjs/core@2"></script>
+    <script src="https://unpkg.com/tippy.js@6"></script>
+
+    <!-- Import specific CSS -->
+    <link rel="stylesheet" href="static/css/calendarstyle.css">
+    
+    <!-- Greeting header -->
+    <div style="margin-top: 75px;">
+        <header class="masthead">
+            <div class="container px-4 px-lg-5 d-flex h-100 align-items-center justify-content-center">
+                <div class="d-flex justify-content-center">
+                    <div class="text-center">
+                        <h1 class="greeting-text mx-auto my-0 text-uppercase">LET'S FIND YOUR TEACHINGS!</h1>
+                    </div>
+                </div>
+            </div>
+        </header>
+    </div>
+
+    <!-- How to section -->
+    <section>
+        <div class="container" style="display: grid; place-items: center;">
+            <h2 class="text-how_to text-center mt-5 mb-2">How to use Ca' Foscari Exchange Calendar</h2>
+            <div class="align-items-center">
+                <div>
+                    <p class="lead fw-normal text-muted mb-5 mb-lg-0">
+                        <ol class="lead">
+                            <li>Prepare your query using all filters and send it to find more about a teaching.</li>
+                            <li>Check the calendar to discover lecture scheduling.</li>
+                            <li>Download information in .ics to add lectures to your preferred calendar client.</li>
+                        </ol>
+                    </p>
+                    <p class="lead fw-normal text-muted mb-lg-0">
+                        NOTE: It is not possible to search for more than one teaching at a time.
+                    </p>
+                </div>
+            </div>
+        </div>
+    </section>
+
+    <br>
+
+    <!-- Database updating section -->
+    <section class="database">
+            <p class="text-database py-3 align-items-center">
+                The calendar database was last updated at: {{ datatime_csv.datatime }}
+            </p>
+    </section>
 
     <div class="container mt-5">
-        <p>The calendar database was last updated at: {{ datatime_csv.datatime }}</p>
-
         <!-- WTForms Form to get input from the user -->
-        <form method="POST">
+        <form method="POST" id="query-form">
             {{ form.csrf_token }}
             <div class="row">
                 <div class="col-md-4">
@@ -47,6 +93,7 @@
                     </div>
                 </div>
             </div>
+            <!-- Submit button -->
             <div class="row">
                 <div class="col-md-4">
                     <div class="form-group">
@@ -55,54 +102,19 @@
                 </div>
             </div>
         </form>
-
-    <!-- Calendar container -->
-
-    <div id='calendar' class='mt-3'></div>
-    <br>
-    <br>
-    <script>
-        document.addEventListener('DOMContentLoaded', function () {
-            alert("JavaScript is loaded!");
-            var calendarEl = document.getElementById('calendar');
-            var calendar = new FullCalendar.Calendar(calendarEl, {
-                initialView: 'dayGridMonth',
-                eventClick: function (info) {
-                    info.jsEvent.preventDefault(); // Don't let the browser navigate
-                    if (info.event.url) {
-                        window.open(info.event.url, '_blank');
-                    }
-                }
-            });
-            calendar.render();
-
-            // Attach an event handler for form submission
-            document.getElementById('query-form').addEventListener('submit', function (event) {
-                event.preventDefault(); // Prevent actual form submission
-                var teaching = document.querySelector("[name='teaching']").value;
-                var location_str = Array.from(document.querySelectorAll("[name='location']:checked")).map(el => el.value).join(","); // ora è drop
-                var degreetype_str = Array.from(document.querySelectorAll("[name='degreetype']:checked")).map(el => el.value).join(",");
-                // var credits = 
-
-                var url = `/query/${teaching}/${location_str}/${degreetype_str}`; // update questa
-                fetch(url)
-                    .then(response => response.json())
-                    .then(result => {
-                        calendar.removeAllEvents(); // Clear existing events
-                        calendar.addEventSource(result); // Add new data
-                    })
-                    .catch(error => console.error('Error loading the calendar data:', error));
-            });
-        });
-    </script>
-
-    <!-- Bottone Export in iCal -->
-    <div class="d-grid gap-2 col-6 mx-auto text-center">
-        <a class="ics_button" href="{{ url_for('get_ics') }}">
-            <button class="btn btn-primary" type="button">Download lectures in iCal</button>
-        </a>
     </div>
 
-    <br>
-    <br>
+    <div class="container mt-5">
+        <!-- Error message container -->
+        <div id="error-message" class="mt-3 text-danger"></div>
+
+        <!-- Calendar container -->
+        <div id='calendar-container' class='mt-3' style='display: none; overflow: auto;'>
+            <div id='calendar'></div>
+        </div>
+        <br>
+        <br>
+
+        <script src="../static/js/display_calendar.js"></script>
+    </div>
 {% endblock %}
