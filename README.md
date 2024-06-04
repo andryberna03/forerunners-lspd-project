@@ -14,7 +14,8 @@ Our website offers three main sections: `Home`, `About the Project`, and `Calend
 ### *Home Page*
 The Home page of the website explains why we decided to undertake this project and displays a map created with Leaflet and OpenStreetMap that shows all the sites in the dataset.
 
-METTERE IMMAGINI HOME PAGE
+![Index Page](frontend/app/static/img/readme/imageindex1.png)
+![Index Page](frontend/app/static/img/readme/imageindex2.png)
  
 ### *Calendar Page*
 The Calendar page allows users to apply filters to request specific teachings and generate a personalised schedule. This schedule can also be downloaded in .ics format via a dedicated button, allowing users to insert it into their preferred calendar client.
@@ -24,7 +25,7 @@ METTERE IMMAGINI CALENDAR PAGE
 ### *About Page*
 The about page provides more detailed information regarding the development of the project, its composition and the team of contributors.
 
-METTERE IMMAGINI ABOUT PAGE
+![About Page](frontend/app/static/img/readme/imageabout.png)
 
 ## **Datasets Used in the Project**
 Our database was built upon the [open data published on the website of Ca’ Foscari University of Venice](https://www.unive.it/pag/13488/). We started by studying the [”Webservice corsi e orari” datasets](https://www.unive.it/pag/fileadmin/user_upload/ateneo/mobile/documenti/WebserviceCorsi-Insegnamenti-Orari-Aule-Sedi.pdf), discovering that data is exposed in JSON format and is updated every 24 hours at 8:00 AM CEST.

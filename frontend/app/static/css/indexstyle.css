@@ -43,6 +43,28 @@
     height: 350px;
 }
 
+.img_aperitivo {
+    /* Stili base per l'immagine */
+    position: relative;
+    transition: transform 0.2s ease;
+    max-width: 100%;
+    height: auto;
+}
+
+.img_aperitivo {
+    box-shadow: 0 0 10px rgba(0, 0, 0, 0.5);
+    width: auto;
+    height: 350px;
+}
+
+.img_aperitivo {
+    /* Stili base per l'immagine */
+    position: relative;
+    transition: transform 0.2s ease;
+    max-width: 100%;
+    height: auto;
+}
+
 .map-container {
     margin-bottom: 50px;
 }
