@@ -119,15 +119,13 @@ async def csv_creation_date(response: Response):
     else:
         raise HTTPException(status_code=404, detail="File CSV non trovato")
 
-
-@app.get("/query/{teaching}/{location_str}/{degreetype_str}/{cycle_str}/{credits_str}")
-def get_courses_taught_by_person(teaching, location_str, degreetype_str, cycle_str, credits_str):
+@app.get("/query/{location_str}/{degreetype_str}/{cycle_str}/{credits_str}")
+def filte_teachings(teaching, location_str, degreetype_str, cycle_str, credits_str):
     """
     """
 
     teaching = teaching.title()  # Convert to title case for consistency
-    # Filter the DataFrame to rows where the person's name appears in the 'DOCENTI' column
-
+    
     filtered_df = final_urls_dataframe
 
     # Filter by location: MESTRE, VENEZIA, RONCADE, TREVISO
@@ -150,12 +148,32 @@ def get_courses_taught_by_person(teaching, location_str, degreetype_str, cycle_s
     if code_list:
         filtered_df = filtered_df[filtered_df['DEGREE_TYPE'].isin(code_list)]
 
-    # filtered_df = filtered_df[filtered_df['TEACHING'].str.contains(teaching, case=False, na=False)]
 
     filtered_df = filtered_df[filtered_df['CYCLE']==cycle_str]
     
     filtered_df = filtered_df[filtered_df['CREDITS']==int(credits_str)]
 
+    filtered_df.fillna("null", inplace=True)
+
+    filtered_dict = filtered_df.to_dict(orient='index')
+
+    subset_final_json = JSONResponse(content=filtered_dict)
+
+    return subset_final_json
+
+
+@app.get("/query/{teaching}/{location_str}/{degreetype_str}/{cycle_str}/{credits_str}")
+def get_teachings(teaching, location_str, degreetype_str, cycle_str, credits_str):
+    """
+    """
+
+    teaching = teaching.title()  # Convert to title case for consistency
+    # Filter the DataFrame to rows where the person's name appears in the 'DOCENTI' column
+
+    filtered_df = final_urls_dataframe
+ 
+    filtered_df = filtered_df[filtered_df['TEACHING'].str.contains(teaching, case=False, na=False)]
+    
     filtered_df.fillna("null", inplace=True)
 
     filtered_dict = filtered_df.to_dict(orient='index')

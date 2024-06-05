@@ -86,15 +86,25 @@
                         {{ form.location(class="form-control") }}
                     </div>
                 </div>
+            </div>
+            
+            <!-- Show Teaching Filter Button -->
+            <div class="row">
+                <div class="col-md-4">
+                    <div class="form-group">
+                        <button type="button" class="btn btn-secondary" id="show-teaching-btn">Show Teaching Filter</button>
+                    </div>
+                </div>
+            </div>
+            
+            <!-- Teaching filter and submit button -->
+            <div class="row" id="teaching-filter-row" style="display: none;">
                 <div class="col-md-4">
                     <div class="form-group">
                         {{ form.teaching.label }}
                         {{ form.teaching(class="form-control") }}
                     </div>
                 </div>
-            </div>
-            <!-- Submit button -->
-            <div class="row">
                 <div class="col-md-4">
                     <div class="form-group">
                         {{ form.submit(class="btn btn-primary") }}
@@ -103,6 +113,12 @@
             </div>
         </form>
     </div>
+    
+    <script>
+        document.getElementById('show-teaching-btn').addEventListener('click', function() {
+            document.getElementById('teaching-filter-row').style.display = 'flex';
+        });
+    </script>
 
     <div class="container mt-5">
         <!-- Error message container -->

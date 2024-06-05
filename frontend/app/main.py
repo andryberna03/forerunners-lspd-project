@@ -60,6 +60,7 @@ class QueryForm(FlaskForm):
     teaching = SelectField('Enter teaching name:') #, validators=[validators.DataRequired()]
     cycle = SelectField('Cycle:', validators=[validators.DataRequired()])
     credits = SelectField('Credits:', validators=[validators.DataRequired()])
+    submit = SubmitField('Discover your teachings')
     submit = SubmitField('View your lectures')
 
 
@@ -124,7 +125,6 @@ def get_teaching_values(location_str, degreetype_str, cycle_str, credits_str, da
     
     # Return the sorted list of unique values
     return sorted(list(unique_values))
-    
 
 
 @app.route('/create_ics')
@@ -236,23 +236,33 @@ def calendar():
         cycle_str = form.cycle.data
         credits_str = form.credits.data
 
-        form.teaching.choices = get_teaching_values(location_str, degreetype_str, cycle_str, credits_str, data, 'TEACHING')
-        teaching = form.teaching.data
-
-
-        # Build URL
-        fastapi_url = f'{FASTAPI_BACKEND_HOST}/query/{teaching}/{location_str}/{degreetype_str}/{cycle_str}/{credits_str}'
-
+        fastapi_url = f'{FASTAPI_BACKEND_HOST}/query/{location_str}/{degreetype_str}/{cycle_str}/{credits_str}'
         response = requests.get(fastapi_url)
-
-        export_ics(response.json())
-
+    
         if response.status_code == 200:
-            # Extract and display the result from the FastAPI backend
-            data = response.json() # data è nel formato che ci piace
-            return render_template('calendar.html', datatime_csv=datatime_csv, form=form, result=data, error_message=error_message)
+            data = response.json
+            form.teaching.choices = get_teaching_values(location_str, degreetype_str, cycle_str, credits_str, data, 'TEACHING')
         else:
-            error_message = f'Error: Unable to fetch lesson for {teaching} from FastAPI Backend'
+            error_message = "Error: Unable to fetch data from the backend."
+
+        if form.validate_on_submit():    
+            teaching = form.teaching.data
+
+
+            
+            # Build URL
+            fastapi_url = f'{FASTAPI_BACKEND_HOST}/query/{teaching}/{location_str}/{degreetype_str}/{cycle_str}/{credits_str}'
+
+            response = requests.get(fastapi_url)
+
+            export_ics(response.json())
+
+            if response.status_code == 200:
+                # Extract and display the result from the FastAPI backend
+                data = response.json() 
+                return render_template('calendar.html', datatime_csv=datatime_csv, form=form, result=data, error_message=error_message)
+            else:
+                error_message = f'Error: Unable to fetch lesson for {teaching} from FastAPI Backend'
 
     return render_template('calendar.html', datatime_csv=datatime_csv, form=form, result=None, error_message=error_message)
 
