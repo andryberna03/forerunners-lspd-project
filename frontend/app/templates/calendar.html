@@ -63,19 +63,19 @@
                 <div class="col-md-4">
                     <div class="form-group">
                         {{ form.cycle.label }}
-                        {{ form.cycle(class="form-control") }}
+                        {{ form.cycle(class="form-control", id="form.cycle") }}
                     </div>
                 </div>
                 <div class="col-md-4">
                     <div class="form-group">
                         {{ form.degreetype.label }}
-                        {{ form.degreetype(class="form-control") }}
+                        {{ form.degreetype(class="form-control", id="form.degreetype") }}
                     </div>
                 </div>
                 <div class="col-md-4">
                     <div class="form-group">
                         {{ form.credits.label }}
-                        {{ form.credits(class="form-control") }}
+                        {{ form.credits(class="form-control", id="form.credits") }}
                     </div>
                 </div>
             </div>
@@ -83,7 +83,7 @@
                 <div class="col-md-4">
                     <div class="form-group">
                         {{ form.location.label }}
-                        {{ form.location(class="form-control") }}
+                        {{ form.location(class="form-control", id="form.location") }}
                     </div>
                 </div>
             </div>
@@ -92,17 +92,17 @@
             <div class="row">
                 <div class="col-md-4">
                     <div class="form-group">
-                        <button type="button" class="btn btn-secondary" id="show-teaching-btn">Show Teaching Filter</button>
+                        <button type="submit" class="btn btn-secondary" id="disc-teaching-btn">Discover your teachings</button>
                     </div>
                 </div>
             </div>
-            
+
             <!-- Teaching filter and submit button -->
-            <div class="row" id="teaching-filter-row" style="display: none;">
+            <div class="row" id="view-lect-row" style="display: none;">
                 <div class="col-md-4">
                     <div class="form-group">
                         {{ form.teaching.label }}
-                        {{ form.teaching(class="form-control") }}
+                        {{ form.teaching(class="form-control", id="id_teaching") }}
                     </div>
                 </div>
                 <div class="col-md-4">
@@ -111,14 +111,59 @@
                     </div>
                 </div>
             </div>
-        </form>
-    </div>
-    
-    <script>
-        document.getElementById('show-teaching-btn').addEventListener('click', function() {
-            document.getElementById('teaching-filter-row').style.display = 'flex';
-        });
-    </script>
+            </form>
+            </div>
+
+            <script>
+            document.getElementById('disc-teaching-btn').addEventListener('click', function() {
+            document.getElementById('view-lect-row').style.display = 'flex';
+            });
+
+            // Funzione per gestire la richiesta AJAX di ottenere gli insegnamenti filtrati
+            function getTeachings() {
+                var location = document.getElementById('form.location').value;
+                var degreetype = document.getElementById('form.degreetype').value;
+                var cycle = document.getElementById('form.cycle').value;
+                var credits = document.getElementById('form.credits').value;
+
+                const url = `http://localhost:8081/query?location_str=${encodeURIComponent(location)}&degreetype_str=${encodeURIComponent(degreetype)}&cycle_str=${encodeURIComponent(cycle)}&credits_str=${encodeURIComponent(credits)}`;
+
+                fetch(url)
+                    .then(response => {
+                        if (!response.ok) {
+                            throw new Error(`HTTP error! Status: ${response.status}`);
+                        }
+                        return response.json();
+                    })
+                    .then(data => {
+                        if (!Array.isArray(data)) {
+                            throw new TypeError("Expected data to be an array");
+                        }
+                        data.forEach(teaching => {
+                            console.log(teaching)
+                            var option = document.createElement('option');
+                            option.text = teaching;
+                            option.value = teaching;
+                            teachingSelect.appendChild(option);
+                        });
+                    })
+                .catch(error => {
+                    console.error('Error:', error);
+                });
+            }
+
+            document.getElementById('query-form').addEventListener('submit', function(event) {
+                event.preventDefault();
+                getTeachings();
+            });
+
+            // Aggiungi questo listener all'evento submit del modulo
+            document.getElementById('query-form').addEventListener('submit', function(event) {
+            event.preventDefault();  // Evita il comportamento predefinito di inviare il modulo
+            getTeachings();  // Esegui la funzione per ottenere gli insegnamenti filtrati
+            });
+            </script>
+
 
     <div class="container mt-5">
         <!-- Error message container -->

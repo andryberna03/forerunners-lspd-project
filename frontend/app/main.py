@@ -4,13 +4,13 @@ Frontend module for the Flask application.
 This module defines a simple Flask application that serves as the frontend for the project.
 """
 
-from flask import Flask, render_template, send_file
-from flask_cors import CORS
+from flask import Flask, jsonify, render_template, request, send_file
+from flask_cors import CORS # type: ignore
 import requests
 from flask_wtf import FlaskForm
 from wtforms import SubmitField, SelectField, validators
 import os
-from ics import Calendar, Event
+from ics import Calendar, Event # type: ignore
 from fastapi.responses import FileResponse
 from datetime import datetime
 import pytz
@@ -60,8 +60,7 @@ class QueryForm(FlaskForm):
     teaching = SelectField('Enter teaching name:') #, validators=[validators.DataRequired()]
     cycle = SelectField('Cycle:', validators=[validators.DataRequired()])
     credits = SelectField('Credits:', validators=[validators.DataRequired()])
-    submit = SubmitField('Discover your teachings')
-    submit = SubmitField('View your lectures')
+    submit = SubmitField('View Your Lectures')
 
 
 @app.route('/')
@@ -110,21 +109,42 @@ def get_unique_values(data, column_name):
                     unique_values.add(entry)
     return sorted(list(unique_values))
 
-def get_teaching_values(location_str, degreetype_str, cycle_str, credits_str, data, column_name):
-    # Filter the data based on the given parameters
-    filtered_data = [
-        item for item in data
-        if location_str in item.get('SITE', '') and
-           degreetype_str in item.get('DEGREE_TYPE', '') and
-           cycle_str in item.get('CYCLE', '') and
-           credits_str in item.get('CREDITS', '')
-    ]
+# def get_teaching_values(location_str, degreetype_str, cycle_str, credits_str, data, column_name):
+#     # Filter the data based on the given parameters
+#     filtered_data = [
+#         item for item in data
+#         if location_str in item.get('SITE', '') and
+#            degreetype_str in item.get('DEGREE_TYPE', '') and
+#            cycle_str in item.get('CYCLE', '') and
+#            credits_str in item.get('CREDITS', '')
+#     ]
     
-    # Extract the unique values from the specified column, ignoring None values
-    unique_values = {item[column_name] for item in filtered_data if column_name in item and item[column_name] is not None}
+#     # Extract the unique values from the specified column, ignoring None values
+#     unique_values = {item[column_name] for item in filtered_data if column_name in item and item[column_name] is not None}
     
-    # Return the sorted list of unique values
-    return sorted(list(unique_values))
+#     # Return the sorted list of unique values
+#     return sorted(list(unique_values))
+
+# @app.route('/get_teachings', methods=['POST'])
+# def get_teachings():
+#     # Ottenere i parametri di filtro dal modulo inviato
+#     location_str = request.form.get('location')
+#     degreetype_str = request.form.get('degreetype')
+#     cycle_str = request.form.get('cycle')
+#     credits_str = request.form.get('credits')
+
+#     # Ottenere gli insegnamenti filtrati dal backend
+#     fastapi_url = f'{FASTAPI_BACKEND_HOST}/query/{location_str}/{degreetype_str}/{cycle_str}/{credits_str}'
+#     response = requests.get(fastapi_url)
+
+#     if response.status_code == 200:
+#         data = response.json()
+#         # Costruisci e restituisci le opzioni del filtro degli insegnamenti
+#         teaching_options = get_teaching_values(location_str, degreetype_str, cycle_str, credits_str, data, 'TEACHING')
+#         return jsonify(teaching_options)
+#     else:
+#         return jsonify([])  # In caso di errore, restituisci una lista vuota
+
 
 
 @app.route('/create_ics')
@@ -236,21 +256,29 @@ def calendar():
         cycle_str = form.cycle.data
         credits_str = form.credits.data
 
+        # Ottenere i parametri di filtro dal modulo inviato
+        location_str = request.form.get('location')
+        degreetype_str = request.form.get('degreetype')
+        cycle_str = request.form.get('cycle')
+        credits_str = request.form.get('credits')
+
+        # Fetch teachingz list
         fastapi_url = f'{FASTAPI_BACKEND_HOST}/query/{location_str}/{degreetype_str}/{cycle_str}/{credits_str}'
         response = requests.get(fastapi_url)
     
         if response.status_code == 200:
             data = response.json
-            form.teaching.choices = get_teaching_values(location_str, degreetype_str, cycle_str, credits_str, data, 'TEACHING')
+            form.teaching.choices = data #Fill filter with list
         else:
             error_message = "Error: Unable to fetch data from the backend."
 
         if form.validate_on_submit():    
-            teaching = form.teaching.data
+            teaching = form.teaching.data # Submit new query
 
 
-            
-            # Build URL
+            teaching = request.form.get('teaching')
+
+            # Build final URL for calendar
             fastapi_url = f'{FASTAPI_BACKEND_HOST}/query/{teaching}/{location_str}/{degreetype_str}/{cycle_str}/{credits_str}'
 
             response = requests.get(fastapi_url)
