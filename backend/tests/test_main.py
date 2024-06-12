@@ -18,12 +18,28 @@ client = TestClient(app)
 
 #ok
 def test_read_main():
+    """
+    Test the main endpoint ("/") of the application.
+
+    Sends a GET request to the root endpoint and asserts:
+    - The response status code is 200.
+    - The JSON response matches {"Hello": "World"}.
+    """
     response = client.get("/")
     assert response.status_code == 200
     assert response.json() == {"Hello": "World"}
 
 #ok
 def test_read_and_return_df():
+    """
+    Test the endpoint "/df_show" to ensure it returns a DataFrame-like JSON structure.
+
+    Sends a GET request to "/df_show" and performs the following checks:
+    - Asserts that the response status code is 200.
+    - Verifies that the response data is a non-empty list.
+    - Checks that the structure of the first item in the response matches the expected keys.
+
+    """
     # Send a GET request to the endpoint
     response = client.get("/df_show")
 
@@ -45,6 +61,16 @@ def test_read_and_return_df():
 #ok
 @patch('app.main.get_csv_creation_date')  # Mock the get_csv_creation_date function
 def test_csv_creation_date(mock_get_csv_creation_date):
+    """
+    Test the endpoint "/csv_creation_date" to verify the behavior of setting a cookie with a formatted creation date.
+
+    - Mocks the function get_csv_creation_date to return a controlled datetime object.
+    - Sends a GET request to "/csv_creation_date".
+    - Asserts that the response status code is 200.
+    - Formats an expected date string for comparison with the cookie value.
+    - Asserts that the cookie named "creation_date" is set with the correct formatted date string.
+
+    """
     # Create a datetime object with the desired timezone
     mock_datetime = datetime.datetime(2024, 6, 12, 10, 30, 0)
 
