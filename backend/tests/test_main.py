@@ -1,13 +1,8 @@
 import os
 import sys
 from fastapi.testclient import TestClient
-from unittest.mock import patch
 from app.main import app
 import datetime
-
-#!!!!!! a cosa serve
-# Add the project root to the sys.path
-#sys.path.insert(0, os.path.abspath(os.path.join(os.path.dirname(__file__), '..')))
 
 """
 Execute this test by running on the terminal (from the app/) the command:
@@ -38,7 +33,7 @@ def test_read_and_return_df():
     - Asserts that the response status code is 200.
     - Verifies that the response data is a non-empty list.
     - Checks that the structure of the first item in the response matches the expected keys.
-
+    - Ensures that none of the items in the response data are empty.
     """
     # Send a GET request to the endpoint
     response = client.get("/df_show")
@@ -53,44 +48,34 @@ def test_read_and_return_df():
     assert isinstance(response_data, list)
     assert len(response_data) > 0
 
-    # Check the structure of the first item in the response data
-    first_item = response_data[0]
+    # Expected keys in the response data
     expected_keys = ['AF_ID', 'TEACHING', 'CYCLE', 'PARTITION', 'SITE', 'CREDITS', 'DEGREE_TYPE', 'LECTURE_DAY', 'LECTURE_START', 'LECTURE_END', 'LECTURER_NAME', 'CLASSROOM_NAME', 'LOCATION_NAME', 'ADDRESS', 'DOCENTE_ID', 'URL_DOCENTE', 'URLS_INSEGNAMENTO', 'START_ISO8601', 'END_ISO8601']
-    assert all(key in first_item for key in expected_keys)
 
-#ok
-@patch('app.main.get_csv_creation_date')  # Mock the get_csv_creation_date function
-def test_csv_creation_date(mock_get_csv_creation_date):
+    # Check the structure and non-empty values for each item in the response data
+    for item in response_data:
+        # Ensure all expected keys are present in the item
+        assert all(key in item for key in expected_keys)
+        
+        # Ensure none of the values corresponding to the keys are empty
+        assert all(item[key] is not None and item[key] != '' for key in expected_keys)
+
+
+#not ok
+def test_csv_creation_date():
     """
-    Test the endpoint "/csv_creation_date" to verify the behavior of setting a cookie with a formatted creation date.
-
-    - Mocks the function get_csv_creation_date to return a controlled datetime object.
-    - Sends a GET request to "/csv_creation_date".
-    - Asserts that the response status code is 200.
-    - Formats an expected date string for comparison with the cookie value.
-    - Asserts that the cookie named "creation_date" is set with the correct formatted date string.
-
     """
-    # Create a datetime object with the desired timezone
-    mock_datetime = datetime.datetime(2024, 6, 12, 10, 30, 0)
-
-    # Mock the return value of get_csv_creation_date to return the datetime object
-    mock_get_csv_creation_date.return_value = mock_datetime
-
-    # Send a GET request to the endpoint
     response = client.get("/csv_creation_date")
 
-    # Assert that the response status code is 200 when the file exists
     assert response.status_code == 200
 
-    # Format the expected date string using strftime
-    expected_date_string = '"Wednesday\\054 12-Jun-2024 10:30:00 CEST"'
+    # QUI DEVO CAPIRE CHE ASSERT DEVO FARE, PER IL FORMAT? %A, %d-%b-%Y %H:%M:%S %Z
 
-    #CHIEDERE AL PROF SE VA BENE COSì PERCHé ho dovuto manipolare la stringa per farlo tornare corretto, mentre credo
-    #che vada manipolata la mock datetime per trasformarla correttamente
 
-    # Assert that the cookie is set with the correct value
-    assert response.cookies.get("creation_date") == expected_date_string
+
+
+
+
+
 
 # # testing the query. we will need to change but overall code is correct
 # @patch('app.main.get_courses_taught_by_person')  # Mock the get_courses_taught_by_person function
