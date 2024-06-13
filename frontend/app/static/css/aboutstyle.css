@@ -45,6 +45,14 @@
     text-align: left;
 }
 
+.about-link {
+    color: rgb(172, 0, 51);
+}
+
+.about-link:hover {
+    text-decoration: none;
+}
+
 .card:hover { /* to make the card responsive when you hover over it */
     transform: scale(1.05); 
     transition: transform 0.3s ease-in-out; 

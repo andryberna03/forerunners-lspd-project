@@ -7,13 +7,13 @@ as the backend for the project.
 
 from fastapi import FastAPI, HTTPException, Response
 from fastapi.middleware.cors import CORSMiddleware
-from flask import jsonify
 import pandas as pd
 from fastapi.responses import JSONResponse
 import pandas as pd
 import os
 import pytz
 from datetime import datetime
+import json
 
 from .mymodules.df_creating import df_creating
 
@@ -120,16 +120,14 @@ async def csv_creation_date(response: Response):
     else:
         raise HTTPException(status_code=404, detail="File CSV non trovato")
 
-@app.get("/query/{location_str}/{degreetype_str}/{cycle_str}/{credits_str}", methods=["GET", "POST"])
-def find_teachings(location_str, degreetype_str, cycle_str, credits_str):
-    """
-    """
 
-    teaching = teaching.title()  # Convert to title case for consistency
-    
+@app.get("/query/{location_str}/{degreetype_str}/{cycle_str}")
+def get_courses_taught_by_person(location_str, degreetype_str, cycle_str):
+    """
+    """
     filtered_df = final_urls_dataframe
 
-    # Filter by location: MESTRE, VENEZIA, RONCADE, Not Defind Yet
+    # Filter by location: MESTRE, VENEZIA, RONCADE, TREVISO
     site_list = location_str.split(",") if location_str else []
     if site_list:
         filtered_df = filtered_df[filtered_df['SITE'].isin(site_list)]
@@ -149,35 +147,33 @@ def find_teachings(location_str, degreetype_str, cycle_str, credits_str):
     if code_list:
         filtered_df = filtered_df[filtered_df['DEGREE_TYPE'].isin(code_list)]
 
-    # Filter by Cycle
     filtered_df = filtered_df[filtered_df['CYCLE']==cycle_str]
-    
-    # Filter by number of Credits
-    filtered_df = filtered_df[filtered_df['CREDITS']==int(credits_str)]
 
-    teaching_names = filtered_df['TEACHING'].tolist()
+    filtered_df.fillna("null", inplace=True)
+
+    teachings = filtered_df['TEACHING']
+
+    final_teachings = dict()
+    for teaching in teachings:
+        final_teachings[teaching] = teaching
+
+    final_teachings = json.dumps(final_teachings)
+
+    return final_teachings
 
 
-    # Return the list of teaching names
-    return jsonify(teaching_names)
-
-
-
-@app.get("/query/{teaching}/{location_str}/{degreetype_str}/{cycle_str}/{credits_str}")
-def get_teachings(teaching, location_str, degreetype_str, cycle_str, credits_str):
+@app.get("/query/{final_teaching}")
+def get_teaching(final_teaching):
     """
     """
-
-    teaching = teaching.title()  # Convert to title case for consistency
-    # Filter the DataFrame to rows where the teaching name contains the provided teaching parameter
     filtered_df = final_urls_dataframe
- 
-    filtered_df = filtered_df[filtered_df['TEACHING'].str.contains(teaching, case=False, na=False)]
-    
+
+    filtered_df = filtered_df[filtered_df['TEACHING'].str.contains(final_teaching, case=False, na=False)]
+
     filtered_df.fillna("null", inplace=True)
 
     filtered_dict = filtered_df.to_dict(orient='index')
 
-    teaching_final_json = JSONResponse(content=filtered_dict)
+    subset_final_json = JSONResponse(content=filtered_dict)
 
-    return teaching_final_json
+    return subset_final_json

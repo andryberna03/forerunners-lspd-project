@@ -19,3 +19,4 @@ flask-cors==4.0.0
 pandas==2.0.3
 ics
 fastapi
+pandas

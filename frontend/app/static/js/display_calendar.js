@@ -3,10 +3,8 @@
  * Initializes the calendar and handles form submission.
  */
 document.addEventListener('DOMContentLoaded', function() {
-
     // Set the maximum height of the calendar element
     document.getElementById('calendar').style.maxHeight = '350px';
-
     // Initialize the FullCalendar instance
     var calendarEl = document.getElementById('calendar');
     var calendar = new FullCalendar.Calendar(calendarEl, {
@@ -38,36 +36,25 @@ document.addEventListener('DOMContentLoaded', function() {
     });
 
     // Event listener for form submission
-    document.getElementById('query-form').addEventListener('submit', function(event) {
+    document.getElementById('teaching-form').addEventListener('submit', function(event) {
         event.preventDefault(); // Prevent the actual form submission
-
         // Show the calendar container
         document.getElementById('calendar-container').style.display = 'block';
         document.getElementById('calendar-container').style.height = '350px';
-
         // Retrieve form values and encode them for URL usage
-        var teaching = encodeURIComponent(document.querySelector('[name="teaching"]').value);
-        var location_str = encodeURIComponent(document.querySelector('[name="location"]').value);
-        var degreetype_str = encodeURIComponent(document.querySelector('[name="degreetype"]').value);
-        var cycle_str = encodeURIComponent(document.querySelector('[name="cycle"]').value);
-        var credits_str = encodeURIComponent(document.querySelector('[name="credits"]').value);
-
+        var final_teaching = encodeURIComponent(document.querySelector('[name="teaching"]').value);
         // Construct the URL with proper encoding
-        var url = `http://localhost:8081/query/${teaching}/${location_str}/${degreetype_str}/${cycle_str}/${credits_str}`;
-
-        console.log(url); // Debug URL
-
+        var url = `http://localhost:8081/query/${final_teaching}/`;
         // Fetch data from the server
         fetch(url)
            .then(response => {
                 if (!response.ok) {
-                    throw new Error('Network response was not ok ' response.statusText);
+                    throw new Error('Network response was not ok ', response.statusText);
                 }
                 return response.json();
             })
            .then(data => {
                 console.log(data);
-
                 var errorMessageEl = document.getElementById('error-message');
                 if (data && Object.keys(data).length > 0) {
                     errorMessageEl.textContent = ''; // Clear any previous error messages
@@ -95,7 +82,6 @@ document.addEventListener('DOMContentLoaded', function() {
                     }
                     calendar.removeAllEvents(); // Clear existing events
                     calendar.addEventSource(events); // Add new data
-
                     // Find the earliest event date and move the calendar to that date
                     var earliestEvent = events.reduce((earliest, event) => {
                         return!earliest || new Date(event.start) < new Date(earliest.start)? event : earliest;
@@ -103,23 +89,14 @@ document.addEventListener('DOMContentLoaded', function() {
                     if (earliestEvent) {
                         calendar.gotoDate(new Date(earliestEvent.start));
                     }
-
                     // Render the calendar after setting the container height
                     calendar.render();
-                } else {
-                    // Show error if filters yield empty set
-                    var errorMessageEl = document.getElementById('error-message')
-                    errorMessageEl.textContent = 'Filter combination is not right';
-                    console.error('Filter combination is not right');
-                    // Hide the calendar container if filters are wrong                                
-                    document.getElementById('calendar-container').style.display = 'none';
                 }
             })
            .catch(error => {
                 var errorMessageEl = document.getElementById('error-message');
-                errorMessageEl.textContent = 'Error loading the calendar data: ' error.message;
-                console.error('Error loading the calendar data:', error);
+                errorMessageEl.textContent = 'Error loading the calendar data', error.message;
+                console.error('Error loading the calendar data', error);
             });
     });
-
 });
