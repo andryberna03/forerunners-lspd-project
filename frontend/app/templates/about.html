@@ -56,7 +56,8 @@
                 <strong>Advanced Filtering:</strong> Filter teachings based on specific criteria such as the degree type and the semester in which the teaching occurs.
             </li>
             <li>
-                <strong>DYNAMIC FILTERING → DA IMPLEMENTARE E SAREBBE MOLTO FIGO AVERLO (SE METTO RONCADE MI ESCONO SOLO CORSI DI FARM)</strong>
+                <strong>Dynamic Filtering</strong>According to Advanced Filtering, only suitable teachings will be displayed to be chosen and this selection will vary at
+                each modification of the Advanced Filtering
 
             </li>
             <li>
@@ -121,33 +122,40 @@
                     </ol>
                 </li>
                 <li>
-                    <strong>User’s query</strong>:
+                    <strong>First user’s query</strong>:
                     <ol>
-                        <li>User uses filters to prepare their query and sends it.</li>
+                        <li>User uses filters to chooses their teaching features and sends it.</li>
                         <li>Flask receives a request from the user.</li>
                         <li>Flask sends a request to the FastAPI to obtain data.</li>
                         <li>FastAPI responds with the requested data in JSON format.</li>
-                        <li>Flask extracts and transforms the data as needed and prepares it for the template.</li>
+                        <li>Flask extracts and transforms the data as needed and prepares for the second user's query.</li>
+                        <li>calendar.html is rendered again to allow second user's query.</li>
                     </ol>
                 </li>
                 <li>
-                    <strong>Calendar display</strong>:
+                    <strong>Second user's query</strong>:
                     <ol>
-                        <li>Flask passes the JSON data to the calendar.html template.</li>
-                        <li>JavaScript code in the calendar.html makes further HTTP requests directly from the browser to the FastAPI bypassing Flask.</li>
-                        <li>The calendar is rendered with the provided data.</li>
+                        <li>User select their specific teaching and send it.</li>
+                        <li>JavaScript make AJAX call to retrieve data in JSON format.</li>
+                        <li>The calendar is rendered with the provided data that populte it.</li>
                     </ol>
                 </li>
                 <li>
-                    <strong>User download teaching in .ical format</strong>:
+                    <strong>User download teaching in iCal format</strong>:
                     <ol>
                         <li>User clicks on download button.</li>
-                        <li>calendar.ics file is created based on their most recent query.</li>
+                        <li>calendar.ics file is created based is created based on information retrived in the most recent query using JavaScript AJAX call.</li>
                         <li>As soon as the file is created, it is immediately downloaded using timezone CET.</li>
                         <li>Now user can add lectures directly to their preferred calendar client.</li>
                     </ol>
                 </li>
             </ol>
+
+    <!-- Testing section -->
+    <div class="container justify-content-center align-items-center">
+        <h2 class="text-center mt-5 mb-4">Testing</h2>
+        <p class="lead">PISCO INSERISCI QUI LE INFO SUL TESTING</p>
+    </div>
 
     <!-- Team Member section -->
     <div class="container justify-content-center align-items-center">

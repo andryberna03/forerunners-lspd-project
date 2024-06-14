@@ -5,15 +5,13 @@
 document.getElementById('teaching-form').addEventListener('submit', function (event) {
   event.preventDefault(); // Prevent the actual form submission
 
-  // Show the calendar container
-  document.getElementById('calendar-container').style.display = 'block';
-  document.getElementById('calendar-container').style.height = '350px';
+  document.getElementById('download-container').style.display = 'block';
 
   // Retrieve form values and encode them for URL usage
   var final_teaching = encodeURIComponent(document.querySelector('[name="teaching"]').value);
 
   // Construct the URL with proper encoding
-  var url = `http://localhost:8081/query/${final_teaching}`;
+  var url = `http://localhost:8081/query/${final_teaching}/`;
 
   // Fetch the data
   fetch(url)
@@ -38,25 +36,25 @@ document.getElementById('download-button').addEventListener('click', function ()
   if (events && Object.keys(events).length > 0) {
     // Start constructing the ICS content
     let icsContent = `BEGIN:VCALENDAR
-                      VERSION:2.0
-                      PRODID:-//Your Product//Your Application//EN
-                      CALSCALE:GREGORIAN
-                      TZID:Europe/Rome\n`; // Added TZID parameter with Rome time zone
+VERSION:2.0
+PRODID:-//Your Product//Your Application//EN
+CALSCALE:GREGORIAN
+TZID:Europe/Rome\n`; // Added TZID parameter with Rome time zone
 
     // Iterate over the events and add each one to the ICS content
     Object.values(events).forEach(event => {
-      // Convert the dates to the correct ICS format using moment-timezone
-      let dtstart = moment.tz(event.START_ISO8601, 'Europe/Rome').format('YYYYMMDDTHHmmss');
-      let dtend = moment.tz(event.END_ISO8601, 'Europe/Rome').format('YYYYMMDDTHHmmss');
-
+      // Format the start and end dates to the correct ICS format (no changes needed here)
+      let dtstart = event.START_ISO8601.replace(/[-:]/g, '').split('.')[0] + 'Z';
+      let dtend = event.END_ISO8601.replace(/[-:]/g, '').split('.')[0] + 'Z';
+  
       icsContent += `BEGIN:VEVENT
-                     DTSTART;TZID=Europe/Rome:${dtstart}
-                     DTEND;TZID=Europe/Rome:${dtend}
-                     SUMMARY:${event.TEACHING}
-                     DESCRIPTION:Professor: ${event.LECTURER_NAME}\\nLocation: ${event.LOCATION_NAME}\\nDetails: ${event.URLS_INSEGNAMENTO}
-                     LOCATION:${event.ADDRESS}
-                     URL:${event.URLS_INSEGNAMENTO}
-                     END:VEVENT\n`;
+DTSTART:${dtstart}
+DTEND:${dtend}
+SUMMARY:${event.TEACHING}
+DESCRIPTION:Professor: ${event.LECTURER_NAME}\nLocation: ${event.LOCATION_NAME}\nDetails: ${event.URLS_INSEGNAMENTO}
+LOCATION:${event.ADDRESS}
+URL:${event.URLS_INSEGNAMENTO}
+END:VEVENT\n`;
     });
 
     // Close the VCALENDAR

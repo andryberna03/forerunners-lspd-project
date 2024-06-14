@@ -22,7 +22,7 @@
 
         <!-- Define title and logo of the tab -->
         <title>{% block title %} {% endblock %}</title>
-        <link rel="icon" href="../static/img/base/logonapoli.png">
+        <link rel="icon" href="../static/img/base/logounive.png">
 
         <!-- Import specific CSS -->
         <link rel="stylesheet" href="static/css/basestyle.css">
@@ -33,9 +33,9 @@
         <nav class="navbar navbar-expand-lg fixed-top">
             <div class="container">
                 <!-- Logo and name of the group into the Navbar -->
-                <a class="navbar-brand d-flex align-items-center" href="{{ url_for('index') }}">
+                <a class="navbar-brand d-flex align-items-center" href="{{ url_for('index') }}" title="Home">
                     <img class="logo img-fluid mw-100 mr-2"
-                        src="../static/img/base/logonapoli.png" class="img-fluid" alt="Forerunners Logo"
+                        src="../static/img/base/logounive.png" class="img-fluid" alt="Forerunners Logo"
                         style="width: 50px; height: 50px;"
                     >
                     FORERRUNERS' PROJECT
@@ -50,7 +50,7 @@
                 <div class="collapse navbar-collapse" id="navbarSupportedContent">
                     <ul class="navbar-nav ml-auto">
                         <li class="nav-item">
-                            <a class="nav-link" href="{{ url_for('index') }}">
+                            <a class="nav-link" href="{{ url_for('index') }}" title="Home">
                                 <svg xmlns="http://www.w3.org/2000/svg" width="16" height="16" fill="currentColor" class="bi bi-house align-middle"
                                     viewBox="0 0 16 16">
                                     <path
@@ -60,7 +60,7 @@
                             </a>
                         </li>
                         <li class="nav-item">
-                            <a class="nav-link" href="{{ url_for('calendar') }}">
+                            <a class="nav-link" href="{{ url_for('calendar') }}" title="Calendar">
                                 <svg xmlns="http://www.w3.org/2000/svg" width="16" height="16" fill="currentColor" class="bi bi-calendar3 align-middle"
                                     viewBox="0 0 16 16">
                                     <path
@@ -72,7 +72,7 @@
                             </a>
                         </li>
                         <li class="nav-item">
-                            <a class="nav-link" href="{{ url_for('about') }}">
+                            <a class="nav-link" href="{{ url_for('about') }}" title="About the Project">
                                 <svg xmlns="http://www.w3.org/2000/svg" width="16" height="16" fill="currentColor" class="bi bi-info-circle align-middle"
                                     viewBox="0 0 16 16">
                                     <path 
@@ -97,25 +97,24 @@
                     <div class="row gy-4 gy-lg-0 justify-content-xl-between">
                         <div class="col-12 col-md-4 col-lg-3 col-xl-2 d-flex justify-content-center align-items-center">
                             <div class="widget">
-                                <a href="{{ url_for('index') }}">
-                                    <img src="../static/img/base/logonapoli.png" alt="Forerunners Logo" width="135" height="135">
+                                <a href="{{ url_for('index') }}" title="Home">
+                                    <img src="../static/img/base/logounive.png" alt="Logo Unive" width="135" height="135">
                                 </a>
                             </div>
                         </div>
                         <div class="col-12 col-md-4 col-lg-3 col-xl-2">
                             <div class="widget">
                                 <h4 class="widget-title mt-3">Get in Touch</h4>
-                                <a class="link-secondary text-decoration-none" href="https://maps.app.goo.gl/xP5L6rTymZMjLGrD9" target="_blank">
+                                <a class="link-secondary text-decoration-none" href="https://maps.app.goo.gl/xP5L6rTymZMjLGrD9" target="_blank" title="Ca' Foscari Headquarter on Google Maps">
                                     <span>Ca' Foscari University, Dorsoduro 3246, 30123 Venice, Italy</span>
                                 </a>
                                 <p class="mb-1">
-                                    <a class="link-secondary text-decoration-none" href="tel: +39 041 234 7575">
+                                    <a class="link-secondary text-decoration-none" href="tel: +39 041 234 7575" title="Student Call Center">
                                         <span>+39 041 234 7575</span>
                                     </a>
                                 </p>
                                 <p class="mb-0">
-                                    <a class="link-secondary text-decoration-none"
-                                        href="mailto:internationalstaff@unive.it">
+                                    <a class="link-secondary text-decoration-none" href="mailto:internationalstaff@unive.it" title="Mail to Staff for International Students">
                                         <span>internationalstaff@unive.it</span>
                                     </a>
                                 </p>
@@ -126,7 +125,7 @@
                                 <h4 class="widget-title mb-7 mb-lg-9 mt-3">Learn More about Exchange Students</h4>
                                 <ul class="list-unstyled">
                                     <li class="foot-item">
-                                        <a class="foot-link" aria-current="page" href="https://www.unive.it/pag/12522/" target="_blank">
+                                        <a class="foot-link" aria-current="page" href="https://www.unive.it/pag/12522/" target="_blank" title="Incoming Mobility website">
                                             <svg xmlns="http://www.w3.org/2000/svg" width="16" height="16" fill="currentColor" class="bi bi-airplane-fill align-middle"
                                                 viewBox="0 0 16 16">
                                                 <path
@@ -136,15 +135,15 @@
                                         </a>
                                     </li>
                                     <li class="foot-item">
-                                        <a class="foot-link align-left" href="https://www.unive.it/pag/12525/" target="_blank">
+                                        <a class="foot-link align-left" href="https://www.unive.it/pag/12525/" target="_blank" title="International Students website">
                                             <i class="fa-solid fa-graduation-cap align-middle"></i>
-                                            <span class="align-middle">Students</span>
+                                            <span class="align-middle">International Students</span>
                                         </a>
                                     </li>
                                     <li class="foot-item">
-                                        <a class="foot-link align-left" href="https://www.unive.it/pag/40946/" target="_blank">
+                                        <a class="foot-link align-left" href="https://www.unive.it/pag/40946/" target="_blank" title="Staff for International Students website">
                                             <i class="fa-solid fa-university align-middle"></i>
-                                            <span class="align-middle">Staff</span>
+                                            <span class="align-middle">Staff for International Students</span>
                                         </a>
                                     </li>
                                 </ul>
@@ -166,7 +165,7 @@
                             <ul class="nav justify-content-start justify-content-center">
                                 <!-- Facebook Ca' Foscari link -->
                                 <li class="nav-item">
-                                    <a class="nav-link link-dark" href="https://www.facebook.com/cafoscari" target="_blank" title="Facebook">
+                                    <a class="nav-link link-dark" href="https://www.facebook.com/cafoscari" target="_blank" title="Facebook Ca' Foscari">
                                         <svg xmlns="http://www.w3.org/2000/svg" width="24" height="24" fill="currentColor" class="bi bi-facebook"
                                             viewBox="0 0 16 16" hov>
                                             <path
@@ -176,7 +175,7 @@
                                 </li>
                                 <!-- Twitter X Ca' Foscari link -->
                                 <li class="nav-item">
-                                    <a class="nav-link link-dark" href="https://twitter.com/cafoscari" target="_blank" title="Twitter">
+                                    <a class="nav-link link-dark" href="https://twitter.com/cafoscari" target="_blank" title="X Ca' Foscari">
                                         <svg xmlns="http://www.w3.org/2000/svg" width="24" height="24" fill="currentColor" class="bi bi-twitter-x"
                                             viewBox="0 0 16 16">
                                             <path
@@ -186,7 +185,7 @@
                                 </li>
                                 <!-- YouTube Ca' Foscari link -->
                                 <li class="foot-item">
-                                    <a class="nav-link link-dark" href="https://www.youtube.com/user/youcafoscari" target="_blank" title="YouTube">
+                                    <a class="nav-link link-dark" href="https://www.youtube.com/user/youcafoscari" target="_blank" title="YouTube Ca' Foscari">
                                         <svg xmlns="http://www.w3.org/2000/svg" width="24" height="24" fill="currentColor" class="bi bi-youtube"
                                             viewBox="0 0 16 16">
                                             <path
@@ -196,7 +195,7 @@
                                 </li>
                                 <!-- Instagram Ca' Foscari link -->
                                 <li class="nav-item">
-                                    <a class="nav-link link-dark" href="https://www.instagram.com/cafoscari/" target="_blank" title="Instagram">
+                                    <a class="nav-link link-dark" href="https://www.instagram.com/cafoscari/" target="_blank" title="Instagram Ca' Foscari">
                                         <svg xmlns="http://www.w3.org/2000/svg" width="24" height="24" fill="currentColor" class="bi bi-instagram"
                                             viewBox="0 0 16 16">
                                             <path
@@ -206,7 +205,7 @@
                                 </li>
                                 <!-- LinkedIn Ca' Foscari link -->
                                 <li class="nav-item">
-                                    <a class="nav-link link-dark" href="https://www.linkedin.com/school/cafoscari/mycompany/verification/" target="_blank" title="LinkedIn">
+                                    <a class="nav-link link-dark" href="https://www.linkedin.com/school/cafoscari/mycompany/verification/" target="_blank" title="LinkedIn Ca' Foscari">
                                         <svg xmlns="http://www.w3.org/2000/svg" width="24" height="24" fill="currentColor" class="bi bi-linkedin"
                                             viewBox="0 0 16 16">
                                             <path
@@ -216,7 +215,7 @@
                                 </li>
                                 <!-- Weibo Ca' Foscari link -->
                                 <li class="nav-item">
-                                    <a class="nav-link link-dark" href="https://www.weibo.com/cafoscari" target="_blank" title="Weibo">
+                                    <a class="nav-link link-dark" href="https://www.weibo.com/cafoscari" target="_blank" title="Weibo Ca' Foscari">
                                         <svg xmlns="http://www.w3.org/2000/svg" width="24" height="24" fill="currentColor" class="bi bi-weibo"
                                             viewBox="0 0 16 16">
                                             <path
@@ -229,12 +228,12 @@
                                 <!-- Flickr Ca' Foscari link NON FUNZIONA -->
                                 <li class="nav-item">
                                     <a class="nav-link link-dark" href="https://www.flickr.com/photos/cafoscari/" target="_blank" class="img-link">
-                                        <img src="../static/img/base/logoflickr.png" alt="Flickr" title="Flickr" class="bi bi-weibo" width="24" height="24">
+                                        <img src="../static/img/base/logoflickr.png" alt="Flickr" title="Flickr Ca' Foscari" class="bi bi-weibo" width="24" height="24">
                                     </a>
                                 </li>
                                 <!-- Telegram Ca' Foscari link -->
                                 <li class="nav-item">
-                                    <a class="nav-link link-dark" href="https://www.telegram.me/cafoscari" target="_blank" title="Telegram">
+                                    <a class="nav-link link-dark" href="https://www.telegram.me/cafoscari" target="_blank" title="Telegram Ca' Foscari">
                                         <svg xmlns="http://www.w3.org/2000/svg" width="24" height="24" fill="currentColor" class="bi bi-telegram"
                                             viewBox="0 0 16 16">
                                             <path
@@ -244,7 +243,7 @@
                                 </li>
                                 <!-- TikTok Ca' Foscari link -->
                                 <li class="nav-item">
-                                    <a class="nav-link link-dark" href="https://www.tiktok.com/@cafoscari?_t=8l8hYrQCimm&_r=1" target="_blank" title="TikTok">
+                                    <a class="nav-link link-dark" href="https://www.tiktok.com/@cafoscari?_t=8l8hYrQCimm&_r=1" target="_blank" title="TikTok Ca' Foscari">
                                         <svg xmlns="http://www.w3.org/2000/svg" width="24" height="24" fill="currentColor" class="bi bi-tiktok"
                                             viewBox="0 0 16 16">
                                             <path
@@ -254,7 +253,7 @@
                                 </li>
                                 <!-- WeChat Ca' Foscari link -->
                                 <li class="nav-item">
-                                    <a class="nav-link link-dark" href="https://mp.weixin.qq.com/s/u70V_4FBamxUlNwz2ra68w" target="_blank" title="WeChat">
+                                    <a class="nav-link link-dark" href="https://mp.weixin.qq.com/s/u70V_4FBamxUlNwz2ra68w" target="_blank" title="WeChat Ca' Foscari">
                                         <svg xmlns="http://www.w3.org/2000/svg" width="24" height="24" fill="currentColor" class="bi bi-wecaht"
                                             viewBox="0 0 16 16">
                                             <path

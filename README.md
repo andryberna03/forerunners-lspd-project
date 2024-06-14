@@ -1,26 +1,27 @@
 # **Ca’ Foscari Exchange Calendar by Forerunners**
 
 ## **Scope**
-Ca’ Foscari Exchange Calendar website is an intuitive and user-friendly platform designed to help exchange students navigate challenges of scheduling their teachings calendars. By simply implementing some filters, students can easily organise their schedules.
+Ca’ Foscari Exchange Calendar website is an intuitive and user-friendly platform designed to help exchange students navigate challenges of scheduling their teachings calendars. By simply implementing some filters, students can easily organise their schedules and collect relevant information about their courses.
 
 ## **Features**
 Our website offers three main sections: `Home`, `About the Project`, and `Calendar`. The `Home` and `About the Project` pages provide a clear overview of the project's purpose and functionality. The `Calendar` page serves as user interactive hub, allowing to submit queries to the project's backend:
 - **User-friendly Interface**: Enjoy a seamless user experience with an intuitive design that makes navigation and information retrieval straightforward and efficient.
 - **Advanced Filtering**: Filter teachings based on specific criteria such as the degree type and the semester in which the teaching occurs.
-- **DYNAMIC FILTERING → DA IMPLEMENTARE E SAREBBE MOLTO FIGO AVERLO (SE METTO RONCADE MI ESCONO SOLO CORSI DI FARM)**
-- **Calendar download**: After filtering the relevant teaching, the user can download the information in .ics format to add it directly to their preferred calendar client.
+- **Dynamic Filtering**: According to Advanced Filtering, only suitable teachings will be displayed to be chosen and this selection will vary at each modification of the Advanced Filtering.
+- **Calendar Download**: After filtering the relevant teaching, the user can download the information in iCal to add it directly to their preferred calendar client.
 
 ## **Preview of the website**
 ### *Home Page*
 The Home page of the website explains why we decided to undertake this project and displays a map created with Leaflet and OpenStreetMap that shows all the sites in the dataset.
 
-![Index Page](frontend/app/static/img/readme/imageindex1.png)
-![Index Page](frontend/app/static/img/readme/imageindex2.png)
+![Index Page pt1](frontend/app/static/img/readme/imageindex1.png)
+![Index Page pt2](frontend/app/static/img/readme/imageindex2.png)
  
 ### *Calendar Page*
-The Calendar page allows users to apply filters to request specific teachings and generate a personalised schedule. This schedule can also be downloaded in .ics format via a dedicated button, allowing users to insert it into their preferred calendar client.
+The Calendar page allows users to apply filters to request specific teachings and generate a personalised schedule. This schedule can also be downloaded in iCal via a dedicated button, allowing users to insert it into their preferred calendar client.
 
-METTERE IMMAGINI CALENDAR PAGE
+![Calendar Page pt1](frontend/app/static/img/readme/imagecalendar1.png)
+![Calendar Page pt2](frontend/app/static/img/readme/imagecalendar2.png)
 
 ### *About Page*
 The about page provides more detailed information regarding the development of the project, its composition and the team of contributors.
@@ -87,11 +88,12 @@ Bidirectional communication is established between the Frontend (Flask) and Back
       - main.py: Main backend application file.
    - test/: Folder for Python test of main backend application.
       - test_main.py: Python test of main backend application.
+      - test_df_creation.py: Python test of Python module for creating dataset.
 - `frontend/`: Flask frontend implementation.
    - Dockerfile: Dockerfile for building the frontend image.
    - requirements.txt: List of Python dependencies for the frontend.
    - app/: Folder for static files, templates, and Python main frontend application
-        - static/: Folder for static files (CSS, JavaScript, etc.).
+        - static/: Folder for static files (CSS, JavaScript, Images).
         - templates/: Folder for HTML templates.
         - main.py: Main frontend application file.
 - `docker-compose.yml`: Docker Compose configuration for running both frontend and backend.
@@ -129,19 +131,16 @@ Bidirectional communication is established between the Frontend (Flask) and Back
 ## **Example Data Flow**
 
 ### *User accesses the calendar webpage:*
-
 The `calendar.html` page is loaded, and meanwhile, the backend checks if 24 hours have passed since the last website dataset update. If not, nothing happens. However, if 24 hours have passed, the FastAPI updates the dataset with new data from Ca' Foscari's open data. After the update, the page loads correctly, and the last update date of the dataset is refreshed. This way, users always have up-to-date data available in the backend for frontend requests.
 
-### *User’s query:*
-The user chooses their teaching using filters and then asks for data. Flask sends a query to the FastAPI to retrieve the relevant data. FastAPI processes the query and responds with the requested information in JSON format.
-Upon receiving the data, Flask extracts and transforms it as necessary, preparing it for integration into the calendar. Next, the Flask backend passes the JSON data to the `calendar.html` template. The calendar is displayed with the provided data, creating a personalised schedule based on the user's specified criteria. 
+### *First user’s query:*
+The user chooses their teaching features using filters and then asks for data. Flask sends a query to the FastAPI to retrieve the relevant data. FastAPI processes the query and responds with the requested information in JSON format. Upon receiving the data, Flask extracts and transforms it as necessary, making them available and ready for the second user's query when `calendar.html` template will be rendered again.
 
-### **Calendar display:**
-Once the `calendar.html` page is loaded in the browser, the embedded JavaScript code initiates additional HTTP requests directly to FastAPI for any supplementary data. These client-side requests bypass the Flask and receive JSON responses that are handled by the client-side JavaScript. 
-This dynamic interaction ensures that the displayed calendar is comprehensive and up-to-date. The final calendar shows class hours. By moving the cursor over the slot the user gains detailed information about each lecture, including the course title, lecturer, time, and location. This detailed view provides users with a clear and organised schedule, making it easy to manage their academic commitment. Additionally, if you click on the time slot it will take the user to Ca’ Foscari official web page for that teaching.
+### *Calendar display:*
+The user select their specific teaching and JavaScript make two AJAX calls to retrieve data. The first one is used to populate the calendar design showing classess. By moving the cursor over the slot the user gains detailed information about each lecture, including the course title, lecturer, time, and location. This detailed view provides users with a clear and organised schedule, making it easy to manage their academic commitment. Additionally, if you click on the time slot it will take the user to Ca’ Foscari official web page for that teaching. The second one is used to create the iCal file.
 
-### *User download teaching in .ical format:*
-When the download button is clicked by the user, `calendar.ics` file is created based on their most recent query. As soon as the file is created, it is immediately downloaded by the browser using timezone CET. This allows the user to directly add the lectures to their preferred calendar client.
+### *User download teaching in iCal:*
+When the download button is clicked by the user, `calendar.ics` file is created based on information retrived in the most recent query using JavaScript AJAX call. As soon as the file is created, it is immediately downloaded by the browser using timezone CET. This allows the user to directly add the lectures to their preferred calendar client.
 
 ## **Shutting Down the Docker Containers**
 
@@ -188,6 +187,10 @@ If you need to start or stop the containers individually, you can use the follow
 Make sure to replace `frontend` and `backend` with the appropriate service names from your `docker-compose.yml` file.
 
 > **NOTE:** When stopping containers individually, the `docker-compose down` command is not required. Now you can manage the lifecycle of your Docker containers more flexibly.
+
+## **Testing**
+
+QUI PISCO DEVE METTERE LE INFO SUL TESTING
 
 ## **Limitations**
 Despite our efforts to create an excellent website, it has some limitations:
