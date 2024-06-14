@@ -8,6 +8,7 @@
     <link rel="stylesheet" href="https://unpkg.com/tippy.js@6/dist/tippy.css" />
     <script src="https://unpkg.com/@popperjs/core@2"></script>
     <script src="https://unpkg.com/tippy.js@6"></script>
+    <script src="https://code.jquery.com/jquery-3.3.1.slim.min.js"></script>
 
     <!-- Import specific CSS -->
     <link rel="stylesheet" href="static/css/calendarstyle.css">
@@ -55,7 +56,7 @@
         </p>
     </section>
 
-    <div class="container mt-5">
+    <div class="container mt-5" id="filters-container">
         <!-- WTForms Form to get input from the user -->
         <form method="POST" id="query-form">
             {{ form.csrf_token }}
@@ -90,7 +91,7 @@
         </form>
     </div>
 
-    <div class="container mt-3" id="teaching-container">
+    <div class="container mt-3" id="teaching-container"> <!-- style="display: none;"> -->
         <!-- WTForms Form to get input from the user -->
         <form method="POST" id="teaching-form">
             {{ form.csrf_token }}
@@ -112,6 +113,14 @@
             </div>
         </form>
     </div>
+    <!-- <script>
+        document.addEventListener('DOMContentLoaded', function() {    
+            document.getElementById("filters-container").addEventListener("submit", function(){
+                // Show the second form
+                document.getElementById("teaching-container").style.display = "block";
+            });
+        })
+    </script> -->
 
     <div class="container mt-5">
         <!-- Error message container -->
@@ -128,11 +137,19 @@
     </div>
 
     <!-- Bottone Export in iCal -->
-    <div class="d-grid gap-2 col-6 mx-auto text-center">
+    <div class="d-grid gap-2 col-6 mx-auto text-center" id="download-container"> <!-- style="display: none;"> -->
         <a class="ics_button" href="{{ url_for('get_ics') }}">
             <button class="btn btn-primary" type="button">Download lectures in iCal</button>
         </a>
     </div>
+    <!-- <script>
+        document.addEventListener('DOMContentLoaded', function() {
+            document.getElementById("teaching-container").addEventListener("submit", function(){
+                // Show download button
+                document.getElementById("download-container").style.display = "block";
+            });
+        })
+    </script> -->
 
     <br>
     <br>
