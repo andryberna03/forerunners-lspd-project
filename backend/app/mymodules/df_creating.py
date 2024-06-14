@@ -5,7 +5,7 @@ import os
 import datetime
 
 
-def df_creating() -> pd.DataFrame:
+def df_creating(file_path_final) -> pd.DataFrame:
     """
     This is the main function which orchestrates the entire process of creating
     the final dataframe. It checks if a file exists and is less than a day old.
@@ -15,9 +15,6 @@ def df_creating() -> pd.DataFrame:
     Returns:
     pd.DataFrame: The final dataframe containing all the required data.
     """
-    # Define the path to the final CSV file
-    file_path_final = 'app/final.csv'
-
     # Check if the file exists and was created within the last 24 hours
     if os.path.exists(file_path_final):
         creation_time = os.path.getctime(file_path_final)
