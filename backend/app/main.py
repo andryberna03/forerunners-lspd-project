@@ -5,8 +5,9 @@ This module defines a FastAPI application that serves
 as the backend for the project.
 """
 
-from fastapi import FastAPI, HTTPException
+from fastapi import FastAPI, HTTPException, Response
 from fastapi.middleware.cors import CORSMiddleware
+import pandas as pd
 from fastapi.responses import JSONResponse
 import pandas as pd
 import os
@@ -17,7 +18,6 @@ import json
 from .mymodules.df_creating import df_creating
 
 app = FastAPI()
-file_path_final = 'app/final.csv'
 
 # Add Cross-Origin Resource Sharing (CORS) middleware to the FastAPI application.
 # This middleware allows all origins to access the API endpoints.
@@ -52,18 +52,31 @@ def read_and_return_df():
     Returns:
         DataFrame: Lectures dataframe.
     """
-    final_urls_dataframe = df_creating(file_path_final)
+    final_urls_dataframe = df_creating()
     final_urls_dataframe = final_urls_dataframe.fillna('null')
     return final_urls_dataframe.to_dict(orient='records')
 
 
+# Funzione per ottenere la data di creazione del file CSV
 def get_csv_creation_date():
     """
-    Returns the creation date of the 'final.csv' file.
-    
+    This function retrieves the creation date of a CSV file.
+
+    Parameters:
+    None
+
     Returns:
-        datetime: The creation date of the file if it exists, otherwise None.
+    datetime.datetime: The creation date of the CSV file if it exists, otherwise None.
+
+    Raises:
+    None
+
+    Note:
+    The CSV file path is hardcoded as 'app/final.csv'.
+    The function uses the os.path.exists() and os.path.getctime() methods to retrieve the file creation date.
+    The creation date is converted from a timestamp to a datetime object using datetime.datetime.fromtimestamp().
     """
+    file_path_final = 'app/final.csv'
     if os.path.exists(file_path_final):
         creation_time = os.path.getctime(file_path_final)
         file_creation_date = datetime.fromtimestamp(creation_time)
@@ -71,17 +84,27 @@ def get_csv_creation_date():
     else:
         return None
 
-# Endpoint to return the creation date of the CSV file
+# Endpoint per restituire la data di creazione del file CSV
 @app.get("/csv_creation_date")
-async def csv_creation_date():
+async def csv_creation_date(response: Response):
     """
-    Endpoint to get the creation date of the 'final.csv' file.
-    
+    This function retrieves the creation date of the CSV file and sets a cookie with the date.
+
+    Parameters:
+    response (Response): The FastAPI Response object to set the cookie.
+
     Returns:
-        str: The creation date of the file in the format 'A, dd-mmm-YYYY HH:MM:SS TZ'.
-    
+    str: The formatted creation date of the CSV file in 'Day, DD-MMM-YYYY HH:MM:SS TZ' format.
+
     Raises:
-        HTTPException: If the CSV file is not found.
+    HTTPException: If the CSV file does not exist, a 404 Not Found exception is raised.
+
+    Note:
+    The CSV file path is hardcoded as 'app/final.csv'.
+    The function uses the os.path.exists() and os.path.getctime() methods to retrieve the file creation date.
+    The creation date is converted from a timestamp to a datetime object using datetime.datetime.fromtimestamp().
+    The datetime object is then converted to the 'Europe/Rome' timezone using pytz.timezone().
+    The formatted date is set as a cookie with the name 'creation_date' using the Response.set_cookie() method.
     """
     creation_date = get_csv_creation_date()
     if creation_date:
@@ -90,10 +113,12 @@ async def csv_creation_date():
         # Convert the creation date to Rome timezone
         creation_date_rome = creation_date.astimezone(rome_tz)
         # Format the date in the required format
-        date_format = creation_date_rome.strftime('%A, %d-%b-%Y %H:%M:%S %Z')
-        return date_format
+        cookie_date_format = creation_date_rome.strftime('%A, %d-%b-%Y %H:%M:%S %Z')
+        # Set the cookie with the formatted date
+        response.set_cookie(key='creation_date', value=cookie_date_format)
+        return cookie_date_format
     else:
-        raise HTTPException(status_code=404, detail="CSV file not found")
+        raise HTTPException(status_code=404, detail="File CSV non trovato")
 
 
 @app.get("/query/{location}/{degreetype}/{cycle}")
@@ -133,8 +158,8 @@ def get_courses_taught_by_person(location, degreetype, cycle):
     for degreetype in degreetype_list:
         code_list.append(degree_mapping[degreetype])
  
-#     if code_list:
-#         filtered_df = filtered_df[filtered_df['DEGREE_TYPE'].isin(code_list)]
+    if code_list:
+        filtered_df = filtered_df[filtered_df['DEGREE_TYPE'].isin(code_list)]
 
     filtered_df = filtered_df[filtered_df['CYCLE'] == cycle]
 
