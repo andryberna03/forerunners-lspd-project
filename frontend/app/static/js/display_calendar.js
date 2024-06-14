@@ -44,7 +44,7 @@ document.addEventListener('DOMContentLoaded', function() {
         // Retrieve form values and encode them for URL usage
         var final_teaching = encodeURIComponent(document.querySelector('[name="teaching"]').value);
         // Construct the URL with proper encoding
-        var url = `http://localhost:8081/query/${final_teaching}/`;
+        var url = `http://localhost:8081/query/${final_teaching}`;
         // Fetch data from the server
         fetch(url)
            .then(response => {
