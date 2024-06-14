@@ -41,8 +41,8 @@ def read_root():
     """
     return {"Hello": "World"}
 
-
-final_urls_dataframe = pd.read_csv('app/final.csv')
+final_path_csv = 'app/final.csv'
+final_urls_dataframe = pd.read_csv(final_path_csv)
 
 @app.get('/df_show')
 def read_and_return_df():
@@ -53,7 +53,7 @@ def read_and_return_df():
         list: A list of dictionaries representing the lectures dataframe.
     """
     # Create or load the DataFrame using the df_creating module
-    final_urls_dataframe = df_creating()
+    final_urls_dataframe = df_creating(final_path_csv)
     # Fill NaN values with 'null'
     final_urls_dataframe = final_urls_dataframe.fillna('null')
     # Convert DataFrame to a list of dictionaries and return
@@ -87,7 +87,7 @@ def get_csv_creation_date():
 
 
 @app.get("/csv_creation_date")
-async def csv_creation_date(response: Response):
+async def csv_creation_date(response):
     """
     Retrieve the creation date of the CSV file and set a cookie with the date.
 
@@ -112,7 +112,6 @@ async def csv_creation_date(response: Response):
         using Response.set_cookie().
     """
     # Get the creation date of the CSV file
-    creation_date = get_csv_creation_date()
     creation_date = get_csv_creation_date()
     if creation_date:
         # Set the timezone to Rome

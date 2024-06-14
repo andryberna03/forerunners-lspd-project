@@ -11,7 +11,7 @@ document.getElementById('teaching-form').addEventListener('submit', function (ev
   var final_teaching = encodeURIComponent(document.querySelector('[name="teaching"]').value);
 
   // Construct the URL with proper encoding
-  var url = `http://localhost:8081/query/${final_teaching}/`;
+  var url = `http://localhost:8081/query/${final_teaching}`;
 
   // Fetch the data
   fetch(url)
