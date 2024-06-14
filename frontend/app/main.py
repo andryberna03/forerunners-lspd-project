@@ -4,16 +4,12 @@ Frontend module for the Flask application.
 This module defines a simple Flask application that serves as the frontend for the project.
 """
 
-from flask import Flask, render_template, send_file
+from flask import Flask, render_template
 from flask_cors import CORS
 import requests
 from flask_wtf import FlaskForm
-from wtforms import SubmitField, SelectField, validators
-import os
-from ics import Calendar, Event
-from fastapi.responses import FileResponse
-from datetime import datetime
-import pytz
+from wtforms import SubmitField, SelectField
+import json
 
 app = Flask(__name__)
 app.config['SECRET_KEY'] = 'your_secret_key'  # Replace with a secure secret key
@@ -42,7 +38,7 @@ class DatatimeCSV(object):
     datatime = None
 
 
-class QueryForm(FlaskForm):
+class QueryTeachings(FlaskForm):
     """
     A Flask-WTF form for querying lectures based on various parameters.
 
@@ -55,12 +51,27 @@ class QueryForm(FlaskForm):
     submit (SubmitField): A button for submitting the form.
     """
 
-    location = SelectField('Location:', validators=[validators.DataRequired()])
-    degreetype = SelectField('Degree type:', validators=[validators.DataRequired()])
-    teaching = SelectField('Enter teaching name:', validators=[validators.DataRequired()])
-    cycle = SelectField('Cycle:', validators=[validators.DataRequired()])
-    credits = SelectField('Credits:', validators=[validators.DataRequired()])
-    submit = SubmitField('View your lectures')
+    location = SelectField('Location:')
+    degreetype = SelectField('Degree type:')
+    cycle = SelectField('Cycle:')
+    submit = SubmitField('View your teachings')
+
+
+class QueryLectures(FlaskForm):
+    """
+    A Flask-WTF form for querying lectures based on various parameters.
+
+    Attributes:
+    location (SelectField): A dropdown menu for selecting the location.
+    degreetype (SelectField): A dropdown menu for selecting the degree type.
+    teaching (SelectField): A dropdown menu for selecting the teaching name.
+    cycle (SelectField): A dropdown menu for selecting the cycle.
+    credits (SelectField): A dropdown menu for selecting the credits.
+    submit (SubmitField): A button for submitting the form.
+    """
+
+    teaching = SelectField('Enter teaching name:')
+    submit_teaching = SubmitField('View your lectures')
 
 
 @app.route('/')
@@ -101,139 +112,73 @@ def get_unique_values(data, column_name):
     if isinstance(data, list):
         for entry in data:
             if column_name in entry and entry[column_name] is not None:  # Aggiungi questo controllo per evitare valori None
-                unique_values.add(entry[column_name])
+                unique_values.add((entry[column_name], entry[column_name]))
     elif isinstance(data, dict):
         if column_name in data:
             for entry in data[column_name]:
                 if entry is not None:  # Aggiungi questo controllo per evitare valori None
-                    unique_values.add(entry)
+                    unique_values.add((entry, entry))
     return sorted(list(unique_values))
 
-@app.route('/create_ics')
-def export_ics(response):
-    """
-    Exports the provided lesson data into an ICS calendar file.
-
-    Parameters:
-    response (dict): A dictionary containing lesson data. Each lesson is represented as a dictionary with keys such as 'TEACHING', 'LECTURE_DAY', 'LECTURE_START', 'LECTURE_END', etc.
-
-    Returns:
-    flask.Response: A Flask response object containing the ICS file as an attachment.
-
-    Raises:
-    None
-
-    """
-    # Create an ICS calendar
-    calendar = Calendar()
-
-    # Iterate over each lesson in the response
-    for key, lesson in response.items():
-        # Create a new event for the lesson
-        event = Event()
-
-        # Set the event name to the teaching name
-        event.name = lesson.get("TEACHING")
-
-        # Parse the lecture day and time
-        year, month, day = lesson['LECTURE_DAY'].split('-')
-        hour_start, minute_start = lesson['LECTURE_START'].split(':')
-
-        # Set the event start time with CET timezone
-        event.begin = str(datetime(int(year), int(month), int(day), int(hour_start), int(minute_start), 0, tzinfo=pytz.timezone("CET")))
-        
-        # Parse the lecture end time
-        hour_end, minute_end = lesson['LECTURE_END'].split(':')
-
-        # Set the event end time with CET timezone
-        event.end = str(datetime(int(year), int(month), int(day), int(hour_end), int(minute_end), 0, tzinfo=pytz.timezone("CET")))
-        
-        # Set the event description with relevant lesson details
-        event.description = (
-            f"Lecturer: {lesson.get('LECTURER_NAME', 'No Lecturer')}\n"
-            f"Classroom: {lesson.get('CLASSROOM_NAME', 'No Classroom')}\n"
-            f"Degree Name: {lesson.get('DEGREE_NAME', 'No Degree Name')}\n"
-            f"URL Lecturer: {lesson.get('URL_DOCENTE', 'No URL')}\n"
-            f"URL Teaching: {lesson.get('URLS_INSEGNAMENTO', 'No URL')}"
-        )
-
-        # Add the event to the calendar
-        calendar.events.add(event)
-
-    # Specify the path for the ICS file
-    ical_path = 'app/calendar.ics'
-
-    # Check if the file already exists
-    if os.path.exists(ical_path):
-       # Open the file in write mode and write the calendar data
-       with open(ical_path, 'w') as f:
-        f.writelines(calendar.serialize_iter())
-
-    # Return the ICS file as a Flask response
-    return FileResponse('calendar.ics', media_type='text/calendar', filename='calendar.ics')
-
-@app.route('/download_ics')
-def get_ics():
-    """
-    This function is responsible for downloading the generated ICS file.
-
-    The function uses Flask's send_file method to send the 'calendar.ics' file to the client.
-    The file is sent as an attachment, which means the client will be prompted to download it.
-
-    Parameters:
-    None
-
-    Returns:
-    flask.Response: A Flask response object containing the ICS file as an attachment.
-    """
-    return send_file('calendar.ics', as_attachment=True)
 
 @app.route('/calendar', methods=['GET', 'POST'])
 def calendar():
-    form = QueryForm()
+    """
+    This function handles the '/calendar' route of the Flask application.
+    It fetches data from the backend, updates form choices, and processes form submissions.
+
+    Parameters:
+    None
+
+    Returns:
+    str: Rendered HTML content for the '/calendar' page.
+    """
     datatime_csv = DatatimeCSV()
+    form = QueryTeachings()
+    form_lectures = QueryLectures()
     error_message = None
 
+    # Fetch the creation date of the CSV file from the backend
     creation_csv = f'{FASTAPI_BACKEND_HOST}/csv_creation_date'
     response_creation_csv = requests.get(creation_csv)
     datatime_creation_csv = response_creation_csv.json()
     datatime_csv.datatime = datatime_creation_csv
 
     # Fetch data from the backend and update form choices
-    fastapi_url = f'{FASTAPI_BACKEND_HOST}/df_show'
-    response = requests.get(fastapi_url)
+    url_csv = f'{FASTAPI_BACKEND_HOST}/df_show'
+    response_csv = requests.get(url_csv)
 
-    if response.status_code == 200:
-        data = response.json()
+    if response_csv.status_code == 200:
+        data = response_csv.json()
         form.cycle.choices = get_unique_values(data, 'CYCLE')
         form.degreetype.choices = get_unique_values(data, 'DEGREE_TYPE')
-        form.credits.choices = get_unique_values(data, 'CREDITS')
         form.location.choices = get_unique_values(data, 'SITE')
-        form.teaching.choices = get_unique_values(data, 'TEACHING')
     else:
         error_message = "Error: Unable to fetch data from the backend."
 
+    # Process form submissions
     if form.validate_on_submit():
-        teaching = form.teaching.data
-        location_str = form.location.data
-        degreetype_str = form.degreetype.data
-        cycle_str = form.cycle.data
-        credits_str = form.credits.data
+        location = form.location.data
+        degreetype = form.degreetype.data
+        cycle = form.cycle.data
 
-        # Build URL
-        fastapi_url = f'{FASTAPI_BACKEND_HOST}/query/{teaching}/{location_str}/{degreetype_str}/{cycle_str}/{credits_str}'
+        # Build URL for querying teachings
+        url_teachings = f'{FASTAPI_BACKEND_HOST}/query/{location}/{degreetype}/{cycle}'
+        response_teachings = requests.get(url_teachings)
 
-        response = requests.get(fastapi_url)
-
-        export_ics(response.json())
-
-        if response.status_code == 200:
-            data = response.json()
-            return render_template('calendar.html', datatime_csv=datatime_csv, form=form, result=data, error_message=error_message)
+        if response_teachings.status_code == 200:
+            # Extract and display the result from the FastAPI backend
+            teachings = response_teachings.json()
+            data_dict = json.loads(teachings)
+            teachings = sorted([(key, value) for key, value in data_dict.items()])
+            form_lectures.teaching.choices = teachings
+            
+            return render_template('calendar.html', form=form, form_lectures=form_lectures, datatime_csv=datatime_csv, error_message=error_message)
         else:
-            error_message = f'Error: Unable to fetch lesson for {teaching} from FastAPI Backend'
+            error_message = "Error: Unable to fetch data from the backend."
 
-    return render_template('calendar.html', datatime_csv=datatime_csv, form=form, result=None, error_message=error_message)
+    # Render the '/calendar' page with the appropriate data and form
+    return render_template('calendar.html', form=form, form_lectures=form_lectures, datatime_csv=datatime_csv, error_message=error_message)
 
 
 if __name__ == '__main__':

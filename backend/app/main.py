@@ -13,6 +13,7 @@ import pandas as pd
 import os
 import pytz
 from datetime import datetime
+import json
 
 from .mymodules.df_creating import df_creating
 
@@ -120,29 +121,39 @@ async def csv_creation_date(response: Response):
         raise HTTPException(status_code=404, detail="File CSV non trovato")
 
 
-@app.get("/query/{teaching}/{location_str}/{degreetype_str}/{cycle_str}/{credits_str}")
-def get_courses_taught_by_person(teaching, location_str, degreetype_str, cycle_str, credits_str):
+@app.get("/query/{location}/{degreetype}/{cycle}")
+def get_courses_taught_by_person(location, degreetype, cycle):
     """
+    This function retrieves and returns a list of teachings based on the provided location, degree type, and cycle.
+
+    Parameters:
+    location (str): A comma-separated string of locations (MESTRE, VENEZIA, RONCADE, TREVISO). If empty, all locations are considered.
+    degreetype (str): A comma-separated string of degree types (Bachelor, Master). If empty, all degree types are considered.
+    cycle (str): The cycle to filter the teachings.
+
+    Returns:
+    str: A JSON string containing a dictionary of unique teachings.
+
+    Note:
+    The function filters the dataframe based on the provided parameters and returns a list of unique teachings.
+    The degree types are mapped to their corresponding codes in the DataFrame.
+    The function fills any missing values in the dataframe with the string 'null'.
     """
-
-    teaching = teaching.title()  # Convert to title case for consistency
-    # Filter the DataFrame to rows where the person's name appears in the 'DOCENTI' column
-
     filtered_df = final_urls_dataframe
 
-    # Filter by location: MESTRE, VENEZIA, RONCADE, TREVISO
-    site_list = location_str.split(",") if location_str else []
+    # Filter by location
+    site_list = location.split(",") if location else []
     if site_list:
         filtered_df = filtered_df[filtered_df['SITE'].isin(site_list)]
 
-    # Filter by DEGREE_TYPE
+    # Filter by degreetype
     # Dictionary to map the degree types to the corresponding codes in the DataFrame
     degree_mapping = {
         'Bachelor': 'Bachelor',
         'Master': 'Master'}
 
     # Convert the degreetype_list from friendly names to codes
-    degreetype_list = degreetype_str.split(",") if degreetype_str else []
+    degreetype_list = degreetype.split(",") if degreetype else []
     code_list = []
     for degreetype in degreetype_list:
         code_list.append(degree_mapping[degreetype])
@@ -150,16 +161,50 @@ def get_courses_taught_by_person(teaching, location_str, degreetype_str, cycle_s
     if code_list:
         filtered_df = filtered_df[filtered_df['DEGREE_TYPE'].isin(code_list)]
 
-    filtered_df = filtered_df[filtered_df['TEACHING'].str.contains(teaching, case=False, na=False)]
-
-    filtered_df = filtered_df[filtered_df['CYCLE']==cycle_str]
-    
-    filtered_df = filtered_df[filtered_df['CREDITS']==int(credits_str)]
+    filtered_df = filtered_df[filtered_df['CYCLE'] == cycle]
 
     filtered_df.fillna("null", inplace=True)
 
+    teachings = filtered_df['TEACHING']
+
+    final_teachings = dict()
+    for teaching in teachings:
+        final_teachings[teaching] = teaching
+
+    final_teachings = json.dumps(final_teachings)
+
+    return final_teachings
+
+
+@app.get("/query/{final_teaching}")
+def get_teaching(final_teaching):
+    """
+    This function retrieves and returns a specific teaching record from the dataframe.
+
+    Parameters:
+    final_teaching (str): The unique identifier of the teaching record to retrieve.
+
+    Returns:
+    JSONResponse: A JSON response containing the details of the specified teaching record.
+
+    Note:
+    The function filters the dataframe based on the 'TEACHING' column and the provided 'final_teaching' parameter.
+    It then fills any missing values in the dataframe with the string 'null'.
+    The filtered dataframe is converted to a dictionary with 'index' orientation, and a JSON response is created using the dictionary.
+    The JSON response is then returned.
+    """
+
+    # Filter the dataframe based on the 'TEACHING' column and the provided 'final_teaching' parameter
+    filtered_df = final_urls_dataframe[final_urls_dataframe['TEACHING'] == final_teaching]
+
+    # Fill any missing values in the dataframe with the string 'null'
+    filtered_df.fillna("null", inplace=True)
+
+    # Convert the filtered dataframe to a dictionary with 'index' orientation
     filtered_dict = filtered_df.to_dict(orient='index')
 
+    # Create a JSON response using the dictionary
     subset_final_json = JSONResponse(content=filtered_dict)
 
+    # Return the JSON response
     return subset_final_json
