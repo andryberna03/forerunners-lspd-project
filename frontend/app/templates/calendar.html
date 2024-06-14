@@ -8,6 +8,8 @@
     <link rel="stylesheet" href="https://unpkg.com/tippy.js@6/dist/tippy.css" />
     <script src="https://unpkg.com/@popperjs/core@2"></script>
     <script src="https://unpkg.com/tippy.js@6"></script>
+    <script src="https://cdnjs.cloudflare.com/ajax/libs/moment.js/2.29.1/moment.min.js"></script>
+    <script src="https://cdnjs.cloudflare.com/ajax/libs/moment-timezone/0.5.34/moment-timezone-with-data.min.js"></script>
 
     <!-- Import specific CSS -->
     <link rel="stylesheet" href="static/css/calendarstyle.css">
@@ -51,7 +53,7 @@
     <!-- Database updating section -->
     <section class="database">
         <p class="text-database py-3 align-items-center">
-            The calendar database was last updated at: {{ datatime_csv.datatime_csv }}
+            The calendar database was last updated at: {{ datatime_csv.datatime }}
         </p>
     </section>
 
@@ -129,10 +131,10 @@
 
     <!-- Bottone Export in iCal -->
     <div class="d-grid gap-2 col-6 mx-auto text-center">
-        <a class="ics_button" href="{{ url_for('get_ics') }}">
-            <button class="btn btn-primary" type="button">Download lectures in iCal</button>
-        </a>
+        <button id="download-button" class="btn btn-primary" type="button">Download lectures in iCal</button>
     </div>
+
+    <script src="../static/js/download_ical.js"></script>
 
     <br>
     <br>
