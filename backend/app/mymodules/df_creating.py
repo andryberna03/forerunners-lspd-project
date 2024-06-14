@@ -7,16 +7,22 @@ import datetime
 
 def df_creating(file_path_final) -> pd.DataFrame:
     """
+    Create or load a DataFrame from a CSV file.
+
     This is the main function which orchestrates the entire process of creating
     the final dataframe. It checks if a file exists and is less than a day old.
     If so, it loads the data from the file. Otherwise, it calls the create_new_dataframe
     function to generate a new dataframe.
+    
+    Parameters:
+    file_path_final (str): The path to the CSV file.
 
     Returns:
     pd.DataFrame: The final dataframe containing all the required data.
     """
     # Check if the file exists and was created within the last 24 hours
     if os.path.exists(file_path_final):
+        # Get the creation time of the file
         creation_time = os.path.getctime(file_path_final)
         file_creation_date = datetime.datetime.fromtimestamp(creation_time)
         current_date = datetime.datetime.now()
@@ -327,14 +333,36 @@ def format_iso8601(final_urls_dataframe):
 
 
 def modify_values(final_urls_dataframe: pd.DataFrame) -> pd.DataFrame:
+    """
+    Modify values in the DataFrame according to specified rules.
+
+    This function performs several modifications on the input DataFrame:
+    - Replaces 'L' with 'Bachelor' and 'LM' with 'Master' in the 'DEGREE_TYPE' column.
+    - Replaces 'PADOVA' with 'VENEZIA' in the 'SITE' column.
+    - Fills missing values in the 'SITE' column with 'Not defined yet'.
+    - Fills missing values in the 'PARTITION' column with an empty string.
+    - Removes rows where 'CYCLE' is 'Precorsi'.
+    - Translates semester names in the 'CYCLE' column to English equivalents.
+
+    Parameters:
+    final_urls_dataframe (pd.DataFrame): The input DataFrame to be modified.
+
+    Returns:
+    pd.DataFrame: The modified DataFrame.
+    """
+    # Replace degree types with their full names
     final_urls_dataframe['DEGREE_TYPE'] = final_urls_dataframe['DEGREE_TYPE'].replace({'L': 'Bachelor', 'LM': 'Master'})
 
+    # Replace 'PADOVA' with 'VENEZIA' in the 'SITE' column
     final_urls_dataframe['SITE'] = final_urls_dataframe['SITE'].replace({'PADOVA': 'VENEZIA'})
 
+    # Fill missing values in the 'SITE' column
     final_urls_dataframe['SITE'] = final_urls_dataframe['SITE'].fillna("Not defined yet")
 
+    # Fill missing values in the 'PARTITION' column with an empty string
     final_urls_dataframe['PARTITION'] = final_urls_dataframe['PARTITION'].fillna("")
 
+    # Remove rows where 'CYCLE' is 'Precorsi'
     final_urls_dataframe = final_urls_dataframe[final_urls_dataframe['CYCLE'] != 'Precorsi']
 
     # Iterate over the DataFrame using the index and semester value

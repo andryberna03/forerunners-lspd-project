@@ -34,7 +34,6 @@ class DatatimeCSV(object):
     Attributes:
     datatime (str): The date and time of the CSV file.
     """
-
     datatime = None
 
 
@@ -45,12 +44,9 @@ class QueryTeachings(FlaskForm):
     Attributes:
     location (SelectField): A dropdown menu for selecting the location.
     degreetype (SelectField): A dropdown menu for selecting the degree type.
-    teaching (SelectField): A dropdown menu for selecting the teaching name.
     cycle (SelectField): A dropdown menu for selecting the cycle.
-    credits (SelectField): A dropdown menu for selecting the credits.
     submit (SubmitField): A button for submitting the form.
     """
-
     location = SelectField('Location:')
     degreetype = SelectField('Degree type:')
     cycle = SelectField('Cycle:')
@@ -62,14 +58,9 @@ class QueryLectures(FlaskForm):
     A Flask-WTF form for querying lectures based on various parameters.
 
     Attributes:
-    location (SelectField): A dropdown menu for selecting the location.
-    degreetype (SelectField): A dropdown menu for selecting the degree type.
     teaching (SelectField): A dropdown menu for selecting the teaching name.
-    cycle (SelectField): A dropdown menu for selecting the cycle.
-    credits (SelectField): A dropdown menu for selecting the credits.
-    submit (SubmitField): A button for submitting the form.
+    submit_teaching (SubmitField): A button for submitting the form.
     """
-
     teaching = SelectField('Enter teaching name:')
     submit_teaching = SubmitField('View your lectures')
 
@@ -111,12 +102,12 @@ def get_unique_values(data, column_name):
     unique_values = set()
     if isinstance(data, list):
         for entry in data:
-            if column_name in entry and entry[column_name] is not None:  # Aggiungi questo controllo per evitare valori None
+            if column_name in entry and entry[column_name] is not None:
                 unique_values.add((entry[column_name], entry[column_name]))
     elif isinstance(data, dict):
         if column_name in data:
             for entry in data[column_name]:
-                if entry is not None:  # Aggiungi questo controllo per evitare valori None
+                if entry is not None:
                     unique_values.add((entry, entry))
     return sorted(list(unique_values))
 
@@ -124,14 +115,12 @@ def get_unique_values(data, column_name):
 @app.route('/calendar', methods=['GET', 'POST'])
 def calendar():
     """
-    This function handles the '/calendar' route of the Flask application.
-    It fetches data from the backend, updates form choices, and processes form submissions.
+    Handle the '/calendar' route of the Flask application.
 
-    Parameters:
-    None
+    Fetches data from the backend, updates form choices, and processes form submissions.
 
     Returns:
-    str: Rendered HTML content for the '/calendar' page.
+        str: Rendered HTML content for the '/calendar' page.
     """
     datatime_csv = DatatimeCSV()
     form = QueryTeachings()

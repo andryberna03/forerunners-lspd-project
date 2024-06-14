@@ -47,65 +47,72 @@ final_urls_dataframe = pd.read_csv('app/final.csv')
 @app.get('/df_show')
 def read_and_return_df():
     """
-    Read and return the dataframe created with df_creating module.
+    Read and return the dataframe created with the df_creating module.
 
     Returns:
-        DataFrame: Lectures dataframe.
+        list: A list of dictionaries representing the lectures dataframe.
     """
+    # Create or load the DataFrame using the df_creating module
     final_urls_dataframe = df_creating()
+    # Fill NaN values with 'null'
     final_urls_dataframe = final_urls_dataframe.fillna('null')
+    # Convert DataFrame to a list of dictionaries and return
     return final_urls_dataframe.to_dict(orient='records')
 
 
-# Funzione per ottenere la data di creazione del file CSV
 def get_csv_creation_date():
     """
-    This function retrieves the creation date of a CSV file.
+    Retrieve the creation date of a CSV file.
 
-    Parameters:
-    None
+    This function checks if a CSV file exists at the hardcoded path 'app/final.csv'.
+    If the file exists, it retrieves and returns the creation date as a datetime object.
 
     Returns:
-    datetime.datetime: The creation date of the CSV file if it exists, otherwise None.
-
-    Raises:
-    None
+        datetime: The creation date of the CSV file if it exists, otherwise None.
 
     Note:
-    The CSV file path is hardcoded as 'app/final.csv'.
-    The function uses the os.path.exists() and os.path.getctime() methods to retrieve the file creation date.
-    The creation date is converted from a timestamp to a datetime object using datetime.datetime.fromtimestamp().
+        The function uses os.path.exists() and os.path.getctime() to check the file existence
+        and get the creation time. The creation time is converted from a timestamp to a datetime
+        object using datetime.fromtimestamp().
     """
     file_path_final = 'app/final.csv'
     if os.path.exists(file_path_final):
+        # Get the creation time of the file
         creation_time = os.path.getctime(file_path_final)
+        # Convert the creation time from a timestamp to a datetime object
         file_creation_date = datetime.fromtimestamp(creation_time)
         return file_creation_date
     else:
         return None
 
-# Endpoint per restituire la data di creazione del file CSV
+
 @app.get("/csv_creation_date")
 async def csv_creation_date(response: Response):
     """
-    This function retrieves the creation date of the CSV file and sets a cookie with the date.
+    Retrieve the creation date of the CSV file and set a cookie with the date.
+
+    This endpoint retrieves the creation date of the CSV file at the hardcoded path 'app/final.csv'.
+    If the file exists, it formats the creation date in 'Day, DD-MMM-YYYY HH:MM:SS TZ' format,
+    sets it as a cookie named 'creation_date', and returns the formatted date.
 
     Parameters:
-    response (Response): The FastAPI Response object to set the cookie.
+        response (Response): The FastAPI Response object to set the cookie.
 
     Returns:
-    str: The formatted creation date of the CSV file in 'Day, DD-MMM-YYYY HH:MM:SS TZ' format.
+        str: The formatted creation date of the CSV file in 'Day, DD-MMM-YYYY HH:MM:SS TZ' format.
 
     Raises:
-    HTTPException: If the CSV file does not exist, a 404 Not Found exception is raised.
+        HTTPException: If the CSV file does not exist, a 404 Not Found exception is raised.
 
     Note:
-    The CSV file path is hardcoded as 'app/final.csv'.
-    The function uses the os.path.exists() and os.path.getctime() methods to retrieve the file creation date.
-    The creation date is converted from a timestamp to a datetime object using datetime.datetime.fromtimestamp().
-    The datetime object is then converted to the 'Europe/Rome' timezone using pytz.timezone().
-    The formatted date is set as a cookie with the name 'creation_date' using the Response.set_cookie() method.
+        The function uses os.path.exists() and os.path.getctime() to check the file existence
+        and get the creation time. The creation time is converted from a timestamp to a datetime
+        object using datetime.fromtimestamp(). The datetime object is then converted to the
+        'Europe/Rome' timezone using pytz.timezone(). The formatted date is set as a cookie
+        using Response.set_cookie().
     """
+    # Get the creation date of the CSV file
+    creation_date = get_csv_creation_date()
     creation_date = get_csv_creation_date()
     if creation_date:
         # Set the timezone to Rome
@@ -118,7 +125,8 @@ async def csv_creation_date(response: Response):
         response.set_cookie(key='creation_date', value=cookie_date_format)
         return cookie_date_format
     else:
-        raise HTTPException(status_code=404, detail="File CSV non trovato")
+        # Raise a 404 Not Found exception if the CSV file does not exist
+        raise HTTPException(status_code=404, detail="File CSV not found")
 
 
 @app.get("/query/{location}/{degreetype}/{cycle}")
@@ -179,7 +187,7 @@ def get_courses_taught_by_person(location, degreetype, cycle):
 @app.get("/query/{final_teaching}")
 def get_teaching(final_teaching):
     """
-    This function retrieves and returns a specific teaching record from the dataframe.
+    Retrieve and return a specific teaching record from the dataframe.
 
     Parameters:
     final_teaching (str): The unique identifier of the teaching record to retrieve.

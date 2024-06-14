@@ -7,11 +7,10 @@ import datetime
 """
 Execute this test by running on the terminal (from the app/) the command:
 pytest --cov=app --cov-report=html tests/
- """
+"""
 
 client = TestClient(app)
 
-#ok
 def test_read_main():
     """
     Test the main endpoint ("/") of the application.
@@ -20,11 +19,15 @@ def test_read_main():
     - The response status code is 200.
     - The JSON response matches {"Hello": "World"}.
     """
+    # Send a GET request to the root endpoint
     response = client.get("/")
+    
+    # Assert that the response status code is 200
     assert response.status_code == 200
+    
+    # Assert that the JSON response matches {"Hello": "World"}
     assert response.json() == {"Hello": "World"}
 
-#ok
 def test_read_and_return_df():
     """
     Test the endpoint "/df_show" to ensure it returns a DataFrame-like JSON structure.

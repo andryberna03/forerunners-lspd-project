@@ -3,48 +3,106 @@ import datetime
 from app.mymodules.df_creating import df_creating, create_new_dataframe
 import pandas as pd
 import pytest
+
 """
 Execute this test by running on the terminal (from the app/) the command:
 pytest --cov=app --cov-report=html tests/
- """
+"""
+
 file_path = 'app/final.csv'
 
-#TESTING df_creating
-
-# Test the function with an existing file that is less than a day old
+# Test the function with an existing file that is more than a day old
 def test_existing_file_recent(mocker):
+    """
+    Test the df_creating function with an existing file that is less than a day old.
+
+    This test mocks the file system and pandas to simulate the presence of a recent file.
+
+    Parameters:
+    mocker: The pytest-mock mocker object.
+
+    Asserts:
+    The returned DataFrame matches the mock DataFrame.
+    """
+    # Mock os.path.exists to return True
     mocker.patch('os.path.exists', return_value=True)
+    # Mock os.path.getctime to return a timestamp of 1 hour ago
     mocker.patch('os.path.getctime', return_value=(datetime.datetime.now() - datetime.timedelta(hours=1)).timestamp())
+    # Mock pandas.read_csv to return a predefined DataFrame
     mock_df = pd.DataFrame({'A': [1, 2, 3]})
     mocker.patch('pandas.read_csv', return_value=mock_df)
     
+    # Call the function with a dummy file path
     result_df = df_creating('app/dummy.csv')
     
+    # Assert that the result DataFrame matches the mock DataFrame
     assert (result_df == mock_df).all().all()
 
 # Test the function with an existing file that is more than a day old
 def test_existing_file_old(mocker):
+    """
+    Test the df_creating function with an existing file that is more than a day old.
+
+    This test mocks the file system and create_new_dataframe to simulate the presence of an old file.
+
+    Parameters:
+    mocker: The pytest-mock mocker object.
+
+    Asserts:
+    The returned DataFrame matches the mock DataFrame created by create_new_dataframe.
+    """
+    # Mock os.path.exists to return True
     mocker.patch('os.path.exists', return_value=True)
+    # Mock os.path.getctime to return a timestamp of 2 days ago
     mocker.patch('os.path.getctime', return_value=(datetime.datetime.now() - datetime.timedelta(days=2)).timestamp())
+    # Mock create_new_dataframe to return a predefined DataFrame
     mock_df = pd.DataFrame({'A': [4, 5, 6]})
     mocker.patch('app.mymodules.df_creating.create_new_dataframe', return_value=mock_df)
     
+    # Call the function with a dummy file path
     result_df = df_creating('app/dummy.csv')
     
+    # Assert that the result DataFrame matches the mock DataFrame created by create_new_dataframe
     assert (result_df == mock_df).all().all()
 
 # Test the function when the file does not exist
 def test_non_existing_file(mocker):
+    """
+    Test the df_creating function when the file does not exist.
+
+    This test mocks the file system and create_new_dataframe to simulate the absence of a file.
+
+    Parameters:
+    mocker: The pytest-mock mocker object.
+
+    Asserts:
+    The returned DataFrame matches the mock DataFrame created by create_new_dataframe.
+    """
+    # Mock os.path.exists to return False
     mocker.patch('os.path.exists', return_value=False)
+    # Mock create_new_dataframe to return a predefined DataFrame
     mock_df = pd.DataFrame({'A': [7, 8, 9]})
     mocker.patch('app.mymodules.df_creating.create_new_dataframe', return_value=mock_df)
     
+    # Call the function with a dummy file path
     result_df = df_creating('app/dummy.csv')
     
+    # Assert that the result DataFrame matches the mock DataFrame created by create_new_dataframe
     assert (result_df == mock_df).all().all()
 
 #TESTING create_new_dataframe
 def test_create_new_dataframe():
+    """
+    Test the create_new_dataframe function.
+
+    This test checks if the DataFrame created by create_new_dataframe has the expected structure and content.
+
+    Asserts:
+    The result is a DataFrame.
+    The DataFrame is not empty.
+    The DataFrame has the expected headers.
+    """
+    # Define the expected headers for the DataFrame
     expected_header = [
         "AF_ID", "TEACHING", "CYCLE", "PARTITION", "SITE", "CREDITS", "DEGREE_TYPE",
         "LECTURE_DAY", "LECTURE_START", "LECTURE_END", "LECTURER_NAME", "CLASSROOM_NAME",
