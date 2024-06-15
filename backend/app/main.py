@@ -129,7 +129,7 @@ async def csv_creation_date(response):
 
 
 @app.get("/query/{location}/{degreetype}/{cycle}")
-def get_courses_taught_by_person(location, degreetype, cycle):
+def get_all_teachings(location, degreetype, cycle):
     """
     This function retrieves and returns a list of teachings based on the provided location, degree type, and cycle.
 
