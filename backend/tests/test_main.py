@@ -1,10 +1,6 @@
-import json
-import os
-import sys
 from fastapi.testclient import TestClient
 from unittest.mock import patch
 from app.main import app
-import datetime
 
 """
 Execute this test by running on the terminal (from the app/) the command:
@@ -75,12 +71,6 @@ def test_csv_creation_date():
 
     # QUI DEVO CAPIRE CHE ASSERT DEVO FARE, PER IL FORMAT? %A, %d-%b-%Y %H:%M:%S %Z
 
-
-
-# MARTA, test sulle due query
-
-# a) @app.get("/query/{location}/{degreetype}/{cycle}")
-# def get_all_teachings(location: str, degreetype: str, cycle: str) -> json:
 
 @patch("app.main.get_all_teachings")  # Mock the get_all_teachings function
 def test_get_all_teachings(mock_get_all_teachings):
