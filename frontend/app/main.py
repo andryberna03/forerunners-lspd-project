@@ -1,7 +1,8 @@
 """
 Frontend module for the Flask application.
 
-This module defines a simple Flask application that serves as the frontend for the project.
+This module defines a simple Flask application that serves
+as the frontend for the project.
 """
 
 from flask import Flask, render_template
@@ -12,20 +13,24 @@ from wtforms import SubmitField, SelectField
 import json
 
 app = Flask(__name__)
-app.config['SECRET_KEY'] = 'your_secret_key'  # Replace with a secure secret key
+# Replace with a secure secret key
+app.config['SECRET_KEY'] = 'your_secret_key'
 
 """
 Configure Cross-Origin Resource Sharing (CORS) for the Flask application.
 
-CORS is a mechanism that allows a server to indicate any other origins (domain, scheme, or port) 
-that are permitted to access the server's resources. By default, Flask does not enable CORS, 
-so this line of code is necessary to allow all origins to access the application.
+CORS is a mechanism that allows a server to indicate any other origins
+(domain, scheme, or port)that are permitted to access the server's resources.
+By default, Flask does not enable CORS,so this line of code is necessary to
+allow all origins to access the application.
 """
 CORS(app)
 
+
 # Configuration for the FastAPI backend URL
-FASTAPI_BACKEND_HOST = 'http://backend'  # Replace with the actual URL of your FastAPI backend
+FASTAPI_BACKEND_HOST = 'http://backend'
 BACKEND_URL = f'{FASTAPI_BACKEND_HOST}/query/'
+
 
 class DatatimeCSV(object):
     """
@@ -117,7 +122,8 @@ def calendar():
     """
     Handle the '/calendar' route of the Flask application.
 
-    Fetches data from the backend, updates form choices, and processes form submissions.
+    Fetches data from the backend, updates form choices,
+    and processes form submissions.
 
     Returns:
         str: Rendered HTML content for the '/calendar' page.
@@ -152,22 +158,31 @@ def calendar():
         cycle = form.cycle.data
 
         # Build URL for querying teachings
-        url_teachings = f'{FASTAPI_BACKEND_HOST}/query/{location}/{degreetype}/{cycle}'
+        url_query = f'{FASTAPI_BACKEND_HOST}/query'
+        url_teachings = f'{url_query}/{location}/{degreetype}/{cycle}'
         response_teachings = requests.get(url_teachings)
 
         if response_teachings.status_code == 200:
             # Extract and display the result from the FastAPI backend
             teachings = response_teachings.json()
             data_dict = json.loads(teachings)
-            teachings = sorted([(key, value) for key, value in data_dict.items()])
+            teachings = sorted([
+                (key, value) for key, value in data_dict.items()
+            ])
             form_lectures.teaching.choices = teachings
-            
-            return render_template('calendar.html', form=form, form_lectures=form_lectures, datatime_csv=datatime_csv, error_message=error_message)
+
+            return render_template(
+                'calendar.html', form=form, form_lectures=form_lectures,
+                datatime_csv=datatime_csv, error_message=error_message
+            )
         else:
             error_message = "Error: Unable to fetch data from the backend."
 
     # Render the '/calendar' page with the appropriate data and form
-    return render_template('calendar.html', form=form, form_lectures=form_lectures, datatime_csv=datatime_csv, error_message=error_message)
+    return render_template(
+        'calendar.html', form=form, form_lectures=form_lectures,
+        datatime_csv=datatime_csv, error_message=error_message
+    )
 
 
 if __name__ == '__main__':

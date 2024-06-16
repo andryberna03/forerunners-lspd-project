@@ -1,60 +1,66 @@
+/* Masthead section styling */
 .masthead {
-    font-weight: bold;
-    position: relative;
-    width: 100%;
-    height: auto;
-    color: rgb(172, 0, 51);
-    padding: 7rem 0;
-    background-image: url('../img/calendar/planning.png');
-    background-position: center;
-    background-repeat: no-repeat;
-    background-attachment: scroll;
-    box-shadow: 0 0 10px rgba(0, 0, 0, 0.5);
-    background-size: cover;
-    background-color: rgba(0, 0, 0, 0.3);
+    font-weight: bold; /* Make the text bold */
+    position: relative; /* Position the element relative to its normal position */
+    width: 100%; /* Make the element take up the full width */
+    height: auto; /* Set the height automatically */
+    color: rgb(172, 0, 51); /* Set the text color to a deep red color */
+    padding: 7rem 0; /* Set the padding for top and bottom to 7rem and left and right to 0 */
+    background-image: url('../img/calendar/planning.png'); /* Set the background image */
+    background-position: center; /* Center the background image */
+    background-repeat: no-repeat; /* Do not repeat the background image */
+    background-attachment: scroll; /* Scroll the background image with the content */
+    box-shadow: 0 0 10px rgba(0, 0, 0, 0.5); /* Add a box shadow */
+    background-size: cover; /* Make the background image cover the entire element */
+    background-color: rgba(0, 0, 0, 0.3); /* Set the background color with some transparency */
 }
 
+/* Greeting text styling */
 .greeting-text {
-    font-size: 400%;
-    /* Creazione di un gradiente di colore partendo da rgb(172, 0, 51) */
+    font-size: 400%; /* Set the font size to 400% */
+    /* Create a linear gradient background color from rgb(172, 0, 51) to rgb(221, 70, 70) */
     background: linear-gradient(to right, rgb(172, 0, 51), rgb(221, 70, 70));
-    /* Specifica che il testo deve essere trasparente */
+    /* Make the text transparent */
     -webkit-background-clip: text;
     background-clip: text;
-    /* Colore di fallback per i browser che non supportano background-clip: text */
+    /* Set a fallback color for browsers that don't support background-clip: text */
     color: transparent;
 }
 
+/* How to section styling */
 .how_to {
-    align-content: center;
-    align-items: center;
-    padding-top: 50px;
-    padding-bottom: 50px;
+    align-content: center; /* Center the content horizontally */
+    align-items: center; /* Center the items horizontally */
+    padding-top: 50px; /* Add padding to the top */
+    padding-bottom: 50px; /* Add padding to the bottom */
 }
 
 .text-how_to {
-    font-size: 300%;
-    text-align: center;
+    font-size: 300%; /* Set the font size to 300% */
+    text-align: center; /* Center the text */
 }
 
+/* Database section styling */
 .database {
-    background-color: rgb(172, 0, 51);
+    background-color: rgb(172, 0, 51); /* Set the background color to a deep red color */
 }
 
 .text-database {
-    text-align: center;
-    color: white;
-    font-size: 100%;
+    text-align: center; /* Center the text */
+    color: white; /* Set the text color to white */
+    font-size: 100%; /* Set the font size to 100% */
 }
 
+/* Error message styling */
 #error-message {
-    color: red;
-    font-weight: bold;
-    margin-top: 20px;
+    color: red; /* Set the text color to red */
+    font-weight: bold; /* Make the text bold */
+    margin-top: 20px; /* Add margin to the top */
 }
 
+/* FullCalendar event styling */
 .fc-event-title,
 .fc-event-time {
-    white-space: normal;
-    display: block;
+    white-space: normal; /* Set the white space to normal */
+    display: block; /* Display the element as a block */
 }

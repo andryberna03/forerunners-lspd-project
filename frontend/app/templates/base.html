@@ -5,262 +5,147 @@
         <meta charset="UTF-8">
         <meta name="viewport" content="width=device-width, initial-scale=1.0, IE=edge" http-equiv="X-UA-Compatible">
 
-        <!-- Import Bootstrap CSS -->
-        <link rel="stylesheet" href="https://stackpath.bootstrapcdn.com/bootstrap/4.3.1/css/bootstrap.min.css"
-            integrity="sha384-ggOyR0iXCbMQv3Xipma34MD+dH/1fQ784/j6cY/iJTQUOhcWr7x9JvoRxT2MZw1T" crossorigin="anonymous">
 
-        <!-- Import Bootstrap JS -->
-        <script src="https://cdn.jsdelivr.net/npm/bootstrap@5.3.3/dist/js/bootstrap.bundle.min.js"
-            integrity="sha384-YvpcrYf0tY3lHB60NNkmXc5s9fDVZLESaAA55NDzOxhy9GkcIdslK1eN7N6jIeHz" crossorigin="anonymous">
-            </script>
 
-        <!-- Import Benton Sans from Google Fonts to use Ca' Foscari brand identity -->
-        <link rel="stylesheet" href="https://fonts.googleapis.com/css2?family=Benton+Sans:wght@400;700&display=swap">
+    <!-- Import Bootstrap CSS -->
+    <link rel="stylesheet" href="https://stackpath.bootstrapcdn.com/bootstrap/4.3.1/css/bootstrap.min.css"
+        integrity="sha384-ggOyR0iXCbMQv3Xipma34MD+dH/1fQ784/j6cY/iJTQUOhcWr7x9JvoRxT2MZw1T" crossorigin="anonymous">
 
-        <!-- Font Awesome -->
-        <link href="https://cdnjs.cloudflare.com/ajax/libs/font-awesome/6.0.0-beta3/css/all.min.css" rel="stylesheet">
+    <!-- Import Bootstrap JS -->
+    <script src="https://cdn.jsdelivr.net/npm/bootstrap@5.3.3/dist/js/bootstrap.bundle.min.js"
+        integrity="sha384-YvpcrYf0tY3lHB60NNkmXc5s9fDVZLESaAA55NDzOxhy9GkcIdslK1eN7N6jIeHz" crossorigin="anonymous">
+        </script>
 
-        <!-- Define title and logo of the tab -->
-        <title>{% block title %} {% endblock %}</title>
-        <link rel="icon" href="../static/img/base/logounive.png">
+    <!-- Import Benton Sans from Google Fonts to use Ca' Foscari brand identity -->
+    <link rel="stylesheet" href="https://fonts.googleapis.com/css2?family=Benton+Sans:wght@400;700&display=swap">
 
-        <!-- Import specific CSS -->
-        <link rel="stylesheet" href="static/css/basestyle.css">
-    </head>
-    <body>
-        <section>
-        <!-- Navbar -->
-        <nav class="navbar navbar-expand-lg fixed-top">
-            <div class="container">
-                <!-- Logo and name of the group into the Navbar -->
-                <a class="navbar-brand d-flex align-items-center" href="{{ url_for('index') }}" title="Home">
-                    <img class="logo img-fluid mw-100 mr-2"
-                        src="../static/img/base/logounive.png" class="img-fluid" alt="Forerunners Logo"
-                        style="width: 50px; height: 50px;"
-                    >
-                    FORERRUNERS' PROJECT
-                </a>
-                <!-- -->
-                <button class="navbar-toggler ms-auto" type="button" data-bs-toggle="collapse" color="white"
-                    data-bs-target="#navbarSupportedContent" aria-controls="navbarSupportedContent" aria-expanded="false"
-                    aria-label="Toggle navigation">
-                    <!-- Font Awesome icon -->
-                    <i class="fas fa-bars fa-2x"></i>
-                </button>
-                <div class="collapse navbar-collapse" id="navbarSupportedContent">
-                    <ul class="navbar-nav ml-auto">
-                        <li class="nav-item">
-                            <a class="nav-link" href="{{ url_for('index') }}" title="Home">
-                                <svg xmlns="http://www.w3.org/2000/svg" width="16" height="16" fill="currentColor" class="bi bi-house align-middle"
-                                    viewBox="0 0 16 16">
-                                    <path
-                                        d="M8.707 1.5a1 1 0 0 0-1.414 0L.646 8.146a.5.5 0 0 0 .708.708L2 8.207V13.5A1.5 1.5 0 0 0 3.5 15h9a1.5 1.5 0 0 0 1.5-1.5V8.207l.646.647a.5.5 0 0 0 .708-.708L13 5.793V2.5a.5.5 0 0 0-.5-.5h-1a.5.5 0 0 0-.5.5v1.293zM13 7.207V13.5a.5.5 0 0 1-.5.5h-9a.5.5 0 0 1-.5-.5V7.207l5-5z" />
-                                </svg>
-                                <span class="align-middle">Home</span>
-                            </a>
-                        </li>
-                        <li class="nav-item">
-                            <a class="nav-link" href="{{ url_for('calendar') }}" title="Calendar">
-                                <svg xmlns="http://www.w3.org/2000/svg" width="16" height="16" fill="currentColor" class="bi bi-calendar3 align-middle"
-                                    viewBox="0 0 16 16">
-                                    <path
-                                        d="M14 0H2a2 2 0 0 0-2 2v12a2 2 0 0 0 2 2h12a2 2 0 0 0 2-2V2a2 2 0 0 0-2-2M1 3.857C1 3.384 1.448 3 2 3h12c.552 0 1 .384 1 .857v10.286c0 .473-.448.857-1 .857H2c-.552 0-1-.384-1-.857z" />
-                                    <path
-                                        d="M6.5 7a1 1 0 1 0 0-2 1 1 0 0 0 0 2m3 0a1 1 0 1 0 0-2 1 1 0 0 0 0 2m3 0a1 1 0 1 0 0-2 1 1 0 0 0 0 2m-9 3a1 1 0 1 0 0-2 1 1 0 0 0 0 2m3 0a1 1 0 1 0 0-2 1 1 0 0 0 0 2m3 0a1 1 0 1 0 0-2 1 1 0 0 0 0 2m3 0a1 1 0 1 0 0-2 1 1 0 0 0 0 2m-9 3a1 1 0 1 0 0-2 1 1 0 0 0 0 2m3 0a1 1 0 1 0 0-2 1 1 0 0 0 0 2m3 0a1 1 0 1 0 0-2 1 1 0 0 0 0 2" />
-                                </svg>
-                                <span class="align-middle">Calendar</span>
-                            </a>
-                        </li>
-                        <li class="nav-item">
-                            <a class="nav-link" href="{{ url_for('about') }}" title="About the Project">
-                                <svg xmlns="http://www.w3.org/2000/svg" width="16" height="16" fill="currentColor" class="bi bi-info-circle align-middle"
-                                    viewBox="0 0 16 16">
-                                    <path 
-                                        d="M8 15A7 7 0 1 1 8 1a7 7 0 0 1 0 14m0 1A8 8 0 1 0 8 0a8 8 0 0 0 0 16" />
-                                    <path
-                                        d="m8.93 6.588-2.29.287-.082.38.45.083c.294.07.352.176.288.469l-.738 3.468c-.194.897.105 1.319.808 1.319.545 0 1.178-.252 1.465-.598l.088-.416c-.2.176-.492.246-.686.246-.275 0-.375-.193-.304-.533zM9 4.5a1 1 0 1 1-2 0 1 1 0 0 1 2 0" />
-                                </svg>
-                                <span class="align-middle">About the Project</span>
-                            </a>
-                        </li>
-                </div>
+    <!-- Font Awesome -->
+    <link href="https://cdnjs.cloudflare.com/ajax/libs/font-awesome/6.0.0-beta3/css/all.min.css" rel="stylesheet">
+
+    <!-- Define title and logo of the tab -->
+    <title>{% block title %} {% endblock %}</title>
+    <link rel="icon" href="../static/img/base/logounive.png">
+
+    <!-- Import specific CSS -->
+    <link rel="stylesheet" href="static/css/basestyle.css">
+</head>
+<body>
+    <section>
+    <!-- Navbar -->
+    <nav class="navbar navbar-expand-lg fixed-top">
+        <div class="container">
+            <!-- Logo and name of the group into the Navbar -->
+            <a class="navbar-brand d-flex align-items-center" href="{{ url_for('index') }}" title="Home">
+                <img class="logo img-fluid mw-100 mr-2"
+                    src="../static/img/base/logounive.png" class="img-fluid" alt="Forerunners Logo"
+                    style="width: 50px; height: 50px;"
+                >
+                FORERRUNERS' PROJECT
+            </a>
+            <!-- -->
+            <button class="navbar-toggler ms-auto" type="button" data-bs-toggle="collapse" color="white"
+                data-bs-target="#navbarSupportedContent" aria-controls="navbarSupportedContent" aria-expanded="false"
+                aria-label="Toggle navigation">
+                <!-- Font Awesome icon -->
+                <i class="fas fa-bars fa-2x"></i>
+            </button>
+            <div class="collapse navbar-collapse" id="navbarSupportedContent">
+                <ul class="navbar-nav ml-auto">
+                    <li class="nav-item">
+                        <a class="nav-link" href="{{ url_for('index') }}" title="Home">
+                            <svg xmlns="http://www.w3.org/2000/svg" width="16" height="16" fill="currentColor" class="bi bi-house align-middle"
+                                viewBox="0 0 16 16">
+                                <path
+                                    d="M8.707 1.5a1 1 0 0 0-1.414 0L.646 8.146a.5.5 0 0 0 .708.708L2 8.207V13.5A1.5 1.5 0 0 0 3.5 15h9a1.5 1.5 0 0 0 1.5-1.5V8.207l.646.647a.5.5 0 0 0 .708-.708L13 5.793V2.5a.5.5 0 0 0-.5-.5h-1a.5.5 0 0 0-.5.5v1.293zM13 7.207V13.5a.5.5 0 0 1-.5.5h-9a.5.5 0 0 1-.5-.5V7.207l5-5z" />
+                            </svg>
+                            <span class="align-middle">Home</span>
+                        </a>
+                    </li>
+                    <li class="nav-item">
+                        <a class="nav-link" href="{{ url_for('calendar') }}" title="Calendar">
+                            <svg xmlns="http://www.w3.org/2000/svg" width="16" height="16" fill="currentColor" class="bi bi-calendar3 align-middle"
+                                viewBox="0 0 16 16">
+                                <path
+                                    d="M14 0H2a2 2 0 0 0-2 2v12a2 2 0 0 0 2 2h12a2 2 0 0 0 2-2V2a2 2 0 0 0-2-2M1 3.857C1 3.384 1.448 3 2 3h12c.552 0 1 .384 1 .857v10.286c0 .473-.448.857-1 .857H2c-.552 0-1-.384-1-.857z" />
+                                <path
+                                    d="M6.5 7a1 1 0 1 0 0-2 1 1 0 0 0 0 2m3 0a1 1 0 1 0 0-2 1 1 0 0 0 0 2m3 0a1 1 0 1 0 0-2 1 1 0 0 0 0 2m-9 3a1 1 0 1 0 0-2 1 1 0 0 0 0 2m3 0a1 1 0 1 0 0-2 1 1 0 0 0 0 2m3 0a1 1 0 1 0 0-2 1 1 0 0 0 0 2m3 0a1 1 0 1 0 0-2 1 1 0 0 0 0 2m-9 3a1 1 0 1 0 0-2 1 1 0 0 0 0 2m3 0a1 1 0 1 0 0-2 1 1 0 0 0 0 2m3 0a1 1 0 1 0 0-2 1 1 0 0 0 0 2" />
+                            </svg>
+                            <span class="align-middle">Calendar</span>
+                        </a>
+                    </li>
+                    <li class="nav-item">
+                        <a class="nav-link" href="{{ url_for('about') }}" title="About the Project">
+                            <svg xmlns="http://www.w3.org/2000/svg" width="16" height="16" fill="currentColor" class="bi bi-info-circle align-middle"
+                                viewBox="0 0 16 16">
+                                <path 
+                                    d="M8 15A7 7 0 1 1 8 1a7 7 0 0 1 0 14m0 1A8 8 0 1 0 8 0a8 8 0 0 0 0 16" />
+                                <path
+                                    d="m8.93 6.588-2.29.287-.082.38.45.083c.294.07.352.176.288.469l-.738 3.468c-.194.897.105 1.319.808 1.319.545 0 1.178-.252 1.465-.598l.088-.416c-.2.176-.492.246-.686.246-.275 0-.375-.193-.304-.533zM9 4.5a1 1 0 1 1-2 0 1 1 0 0 1 2 0" />
+                            </svg>
+                            <span class="align-middle">About the Project</span>
+                        </a>
+                    </li>
             </div>
-        </nav>
-        <div>
-            {% block content %} {% endblock %}
         </div>
-        <!-- Footer -->
-        <footer class="footer">
-            <!-- Ca' Foscari contact information and other website pages -->
-            <section class="py-4 py-md-3 py-xl-8 border-top border-light">
-                <div class="container overflow-hidden">
-                    <div class="row gy-4 gy-lg-0 justify-content-xl-between">
-                        <div class="col-12 col-md-4 col-lg-3 col-xl-2 d-flex justify-content-center align-items-center">
-                            <div class="widget">
-                                <a href="{{ url_for('index') }}" title="Home">
-                                    <img src="../static/img/base/logounive.png" alt="Logo Unive" width="135" height="135">
-                                </a>
-                            </div>
-                        </div>
-                        <div class="col-12 col-md-4 col-lg-3 col-xl-2">
-                            <div class="widget">
-                                <h4 class="widget-title mt-3">Get in Touch</h4>
-                                <a class="link-secondary text-decoration-none" href="https://maps.app.goo.gl/xP5L6rTymZMjLGrD9" target="_blank" title="Ca' Foscari Headquarter on Google Maps">
-                                    <span>Ca' Foscari University, Dorsoduro 3246, 30123 Venice, Italy</span>
-                                </a>
-                                <p class="mb-1">
-                                    <a class="link-secondary text-decoration-none" href="tel: +39 041 234 7575" title="Student Call Center">
-                                        <span>+39 041 234 7575</span>
-                                    </a>
-                                </p>
-                                <p class="mb-0">
-                                    <a class="link-secondary text-decoration-none" href="mailto:internationalstaff@unive.it" title="Mail to Staff for International Students">
-                                        <span>internationalstaff@unive.it</span>
-                                    </a>
-                                </p>
-                            </div>
-                        </div>
-                        <div class="col-12 col-md- col-lg-4 col-xl-3">
-                            <div class="widget">
-                                <h4 class="widget-title mb-7 mb-lg-9 mt-3">Learn More about Exchange Students</h4>
-                                <ul class="list-unstyled">
-                                    <li class="foot-item">
-                                        <a class="foot-link" aria-current="page" href="https://www.unive.it/pag/12522/" target="_blank" title="Incoming Mobility website">
-                                            <svg xmlns="http://www.w3.org/2000/svg" width="16" height="16" fill="currentColor" class="bi bi-airplane-fill align-middle"
-                                                viewBox="0 0 16 16">
-                                                <path
-                                                    d="M6.428 1.151C6.708.591 7.213 0 8 0s1.292.592 1.572 1.151C9.861 1.73 10 2.431 10 3v3.691l5.17 2.585a1.5 1.5 0 0 1 .83 1.342V12a.5.5 0 0 1-.582.493l-5.507-.918-.375 2.253 1.318 1.318A.5.5 0 0 1 10.5 16h-5a.5.5 0 0 1-.354-.854l1.319-1.318-.376-2.253-5.507.918A.5.5 0 0 1 0 12v-1.382a1.5 1.5 0 0 1 .83-1.342L6 6.691V3c0-.568.14-1.271.428-1.849" />
-                                            </svg>
-                                            <span class="align-left">Incoming Mobility</span>
-                                        </a>
-                                    </li>
-                                    <li class="foot-item">
-                                        <a class="foot-link align-left" href="https://www.unive.it/pag/12525/" target="_blank" title="International Students website">
-                                            <i class="fa-solid fa-graduation-cap align-middle"></i>
-                                            <span class="align-middle">International Students</span>
-                                        </a>
-                                    </li>
-                                    <li class="foot-item">
-                                        <a class="foot-link align-left" href="https://www.unive.it/pag/40946/" target="_blank" title="Staff for International Students website">
-                                            <i class="fa-solid fa-university align-middle"></i>
-                                            <span class="align-middle">Staff for International Students</span>
-                                        </a>
-                                    </li>
-                                </ul>
-                            </div>
+    </nav>
+    <div>
+        {% block content %} {% endblock %}
+    </div>
+    <!-- Footer -->
+    <footer class="footer">
+        <!-- Ca' Foscari contact information and other website pages -->
+        <section class="py-4 py-md-3 py-xl-8 border-top border-light">
+            <div class="container overflow-hidden">
+                <div class="row gy-4 gy-lg-0 justify-content-xl-between">
+                    <div class="col-12 col-md-4 col-lg-3 col-xl-2 d-flex justify-content-center align-items-center">
+                        <div class="widget">
+                            <a href="{{ url_for('index') }}" title="Home">
+                                <img src="../static/img/base/logounive.png" alt="Logo Unive" width="135" height="135">
+                            </a>
                         </div>
                     </div>
-                </div>
-            </section>
-            <!-- Ca' Foscari Privacy and Social Media accounts -->
-            <div class="py-2 py-md-2 border-top border-light-subtle">
-                <div class="container overflow-hidden">
-                    <div class="row gy-4 gy-md-0">
-                        <div class="col-md-5 order-1 order-md-0 text-center text-md-start">
-                            <div class="copyright">
-                                &copy; 2024. All Rights Reserved.
-                            </div>
+                    <div class="col-12 col-md-4 col-lg-3 col-xl-2">
+                        <div class="widget">
+                            <h4 class="widget-title mt-3">Get in Touch</h4>
+                            <a class="link-secondary text-decoration-none" href="https://maps.app.goo.gl/xP5L6rTymZMjLGrD9" target="_blank" title="Ca' Foscari Headquarter on Google Maps">
+                                <span>Ca' Foscari University, Dorsoduro 3246, 30123 Venice, Italy</span>
+                            </a>
+                            <p class="mb-1">
+                                <a class="link-secondary text-decoration-none" href="tel: +39 041 234 7575" title="Student Call Center">
+                                    <span>+39 041 234 7575</span>
+                                </a>
+                            </p>
+                            <p class="mb-0">
+                                <a class="link-secondary text-decoration-none" href="mailto:internationalstaff@unive.it" title="Mail to Staff for International Students">
+                                    <span>internationalstaff@unive.it</span>
+                                </a>
+                            </p>
                         </div>
-                        <div class="col-md-7 text-center text-md-end">
-                            <ul class="nav justify-content-start justify-content-center">
-                                <!-- Facebook Ca' Foscari link -->
-                                <li class="nav-item">
-                                    <a class="nav-link link-dark" href="https://www.facebook.com/cafoscari" target="_blank" title="Facebook Ca' Foscari">
-                                        <svg xmlns="http://www.w3.org/2000/svg" width="24" height="24" fill="currentColor" class="bi bi-facebook"
-                                            viewBox="0 0 16 16" hov>
-                                            <path
-                                                d="M16 8.049c0-4.446-3.582-8.05-8-8.05C3.58 0-.002 3.603-.002 8.05c0 4.017 2.926 7.347 6.75 7.951v-5.625h-2.03V8.05H6.75V6.275c0-2.017 1.195-3.131 3.022-3.131.876 0 1.791.157 1.791.157v1.98h-1.009c-.993 0-1.303.621-1.303 1.258v1.51h2.218l-.354 2.326H9.25V16c3.824-.604 6.75-3.934 6.75-7.951z" />
-                                        </svg>
-                                    </a>
-                                </li>
-                                <!-- Twitter X Ca' Foscari link -->
-                                <li class="nav-item">
-                                    <a class="nav-link link-dark" href="https://twitter.com/cafoscari" target="_blank" title="X Ca' Foscari">
-                                        <svg xmlns="http://www.w3.org/2000/svg" width="24" height="24" fill="currentColor" class="bi bi-twitter-x"
-                                            viewBox="0 0 16 16">
-                                            <path
-                                                d="M12.6.75h2.454l-5.36 6.142L16 15.25h-4.937l-3.867-5.07-4.425 5.07H.316l5.733-6.57L0 .75h5.063l3.495 4.633L12.601.75Zm-.86 13.028h1.36L4.323 2.145H2.865z" />
-                                        </svg>
-                                    </a>
-                                </li>
-                                <!-- YouTube Ca' Foscari link -->
+                    </div>
+                    <div class="col-12 col-md- col-lg-4 col-xl-3">
+                        <div class="widget">
+                            <h4 class="widget-title mb-7 mb-lg-9 mt-3">Learn More about Exchange Students</h4>
+                            <ul class="list-unstyled">
                                 <li class="foot-item">
-                                    <a class="nav-link link-dark" href="https://www.youtube.com/user/youcafoscari" target="_blank" title="YouTube Ca' Foscari">
-                                        <svg xmlns="http://www.w3.org/2000/svg" width="24" height="24" fill="currentColor" class="bi bi-youtube"
+                                    <a class="foot-link" aria-current="page" href="https://www.unive.it/pag/12522/" target="_blank" title="Incoming Mobility website">
+                                        <svg xmlns="http://www.w3.org/2000/svg" width="16" height="16" fill="currentColor" class="bi bi-airplane-fill align-middle"
                                             viewBox="0 0 16 16">
                                             <path
-                                                d="M8.051 1.999h.089c.822.003 4.987.033 6.11.335a2.01 2.01 0 0 1 1.415 1.42c.101.38.172.883.22 1.402l.01.104.022.26.008.104c.065.914.073 1.77.074 1.957v.075c-.001.194-.01 1.108-.082 2.06l-.008.105-.009.104c-.05.572-.124 1.14-.235 1.558a2.007 2.007 0 0 1-1.415 1.42c-1.16.312-5.569.334-6.18.335h-.142c-.309 0-1.587-.006-2.927-.052l-.17-.006-.087-.004-.171-.007-.171-.007c-1.11-.049-2.167-.128-2.654-.26a2.007 2.007 0 0 1-1.415-1.419c-.111-.417-.185-.986-.235-1.558L.09 9.82l-.008-.104A31.4 31.4 0 0 1 0 7.68v-.123c.002-.215.01-.958.064-1.778l.007-.103.003-.052.008-.104.022-.26.01-.104c.048-.519.119-1.023.22-1.402a2.007 2.007 0 0 1 1.415-1.42c.487-.13 1.544-.21 2.654-.26l.17-.007.172-.006.086-.003.171-.007A99.788 99.788 0 0 1 7.858 2h.193zM6.4 5.209v4.818l4.157-2.408L6.4 5.209z" />
+                                                d="M6.428 1.151C6.708.591 7.213 0 8 0s1.292.592 1.572 1.151C9.861 1.73 10 2.431 10 3v3.691l5.17 2.585a1.5 1.5 0 0 1 .83 1.342V12a.5.5 0 0 1-.582.493l-5.507-.918-.375 2.253 1.318 1.318A.5.5 0 0 1 10.5 16h-5a.5.5 0 0 1-.354-.854l1.319-1.318-.376-2.253-5.507.918A.5.5 0 0 1 0 12v-1.382a1.5 1.5 0 0 1 .83-1.342L6 6.691V3c0-.568.14-1.271.428-1.849" />
                                         </svg>
+                                        <span class="align-left">Incoming Mobility</span>
                                     </a>
                                 </li>
-                                <!-- Instagram Ca' Foscari link -->
-                                <li class="nav-item">
-                                    <a class="nav-link link-dark" href="https://www.instagram.com/cafoscari/" target="_blank" title="Instagram Ca' Foscari">
-                                        <svg xmlns="http://www.w3.org/2000/svg" width="24" height="24" fill="currentColor" class="bi bi-instagram"
-                                            viewBox="0 0 16 16">
-                                            <path
-                                                d="M8 0C5.829 0 5.556.01 4.703.048 3.85.088 3.269.222 2.76.42a3.917 3.917 0 0 0-1.417.923A3.927 3.927 0 0 0 .42 2.76C.222 3.268.087 3.85.048 4.7.01 5.555 0 5.827 0 8.001c0 2.172.01 2.444.048 3.297.04.852.174 1.433.372 1.942.205.526.478.972.923 1.417.444.445.89.719 1.416.923.51.198 1.09.333 1.942.372C5.555 15.99 5.827 16 8 16s2.444-.01 3.298-.048c.851-.04 1.434-.174 1.943-.372a3.916 3.916 0 0 0 1.416-.923c.445-.445.718-.891.923-1.417.197-.509.332-1.09.372-1.942C15.99 10.445 16 10.173 16 8s-.01-2.445-.048-3.299c-.04-.851-.175-1.433-.372-1.941a3.926 3.926 0 0 0-.923-1.417A3.911 3.911 0 0 0 13.24.42c-.51-.198-1.092-.333-1.943-.372C10.443.01 10.172 0 7.998 0h.003zm-.717 1.442h.718c2.136 0 2.389.007 3.232.046.78.035 1.204.166 1.486.275.373.145.64.319.92.599.28.28.453.546.598.92.11.281.24.705.275 1.485.039.843.047 1.096.047 3.231s-.008 2.389-.047 3.232c-.035.78-.166 1.203-.275 1.485a2.47 2.47 0 0 1-.599.919c-.28.28-.546.453-.92.598-.28.11-.704.24-1.485.276-.843.038-1.096.047-3.232.047s-2.39-.009-3.233-.047c-.78-.036-1.203-.166-1.485-.276a2.478 2.478 0 0 1-.92-.598 2.48 2.48 0 0 1-.6-.92c-.109-.281-.24-.705-.275-1.485-.038-.843-.046-1.096-.046-3.233 0-2.136.008-2.388.046-3.231.036-.78.166-1.204.276-1.486.145-.373.319-.64.599-.92.28-.28.546-.453.92-.598.282-.11.705-.24 1.485-.276.738-.034 1.024-.044 2.515-.045v.002zm4.988 1.328a.96.96 0 1 0 0 1.92.96.96 0 0 0 0-1.92zm-4.27 1.122a4.109 4.109 0 1 0 0 8.217 4.109 4.109 0 0 0 0-8.217zm0 1.441a2.667 2.667 0 1 1 0 5.334 2.667 2.667 0 0 1 0-5.334z" />
-                                        </svg>
+                                <li class="foot-item">
+                                    <a class="foot-link align-left" href="https://www.unive.it/pag/12525/" target="_blank" title="International Students website">
+                                        <i class="fa-solid fa-graduation-cap align-middle"></i>
+                                        <span class="align-middle">International Students</span>
                                     </a>
                                 </li>
-                                <!-- LinkedIn Ca' Foscari link -->
-                                <li class="nav-item">
-                                    <a class="nav-link link-dark" href="https://www.linkedin.com/school/cafoscari/mycompany/verification/" target="_blank" title="LinkedIn Ca' Foscari">
-                                        <svg xmlns="http://www.w3.org/2000/svg" width="24" height="24" fill="currentColor" class="bi bi-linkedin"
-                                            viewBox="0 0 16 16">
-                                            <path
-                                                d="M0 1.146C0 .513.526 0 1.175 0h13.65C15.474 0 16 .513 16 1.146v13.708c0 .633-.526 1.146-1.175 1.146H1.175C.526 16 0 15.487 0 14.854zm4.943 12.248V6.169H2.542v7.225zm-1.2-8.212c.837 0 1.358-.554 1.358-1.248-.015-.709-.52-1.248-1.342-1.248S2.4 3.226 2.4 3.934c0 .694.521 1.248 1.327 1.248zm4.908 8.212V9.359c0-.216.016-.432.08-.586.173-.431.568-.878 1.232-.878.869 0 1.216.662 1.216 1.634v3.865h2.401V9.25c0-2.22-1.184-3.252-2.764-3.252-1.274 0-1.845.7-2.165 1.193v.025h-.016l.016-.025V6.169h-2.4c.03.678 0 7.225 0 7.225z" />
-                                        </svg>
-                                    </a>
-                                </li>
-                                <!-- Weibo Ca' Foscari link -->
-                                <li class="nav-item">
-                                    <a class="nav-link link-dark" href="https://www.weibo.com/cafoscari" target="_blank" title="Weibo Ca' Foscari">
-                                        <svg xmlns="http://www.w3.org/2000/svg" width="24" height="24" fill="currentColor" class="bi bi-weibo"
-                                            viewBox="0 0 16 16">
-                                            <path
-                                                d="M10.878 1.093a4.23 4.23 0 0 1 4.031 1.305 4.22 4.22 0 0 1 .886 4.14v.001a.612.612 0 0 1-1.166-.377 3.01 3.01 0 0 0-3.495-3.873.611.611 0 1 1-.256-1.196M3.753 9.465c.548-1.11 1.972-1.74 3.233-1.411 1.304.338 1.971 1.568 1.437 2.764-.541 1.221-2.095 1.875-3.416 1.449-1.271-.411-1.812-1.67-1.254-2.802m2.658.567c.16.066.365-.009.458-.168.088-.16.03-.34-.129-.397-.156-.062-.353.013-.446.168-.09.154-.041.333.117.397m-1.607 1.314c.413.188.963.009 1.219-.4.252-.413.12-.883-.296-1.062-.41-.172-.94.005-1.194.402-.256.4-.135.874.271 1.06" />
-                                            <path
-                                                d="m12.014 7.238.005.001c.919.285 1.941.974 1.939 2.188 0 2.007-2.895 4.535-7.246 4.535C3.393 13.962 0 12.352 0 9.708c0-1.385.876-2.985 2.384-4.493C4.4 3.199 6.751 2.28 7.634 3.165c.39.392.427 1.065.177 1.87-.132.405.38.182.38.182 1.63-.682 3.051-.722 3.57.02.278.397.252.951-.004 1.594-.116.293.035.34.257.407m-10.4 3.101c.172 1.738 2.46 2.936 5.109 2.674 2.647-.26 4.656-1.883 4.482-3.623-.17-1.738-2.458-2.937-5.107-2.674-2.647.263-4.656 1.883-4.484 3.623m11.681-6.484a2.06 2.06 0 0 0-1.962-.634.526.526 0 1 0 .219 1.031 1.008 1.008 0 0 1 1.17 1.296.528.528 0 0 0 1.005.325 2.06 2.06 0 0 0-.432-2.018" /> 
-                                        </svg>
-                                    </a>
-                                </li>
-                                <!-- Flickr Ca' Foscari link NON FUNZIONA -->
-                                <li class="nav-item">
-                                    <a class="nav-link link-dark" href="https://www.flickr.com/photos/cafoscari/" target="_blank" class="img-link">
-                                        <img src="../static/img/base/logoflickr.png" alt="Flickr" title="Flickr Ca' Foscari" class="bi bi-weibo" width="24" height="24">
-                                    </a>
-                                </li>
-                                <!-- Telegram Ca' Foscari link -->
-                                <li class="nav-item">
-                                    <a class="nav-link link-dark" href="https://www.telegram.me/cafoscari" target="_blank" title="Telegram Ca' Foscari">
-                                        <svg xmlns="http://www.w3.org/2000/svg" width="24" height="24" fill="currentColor" class="bi bi-telegram"
-                                            viewBox="0 0 16 16">
-                                            <path
-                                                d="M16 8A8 8 0 1 1 0 8a8 8 0 0 1 16 0M8.287 5.906q-1.168.486-4.666 2.01-.567.225-.595.442c-.03.243.275.339.69.47l.175.055c.408.133.958.288 1.243.294q.39.01.868-.32 3.269-2.206 3.374-2.23c.05-.012.12-.026.166.016s.042.12.037.141c-.03.129-1.227 1.241-1.846 1.817-.193.18-.33.307-.358.336a8 8 0 0 1-.188.186c-.38.366-.664.64.015 1.088.327.216.589.393.85.571.284.194.568.387.936.629q.14.092.27.187c.331.236.63.448.997.414.214-.02.435-.22.547-.82.265-1.417.786-4.486.906-5.751a1.4 1.4 0 0 0-.013-.315.34.34 0 0 0-.114-.217.53.53 0 0 0-.31-.093c-.3.005-.763.166-2.984 1.09"/>
-                                        </svg>
-                                    </a>
-                                </li>
-                                <!-- TikTok Ca' Foscari link -->
-                                <li class="nav-item">
-                                    <a class="nav-link link-dark" href="https://www.tiktok.com/@cafoscari?_t=8l8hYrQCimm&_r=1" target="_blank" title="TikTok Ca' Foscari">
-                                        <svg xmlns="http://www.w3.org/2000/svg" width="24" height="24" fill="currentColor" class="bi bi-tiktok"
-                                            viewBox="0 0 16 16">
-                                            <path
-                                                d="M9 0h1.98c.144.715.54 1.617 1.235 2.512C12.895 3.389 13.797 4 15 4v2c-1.753 0-3.07-.814-4-1.829V11a5 5 0 1 1-5-5v2a3 3 0 1 0 3 3z"/>
-                                        </svg>
-                                    </a>
-                                </li>
-                                <!-- WeChat Ca' Foscari link -->
-                                <li class="nav-item">
-                                    <a class="nav-link link-dark" href="https://mp.weixin.qq.com/s/u70V_4FBamxUlNwz2ra68w" target="_blank" title="WeChat Ca' Foscari">
-                                        <svg xmlns="http://www.w3.org/2000/svg" width="24" height="24" fill="currentColor" class="bi bi-wecaht"
-                                            viewBox="0 0 16 16">
-                                            <path
-                                                d="M11.176 14.429c-2.665 0-4.826-1.8-4.826-4.018 0-2.22 2.159-4.02 4.824-4.02S16 8.191 16 10.411c0 1.21-.65 2.301-1.666 3.036a.32.32 0 0 0-.12.366l.218.81a.6.6 0 0 1 .029.117.166.166 0 0 1-.162.162.2.2 0 0 1-.092-.03l-1.057-.61a.5.5 0 0 0-.256-.074.5.5 0 0 0-.142.021 5.7 5.7 0 0 1-1.576.22M9.064 9.542a.647.647 0 1 0 .557-1 .645.645 0 0 0-.646.647.6.6 0 0 0 .09.353Zm3.232.001a.646.646 0 1 0 .546-1 .645.645 0 0 0-.644.644.63.63 0 0 0 .098.356" />
-                                            <path
-                                                d="M0 6.826c0 1.455.781 2.765 2.001 3.656a.385.385 0 0 1 .143.439l-.161.6-.1.373a.5.5 0 0 0-.032.14.19.19 0 0 0 .193.193q.06 0 .111-.029l1.268-.733a.6.6 0 0 1 .308-.088q.088 0 .171.025a6.8 6.8 0 0 0 1.625.26 4.5 4.5 0 0 1-.177-1.251c0-2.936 2.785-5.02 5.824-5.02l.15.002C10.587 3.429 8.392 2 5.796 2 2.596 2 0 4.16 0 6.826m4.632-1.555a.77.77 0 1 1-1.54 0 .77.77 0 0 1 1.54 0m3.875 0a.77.77 0 1 1-1.54 0 .77.77 0 0 1 1.54 0" />
-                                        </svg>
+                                <li class="foot-item">
+                                    <a class="foot-link align-left" href="https://www.unive.it/pag/40946/" target="_blank" title="Staff for International Students website">
+                                        <i class="fa-solid fa-university align-middle"></i>
+                                        <span class="align-middle">Staff for International Students</span>
                                     </a>
                                 </li>
                             </ul>
@@ -268,6 +153,124 @@
                     </div>
                 </div>
             </div>
-        </footer>
-    </body>
+        </section>
+        <!-- Ca' Foscari Privacy and Social Media accounts -->
+        <div class="py-2 py-md-2 border-top border-light-subtle">
+            <div class="container overflow-hidden">
+                <div class="row gy-4 gy-md-0">
+                    <div class="col-md-5 order-1 order-md-0 text-center text-md-start">
+                        <div class="copyright">
+                            &copy; 2024. All Rights Reserved.
+                        </div>
+                    </div>
+                    <div class="col-md-7 text-center text-md-end">
+                        <ul class="nav justify-content-start justify-content-center">
+                            <!-- Facebook Ca' Foscari link -->
+                            <li class="nav-item">
+                                <a class="nav-link link-dark" href="https://www.facebook.com/cafoscari" target="_blank" title="Facebook Ca' Foscari">
+                                    <svg xmlns="http://www.w3.org/2000/svg" width="24" height="24" fill="currentColor" class="bi bi-facebook"
+                                        viewBox="0 0 16 16" hov>
+                                        <path
+                                            d="M16 8.049c0-4.446-3.582-8.05-8-8.05C3.58 0-.002 3.603-.002 8.05c0 4.017 2.926 7.347 6.75 7.951v-5.625h-2.03V8.05H6.75V6.275c0-2.017 1.195-3.131 3.022-3.131.876 0 1.791.157 1.791.157v1.98h-1.009c-.993 0-1.303.621-1.303 1.258v1.51h2.218l-.354 2.326H9.25V16c3.824-.604 6.75-3.934 6.75-7.951z" />
+                                    </svg>
+                                </a>
+                            </li>
+                            <!-- Twitter X Ca' Foscari link -->
+                            <li class="nav-item">
+                                <a class="nav-link link-dark" href="https://twitter.com/cafoscari" target="_blank" title="X Ca' Foscari">
+                                    <svg xmlns="http://www.w3.org/2000/svg" width="24" height="24" fill="currentColor" class="bi bi-twitter-x"
+                                        viewBox="0 0 16 16">
+                                        <path
+                                            d="M12.6.75h2.454l-5.36 6.142L16 15.25h-4.937l-3.867-5.07-4.425 5.07H.316l5.733-6.57L0 .75h5.063l3.495 4.633L12.601.75Zm-.86 13.028h1.36L4.323 2.145H2.865z" />
+                                    </svg>
+                                </a>
+                            </li>
+                            <!-- YouTube Ca' Foscari link -->
+                            <li class="foot-item">
+                                <a class="nav-link link-dark" href="https://www.youtube.com/user/youcafoscari" target="_blank" title="YouTube Ca' Foscari">
+                                    <svg xmlns="http://www.w3.org/2000/svg" width="24" height="24" fill="currentColor" class="bi bi-youtube"
+                                        viewBox="0 0 16 16">
+                                        <path
+                                            d="M8.051 1.999h.089c.822.003 4.987.033 6.11.335a2.01 2.01 0 0 1 1.415 1.42c.101.38.172.883.22 1.402l.01.104.022.26.008.104c.065.914.073 1.77.074 1.957v.075c-.001.194-.01 1.108-.082 2.06l-.008.105-.009.104c-.05.572-.124 1.14-.235 1.558a2.007 2.007 0 0 1-1.415 1.42c-1.16.312-5.569.334-6.18.335h-.142c-.309 0-1.587-.006-2.927-.052l-.17-.006-.087-.004-.171-.007-.171-.007c-1.11-.049-2.167-.128-2.654-.26a2.007 2.007 0 0 1-1.415-1.419c-.111-.417-.185-.986-.235-1.558L.09 9.82l-.008-.104A31.4 31.4 0 0 1 0 7.68v-.123c.002-.215.01-.958.064-1.778l.007-.103.003-.052.008-.104.022-.26.01-.104c.048-.519.119-1.023.22-1.402a2.007 2.007 0 0 1 1.415-1.42c.487-.13 1.544-.21 2.654-.26l.17-.007.172-.006.086-.003.171-.007A99.788 99.788 0 0 1 7.858 2h.193zM6.4 5.209v4.818l4.157-2.408L6.4 5.209z" />
+                                    </svg>
+                                </a>
+                            </li>
+                            <!-- Instagram Ca' Foscari link -->
+                            <li class="nav-item">
+                                <a class="nav-link link-dark" href="https://www.instagram.com/cafoscari/" target="_blank" title="Instagram Ca' Foscari">
+                                    <svg xmlns="http://www.w3.org/2000/svg" width="24" height="24" fill="currentColor" class="bi bi-instagram"
+                                        viewBox="0 0 16 16">
+                                        <path
+                                            d="M8 0C5.829 0 5.556.01 4.703.048 3.85.088 3.269.222 2.76.42a3.917 3.917 0 0 0-1.417.923A3.927 3.927 0 0 0 .42 2.76C.222 3.268.087 3.85.048 4.7.01 5.555 0 5.827 0 8.001c0 2.172.01 2.444.048 3.297.04.852.174 1.433.372 1.942.205.526.478.972.923 1.417.444.445.89.719 1.416.923.51.198 1.09.333 1.942.372C5.555 15.99 5.827 16 8 16s2.444-.01 3.298-.048c.851-.04 1.434-.174 1.943-.372a3.916 3.916 0 0 0 1.416-.923c.445-.445.718-.891.923-1.417.197-.509.332-1.09.372-1.942C15.99 10.445 16 10.173 16 8s-.01-2.445-.048-3.299c-.04-.851-.175-1.433-.372-1.941a3.926 3.926 0 0 0-.923-1.417A3.911 3.911 0 0 0 13.24.42c-.51-.198-1.092-.333-1.943-.372C10.443.01 10.172 0 7.998 0h.003zm-.717 1.442h.718c2.136 0 2.389.007 3.232.046.78.035 1.204.166 1.486.275.373.145.64.319.92.599.28.28.453.546.598.92.11.281.24.705.275 1.485.039.843.047 1.096.047 3.231s-.008 2.389-.047 3.232c-.035.78-.166 1.203-.275 1.485a2.47 2.47 0 0 1-.599.919c-.28.28-.546.453-.92.598-.28.11-.704.24-1.485.276-.843.038-1.096.047-3.232.047s-2.39-.009-3.233-.047c-.78-.036-1.203-.166-1.485-.276a2.478 2.478 0 0 1-.92-.598 2.48 2.48 0 0 1-.6-.92c-.109-.281-.24-.705-.275-1.485-.038-.843-.046-1.096-.046-3.233 0-2.136.008-2.388.046-3.231.036-.78.166-1.204.276-1.486.145-.373.319-.64.599-.92.28-.28.546-.453.92-.598.282-.11.705-.24 1.485-.276.738-.034 1.024-.044 2.515-.045v.002zm4.988 1.328a.96.96 0 1 0 0 1.92.96.96 0 0 0 0-1.92zm-4.27 1.122a4.109 4.109 0 1 0 0 8.217 4.109 4.109 0 0 0 0-8.217zm0 1.441a2.667 2.667 0 1 1 0 5.334 2.667 2.667 0 0 1 0-5.334z" />
+                                    </svg>
+                                </a>
+                            </li>
+                            <!-- LinkedIn Ca' Foscari link -->
+                            <li class="nav-item">
+                                <a class="nav-link link-dark" href="https://www.linkedin.com/school/cafoscari/mycompany/verification/" target="_blank" title="LinkedIn Ca' Foscari">
+                                    <svg xmlns="http://www.w3.org/2000/svg" width="24" height="24" fill="currentColor" class="bi bi-linkedin"
+                                        viewBox="0 0 16 16">
+                                        <path
+                                            d="M0 1.146C0 .513.526 0 1.175 0h13.65C15.474 0 16 .513 16 1.146v13.708c0 .633-.526 1.146-1.175 1.146H1.175C.526 16 0 15.487 0 14.854zm4.943 12.248V6.169H2.542v7.225zm-1.2-8.212c.837 0 1.358-.554 1.358-1.248-.015-.709-.52-1.248-1.342-1.248S2.4 3.226 2.4 3.934c0 .694.521 1.248 1.327 1.248zm4.908 8.212V9.359c0-.216.016-.432.08-.586.173-.431.568-.878 1.232-.878.869 0 1.216.662 1.216 1.634v3.865h2.401V9.25c0-2.22-1.184-3.252-2.764-3.252-1.274 0-1.845.7-2.165 1.193v.025h-.016l.016-.025V6.169h-2.4c.03.678 0 7.225 0 7.225z" />
+                                    </svg>
+                                </a>
+                            </li>
+                            <!-- Weibo Ca' Foscari link -->
+                            <li class="nav-item">
+                                <a class="nav-link link-dark" href="https://www.weibo.com/cafoscari" target="_blank" title="Weibo Ca' Foscari">
+                                    <svg xmlns="http://www.w3.org/2000/svg" width="24" height="24" fill="currentColor" class="bi bi-weibo"
+                                        viewBox="0 0 16 16">
+                                        <path
+                                            d="M10.878 1.093a4.23 4.23 0 0 1 4.031 1.305 4.22 4.22 0 0 1 .886 4.14v.001a.612.612 0 0 1-1.166-.377 3.01 3.01 0 0 0-3.495-3.873.611.611 0 1 1-.256-1.196M3.753 9.465c.548-1.11 1.972-1.74 3.233-1.411 1.304.338 1.971 1.568 1.437 2.764-.541 1.221-2.095 1.875-3.416 1.449-1.271-.411-1.812-1.67-1.254-2.802m2.658.567c.16.066.365-.009.458-.168.088-.16.03-.34-.129-.397-.156-.062-.353.013-.446.168-.09.154-.041.333.117.397m-1.607 1.314c.413.188.963.009 1.219-.4.252-.413.12-.883-.296-1.062-.41-.172-.94.005-1.194.402-.256.4-.135.874.271 1.06" />
+                                        <path
+                                            d="m12.014 7.238.005.001c.919.285 1.941.974 1.939 2.188 0 2.007-2.895 4.535-7.246 4.535C3.393 13.962 0 12.352 0 9.708c0-1.385.876-2.985 2.384-4.493C4.4 3.199 6.751 2.28 7.634 3.165c.39.392.427 1.065.177 1.87-.132.405.38.182.38.182 1.63-.682 3.051-.722 3.57.02.278.397.252.951-.004 1.594-.116.293.035.34.257.407m-10.4 3.101c.172 1.738 2.46 2.936 5.109 2.674 2.647-.26 4.656-1.883 4.482-3.623-.17-1.738-2.458-2.937-5.107-2.674-2.647.263-4.656 1.883-4.484 3.623m11.681-6.484a2.06 2.06 0 0 0-1.962-.634.526.526 0 1 0 .219 1.031 1.008 1.008 0 0 1 1.17 1.296.528.528 0 0 0 1.005.325 2.06 2.06 0 0 0-.432-2.018" /> 
+                                    </svg>
+                                </a>
+                            </li>
+                            <!-- Flickr Ca' Foscari link -->
+                            <li class="nav-item">
+                                <a class="nav-link link-dark" href="https://www.flickr.com/photos/cafoscari/" target="_blank" class="img-link">
+                                    <img src="../static/img/base/logoflickr.png" alt="Flickr" title="Flickr Ca' Foscari" class="bi bi-weibo" width="24" height="24">
+                                </a>
+                            </li>
+                            <!-- Telegram Ca' Foscari link -->
+                            <li class="nav-item">
+                                <a class="nav-link link-dark" href="https://www.telegram.me/cafoscari" target="_blank" title="Telegram Ca' Foscari">
+                                    <svg xmlns="http://www.w3.org/2000/svg" width="24" height="24" fill="currentColor" class="bi bi-telegram"
+                                        viewBox="0 0 16 16">
+                                        <path
+                                            d="M16 8A8 8 0 1 1 0 8a8 8 0 0 1 16 0M8.287 5.906q-1.168.486-4.666 2.01-.567.225-.595.442c-.03.243.275.339.69.47l.175.055c.408.133.958.288 1.243.294q.39.01.868-.32 3.269-2.206 3.374-2.23c.05-.012.12-.026.166.016s.042.12.037.141c-.03.129-1.227 1.241-1.846 1.817-.193.18-.33.307-.358.336a8 8 0 0 1-.188.186c-.38.366-.664.64.015 1.088.327.216.589.393.85.571.284.194.568.387.936.629q.14.092.27.187c.331.236.63.448.997.414.214-.02.435-.22.547-.82.265-1.417.786-4.486.906-5.751a1.4 1.4 0 0 0-.013-.315.34.34 0 0 0-.114-.217.53.53 0 0 0-.31-.093c-.3.005-.763.166-2.984 1.09"/>
+                                    </svg>
+                                </a>
+                            </li>
+                            <!-- TikTok Ca' Foscari link -->
+                            <li class="nav-item">
+                                <a class="nav-link link-dark" href="https://www.tiktok.com/@cafoscari?_t=8l8hYrQCimm&_r=1" target="_blank" title="TikTok Ca' Foscari">
+                                    <svg xmlns="http://www.w3.org/2000/svg" width="24" height="24" fill="currentColor" class="bi bi-tiktok"
+                                        viewBox="0 0 16 16">
+                                        <path
+                                            d="M9 0h1.98c.144.715.54 1.617 1.235 2.512C12.895 3.389 13.797 4 15 4v2c-1.753 0-3.07-.814-4-1.829V11a5 5 0 1 1-5-5v2a3 3 0 1 0 3 3z"/>
+                                    </svg>
+                                </a>
+                            </li>
+                            <!-- WeChat Ca' Foscari link -->
+                            <li class="nav-item">
+                                <a class="nav-link link-dark" href="https://mp.weixin.qq.com/s/u70V_4FBamxUlNwz2ra68w" target="_blank" title="WeChat Ca' Foscari">
+                                    <svg xmlns="http://www.w3.org/2000/svg" width="24" height="24" fill="currentColor" class="bi bi-wecaht"
+                                        viewBox="0 0 16 16">
+                                        <path
+                                            d="M11.176 14.429c-2.665 0-4.826-1.8-4.826-4.018 0-2.22 2.159-4.02 4.824-4.02S16 8.191 16 10.411c0 1.21-.65 2.301-1.666 3.036a.32.32 0 0 0-.12.366l.218.81a.6.6 0 0 1 .029.117.166.166 0 0 1-.162.162.2.2 0 0 1-.092-.03l-1.057-.61a.5.5 0 0 0-.256-.074.5.5 0 0 0-.142.021 5.7 5.7 0 0 1-1.576.22M9.064 9.542a.647.647 0 1 0 .557-1 .645.645 0 0 0-.646.647.6.6 0 0 0 .09.353Zm3.232.001a.646.646 0 1 0 .546-1 .645.645 0 0 0-.644.644.63.63 0 0 0 .098.356" />
+                                        <path
+                                            d="M0 6.826c0 1.455.781 2.765 2.001 3.656a.385.385 0 0 1 .143.439l-.161.6-.1.373a.5.5 0 0 0-.032.14.19.19 0 0 0 .193.193q.06 0 .111-.029l1.268-.733a.6.6 0 0 1 .308-.088q.088 0 .171.025a6.8 6.8 0 0 0 1.625.26 4.5 4.5 0 0 1-.177-1.251c0-2.936 2.785-5.02 5.824-5.02l.15.002C10.587 3.429 8.392 2 5.796 2 2.596 2 0 4.16 0 6.826m4.632-1.555a.77.77 0 1 1-1.54 0 .77.77 0 0 1 1.54 0m3.875 0a.77.77 0 1 1-1.54 0 .77.77 0 0 1 1.54 0" />
+                                    </svg>
+                                </a>
+                            </li>
+                        </ul>
+                    </div>
+                </div>
+            </div>
+        </div>
+    </footer>
+</body>
+
 </html>

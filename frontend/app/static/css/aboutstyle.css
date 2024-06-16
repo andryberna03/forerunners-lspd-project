@@ -1,59 +1,66 @@
+/* Masthead section styling */
 .masthead {
-    font-weight: bold;
-    position: relative;
-    width: 100%;
-    height: auto;
-    color: rgb(172, 0, 51);
-    padding: 7rem 0;
-    background-image: url('../img/about/programming.png');
-    background-position: center;
-    background-repeat: no-repeat;
-    background-attachment: scroll;
-    box-shadow: 0 0 10px rgba(0, 0, 0, 0.5);
-    background-size: cover;
-    background-color: rgba(0, 0, 0, 0.3);
+    font-weight: bold; /* Make the text bold */
+    position: relative; /* Position the element relative to its normal position */
+    width: 100%; /* Make the element take up the full width */
+    height: auto; /* Set the height automatically */
+    color: rgb(172, 0, 51); /* Set the text color */
+    padding: 7rem 0; /* Set the padding for top and bottom to 7rem and left and right to 0 */
+    background-image: url('../img/about/programming.png'); /* Set the background image */
+    background-position: center; /* Center the background image */
+    background-repeat: no-repeat; /* Do not repeat the background image */
+    background-attachment: scroll; /* Scroll the background image with the content */
+    background-size: cover; /* Make the background image cover the entire element */
+    background-color: rgba(0, 0, 0, 0.3); /* Set the background color with some transparency */
+    box-shadow: 0 0 10px rgba(0, 0, 0, 0.5); /* Add a box shadow */
 }
 
-.Github-link, 
+/* Github link styling */
+.Github-link,
 .Github-link-2 {
-    color: black !important;
+    color: black !important; /* Set the text color to black */
 }
 
 .Github-link-2:hover,
 .btn:hover {
-    text-decoration-color: rgb(110, 117, 124);
-    text-decoration: underline;
-    text-decoration-thickness: 2px;
+    text-decoration-color: rgb(110, 117, 124); /* Set the underline color when hovering */
+    text-decoration: underline; /* Add an underline */
+    text-decoration-thickness: 2px; /* Set the underline thickness */
 }
 
 .Github-link {
-    text-align: center;
+    text-align: center; /* Center the text */
 }
 
 .Github-link svg,
 .Github-link h1 {
-    margin: 0 auto;
+    margin: 0 auto; /* Center the SVG and h1 elements */
 }
 
-.pricing8 .btn-info-gradiant, .pricing8 .btn-danger-gradiant {
-    background: rgb(172, 0, 51);
+/* Pricing section styling */
+.pricing8 .btn-info-gradiant,
+.pricing8 .btn-danger-gradiant {
+    background: rgb(172, 0, 51); /* Set the background color */
 }
 
+/* Frontend and backend section styling */
 .frontend,
 .backend {
-    justify-content: center;
-    text-align: left;
+    justify-content: center; /* Center the content */
+    text-align: left; /* Align the text to the left */
 }
 
+/* About link styling */
 .about-link {
-    color: rgb(172, 0, 51);
+    color: rgb(172, 0, 51); /* Set the text color */
 }
 
 .about-link:hover {
-    text-decoration: none;
+    text-decoration: none; /* Remove the underline when hovering */
 }
 
-.card:hover { /* to make the card responsive when you hover over it */
-    transform: scale(1.05); 
-    transition: transform 0.3s ease-in-out; 
+/* Card hover styling */
+.card:hover { /* When hovering over the card */
+    transform: scale(1.05); /* Increase the size of the card */
+    transition: transform 0.3s ease-in-out; /* Add a smooth transition */
 }

@@ -1,51 +1,68 @@
 /* Set the background of the navbar to Pantone 207 C to use Ca' Foscari brand identity */
 .navbar {
+    /* Set the background color of the navbar to a deep red color (Pantone 207 C) */
     background-color: rgb(172, 0, 51);
 }
 
 /* Set navbar element in color white */
 .navbar-toggler, .navbar-toggler-icon {
+    /* Set the color of the navbar toggler and icon to white */
     color: white;
+    /* Set the border color of the navbar toggler to transparent */
     border-color: transparent;
 }
 
 .navbar-toggler:hover {
+    /* Set the border color of the navbar toggler to white on hover */
     border-color: white;
 }
 
+/* Set the color of navbar brand, links, and widgets to white */
 .navbar-brand, .nav-link, .nav-link svg, .widget, .copyright {
     color: white;
 }
 
+/* Set the hover effect for navbar brand and foot links */
 .navbar-brand:hover, .foot-link:hover {
+    /* Keep the text color white on hover */
     color: white !important;
+    /* Add an underline effect on hover */
     text-decoration-color: rgb(110, 117, 124);
     text-decoration: underline;
     text-decoration-thickness: 2px;
 }
 
+/* Set the hover effect for navbar links */
 .navbar-nav .nav-link:hover span, .navbar-nav .nav-link:hover svg {
+    /* Keep the text color white on hover */
     color: white !important;
+    /* Add an underline effect on hover */
     text-decoration-color: rgb(110, 117, 124);
     text-decoration: underline;
     text-decoration-thickness: 2px;
 }
 
+/* Set the hover effect for foot links and widget links */
 .list-unstyled .foot-link:hover span, .widget .link-secondary:hover span {
+    /* Keep the text color white on hover */
     color: white !important;
+    /* Add an underline effect on hover */
     text-decoration-color: rgb(110, 117, 124);
     text-decoration: underline;
     text-decoration-thickness: 2px;
 }
 
+/* Set the background color of the footer */
 .footer {
-    background-color: rgb(51, 51, 51);
+    background-color: rgb(51, 51, 51); /* Dark gray color */
 }
 
+/* Set the font size of font awesome icons */
 .fas {
     font-size: 30px;
 }
 
+/* Set the color of foot links and secondary links */
 .foot-link, .link-secondary {
-    color:rgb(234, 236, 239);
+    color: rgb(234, 236, 239); /* Light gray color */
 }

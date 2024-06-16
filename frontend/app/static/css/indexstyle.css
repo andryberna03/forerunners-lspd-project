@@ -1,115 +1,123 @@
+/* Masthead section styling */
 .masthead {
-    font-weight: bold;
-    position: relative;
-    width: 100%;
-    height: auto;
-    color: rgb(172, 0, 51);
-    padding: 7rem 0;
-    background-image: url('../img/index/picture_venice.jpg');
-    background-position: center;
-    background-repeat: no-repeat;
-    background-attachment: scroll;
-    box-shadow: 0 0 10px rgba(0, 0, 0, 0.5);
-    background-size: cover;
-    background-color: rgba(0, 0, 0, 0.3);
+    font-weight: bold; /* Make the text bold */
+    position: relative; /* Position the element relative to its normal position */
+    width: 100%; /* Make the element take up the full width */
+    height: auto; /* Set the height automatically */
+    color: rgb(172, 0, 51); /* Set the text color to a deep red color */
+    padding: 7rem 0; /* Set the padding for top and bottom to 7rem and left and right to 0 */
+    background-image: url('../img/index/picture_venice.jpg'); /* Set the background image */
+    background-position: center; /* Center the background image */
+    background-repeat: no-repeat; /* Do not repeat the background image */
+    background-attachment: scroll; /* Scroll the background image with the content */
+    box-shadow: 0 0 10px rgba(0, 0, 0, 0.5); /* Add a box shadow */
+    background-size: cover; /* Make the background image cover the entire element */
+    background-color: rgba(0, 0, 0, 0.3); /* Set the background color with some transparency */
 }
 
+/* Greeting text styling */
 .greeting-text {
-    font-size: 400%;
-    /* Creazione di un gradiente di colore partendo da rgb(172, 0, 51) */
+    font-size: 400%; /* Set the font size to 400% */
+    /* Create a linear gradient background color from rgb(172, 0, 51) to rgb(221, 70, 70) */
     background: linear-gradient(to right, rgb(172, 0, 51), rgb(221, 70, 70));
-    /* Specifica che il testo deve essere trasparente */
+    /* Make the text transparent */
     -webkit-background-clip: text;
     background-clip: text;
-    /* Colore di fallback per i browser che non supportano background-clip: text */
+    /* Set a fallback color for browsers that don't support background-clip: text */
     color: transparent;
 }
 
+/* Aperitivo section styling */
 .aperitivo {
-    align-content: center;
-    align-items: center;
-    padding-top: 50px;
-    padding-bottom: 50px;
+    align-content: center; /* Center the content horizontally */
+    align-items: center; /* Center the items horizontally */
+    padding-top: 50px; /* Add padding to the top */
+    padding-bottom: 50px; /* Add padding to the bottom */
 }
 
 .text-aperitivo {
-    font-size: 320%;
-    text-align: center;
+    font-size: 320%; /* Set the font size to 320% */
+    text-align: center; /* Center the text */
+}
+
+/* Aperitivo image styling */
+.img_aperitivo {
+    box-shadow: 0 0 10px rgba(0, 0, 0, 0.5); /* Add a box shadow */
+    width: auto; /* Set the width automatically */
+    height: 350px; /* Set the height to 350px */
 }
 
 .img_aperitivo {
-    box-shadow: 0 0 10px rgba(0, 0, 0, 0.5);
-    width: auto;
-    height: 350px;
+    /* Base styles for the image */
+    position: relative; /* Position the element relative to its normal position */
+    transition: transform 0.2s ease; /* Add a transition effect */
+    max-width: 100%; /* Set the maximum width to 100% */
+    height: auto; /* Set the height automatically */
 }
 
-.img_aperitivo {
-    /* Stili base per l'immagine */
-    position: relative;
-    transition: transform 0.2s ease;
-    max-width: 100%;
-    height: auto;
+/* University image styling */
+.img_unive {
+    box-shadow: 0 0 10px rgba(0, 0, 0, 0.5); /* Add a box shadow */
+    width: auto; /* Set the width automatically */
+    height: 350px; /* Set the height to 350px */
 }
 
 .img_unive {
-    box-shadow: 0 0 10px rgba(0, 0, 0, 0.5);
-    width: auto;
-    height: 350px;
+    /* Base styles for the image */
+    position: relative; /* Position the element relative to its normal position */
+    transition: transform 0.2s ease; /* Add a transition effect */
+    max-width: 100%; /* Set the maximum width to 100% */
+    height: auto; /* Set the height automatically */
 }
 
-.img_unive {
-    /* Stili base per l'immagine */
-    position: relative;
-    transition: transform 0.2s ease;
-    max-width: 100%;
-    height: auto;
-}
-
+/* Map container styling */
 .map-container {
-    margin-bottom: 50px;
+    margin-bottom: 50px; /* Add margin to the bottom */
 }
 
 #mapid {
-    height: 400px;
+    height: 400px; /* Set the height to 400px */
 }
 
+/* Mission section styling */
 .mission {
-    text-align: center;
-    color: white;
-    background-color: rgb(172, 0, 51);
+    text-align: center; /* Center the text */
+    color: white; /* Set the text color to white */
+    background-color: rgb(172, 0, 51); /* Set the background color to a deep red color */
 }
 
 .head-mission {
-    text-align: center;
-    color: white;
-    font-size: 320%;
+    text-align: center; /* Center the text */
+    color: white; /* Set the text color to white */
+    font-size: 320%; /* Set the font size to 320% */
 }
 
-.text-mission{
-    text-align: center;
-    color: white;
-    font-size: 150%;
+.text-mission {
+    text-align: center; /* Center the text */
+    color: white; /* Set the text color to white */
+    font-size: 150%; /* Set the font size to 150% */
 }
 
+/* Call to action section styling */
 section.cta {
-    position: relative;
-    padding: 7rem 0;
-    background-image: url("../img/index/venice_sunset.jpg");
-    background-position: center;
-    background-size: cover;
+    position: relative; /* Position the element relative to its normal position */
+    padding: 7rem 0; /* Set the padding for top and bottom to 7rem and left and right to 0 */
+    background-image: url("../img/index/venice_sunset.jpg"); /* Set the background image */
+    background-position: center; /* Center the background image */
+    background-size: cover; /* Make the background image cover the entire element */
 }
 
 section.cta .cta-content {
-    position: relative;
-    z-index: 1;
+    position: relative; /* Position the element relative to its normal position */
+    z-index: 1; /* Set the z-index to 1 */
 }
 
 section.cta:before {
-    content: "";
-    position: absolute;
-    top: 0;
-    left: 0;
-    width: 100%;
-    height: 100%;
-    background: rgba(0, 0, 0, 0.5);
+    content: ""; /* Add an empty content */
+    position: absolute; /* Position the element absolutely */
+    top: 0; /* Set the top position to 0 */
+    left: 0; /* Set the left position to 0 */
+    width: 100%; /* Set the width to 100% */
+    height: 100%; /* Set the height to 100% */
+    background: rgba(0, 0, 0, 0.5); /* Set the background color with some transparency */
 }

@@ -3,19 +3,23 @@
 {% block title %} Homepage {% endblock %}
 
 {% block content %}
-    <!-- Import specific CSS -->
+    <!-- Import specific CSS file for the index page -->
     <link rel="stylesheet" href="static/css/indexstyle.css">
-    <!-- Leaflet.js Script -->
+
+    <!-- Include Leaflet.js script for interactive maps -->
     <script src="https://unpkg.com/leaflet/dist/leaflet.js"></script>
-    <!-- Leaflet.js CSS -->
+
+    <!-- Include Leaflet.js CSS for map styling -->
     <link rel="stylesheet" href="https://unpkg.com/leaflet/dist/leaflet.css" />
 
-    <!-- Greeting header -->
+    <!-- Greeting header section -->
     <div style="margin-top: 75px;">
+        <!-- Main header section with centered content -->
         <header class="masthead">
             <div class="container px-4 px-lg-5 d-flex h-100 align-items-center justify-content-center">
                 <div class="d-flex justify-content-center">
                     <div class="text-center">
+                        <!-- Main greeting text -->
                         <h1 class="greeting-text mx-auto my-0 text-uppercase">Welcome Exchange Students!</h1>
                     </div>
                 </div>
@@ -23,73 +27,82 @@
         </header>
     </div>
 
-    <!-- Aperitivo section -->
+    <!-- Aperitivo section to introduce the project's purpose -->
     <section>
         <div class="container px-5">
             <div class="row aperitivo d-flex">
+                <!-- Text content about the project's purpose -->
                 <div class="col-sm">
                     <h2 class="text-aperitivo">Stress-Free Exchange: It's Possible!</h2>
-                    <p class="lead fw-normal text-muted mb-5 mb-lg-0">We've decided to embark on this project because many of us 
-                    have firsthand experience with the stress of organizing and scheduling exams to earn credits during exchange semesters.
-                    Our aim is to spare others from going through the same ordeal.</p>
+                    <p class="lead fw-normal text-muted mb-5 mb-lg-0">
+                        We've decided to embark on this project because many of us have firsthand experience with the stress of organizing and scheduling exams to earn credits during exchange semesters. Our aim is to spare others from going through the same ordeal.
+                    </p>
                 </div>
+                <!-- Image related to the Aperitivo section -->
                 <div class="col-sm col-md-6">
-                    <img class="img_aperitivo img-fluid rounded-circle" src="../static/img/index/aperitivo.png"
-                        alt="Gondoliere Venice">
+                    <img class="img_aperitivo img-fluid rounded-circle" src="../static/img/index/aperitivo.png" alt="Gondoliere Venice">
                 </div>
             </div>
         </div>
     </section>
 
-    <!-- Mission section -->
+    <!-- Mission section to outline the project's mission -->
     <section class="mission">
         <div class="container px-5 py-5">
+            <!-- Mission statement heading -->
             <h2 class="head-mission">OUR MISSION</h2>
+            <!-- Mission statement text -->
             <p class="text-mission">
-                Streamline the retrieval of information about Ca' Foscari's teachings to attract more exchange students to Venice,
-                enriching our community and aiding our university in enhancing its internationalization efforts
+                Streamline the retrieval of information about Ca' Foscari's teachings to attract more exchange students to Venice, enriching our community and aiding our university in enhancing its internationalization efforts.
             </p>
         </div>
     </section>
 
-    <!-- Ca' Foscari info section -->
+    <!-- Information section about Ca' Foscari University -->
     <section>
         <div class="container px-5">
             <div class="row aperitivo d-flex">
+                <!-- Image of Ca' Foscari University -->
                 <div class="col-sm col-md-6">
                     <img class="img_unive img-fluid rounded-circle" src="../static/img/index/logo_unive.png" alt="Gondoliere Venice">
                 </div>
+                <!-- Text content about Ca' Foscari University -->
                 <div class="col-sm">
                     <h2 class="text-aperitivo">Ca'Foscari University</h2>
-                    <p class="lead fw-normal text-muted mb-5 mb-lg-0">Ca' Foscari University of Venice, established on August 6, 1868, is a renowned Italian public university. It enjoys both
-                    national and international recognition for its exceptional research endeavors and the excellence of its teaching
-                    methods, characterized by an international and interdisciplinary approach. Situated in the heart of a truly remarkable
-                    city, the university fosters a diverse and global community of scholars, students, and researchers.</p>
+                    <p class="lead fw-normal text-muted mb-5 mb-lg-0">
+                        Ca' Foscari University of Venice, established on August 6, 1868, is a renowned Italian public university. It enjoys both national and international recognition for its exceptional research endeavors and the excellence of its teaching methods, characterized by an international and interdisciplinary approach. Situated in the heart of a truly remarkable city, the university fosters a diverse and global community of scholars, students, and researchers.
+                    </p>
                 </div>
             </div>
         </div>
     </section>
 
+    <!-- Container for the interactive map -->
     <div class="container map-container">
         <div>
+            <!-- Div element where the map will be rendered -->
             <div id="mapid"></div>
         </div>
     </div>
 
-    <!-- Call to action section-->
+    <!-- Call to action section to encourage user engagement -->
     <section class="cta">
         <div class="cta-content">
             <div class="container px-5">
+                <!-- Call to action heading -->
                 <h2 class="text-white display-1 lh-1 mb-4">
                     Stop wasting your time.
                     <br/>
-                    Start a new exprience!
+                    Start a new experience!
                 </h2>
+                <!-- Button leading to the calendar page -->
                 <a class="btn btn-outline-light py-3 px-4 rounded-pill" href="{{ url_for('calendar') }}" title="Calendar">Start Scheduling!</a>
             </div>
         </div>
     </section>
 
+    <!-- Custom JavaScript files for additional functionalities -->
     <script src="../static/js/image_mooving.js"></script>
     <script src="../static/js/index_map.js"></script>
+
 {% endblock %}

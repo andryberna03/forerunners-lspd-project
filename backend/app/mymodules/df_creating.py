@@ -11,9 +11,9 @@ def df_creating(file_path_final) -> pd.DataFrame:
 
     This is the main function which orchestrates the entire process of creating
     the final dataframe. It checks if a file exists and is less than a day old.
-    If so, it loads the data from the file. Otherwise, it calls the create_new_dataframe
-    function to generate a new dataframe.
-    
+    If so, it loads the data from the file. Otherwise, it calls the function
+    create_new_dataframe to generate a new dataframe.
+
     Parameters:
     file_path_final (str): The path to the CSV file.
 
@@ -31,7 +31,7 @@ def df_creating(file_path_final) -> pd.DataFrame:
         if current_date - file_creation_date < datetime.timedelta(days=1):
             final_urls_dataframe = pd.read_csv(file_path_final)
             return final_urls_dataframe
-        # If the file was not created within the last 24 hours, create a new dataframe
+        # If not, create a new dataframe
         else:
             return create_new_dataframe(file_path_final)
     # If the file does not exist, create a new dataframe
@@ -41,8 +41,8 @@ def df_creating(file_path_final) -> pd.DataFrame:
 
 def create_new_dataframe(file_path_final: str) -> pd.DataFrame:
     """
-    This function creates a new DataFrame by calling the necessary functions,
-    preprocesses the data, merges it, orders it, adds URLs, and handles problematic values.
+    This function creates a new DataFrame by calling the necessary functions to
+    preprocess,  merges and handles data.
     It then saves the DataFrame to a CSV file and returns it.
 
     Args:
@@ -53,16 +53,26 @@ def create_new_dataframe(file_path_final: str) -> pd.DataFrame:
     """
     # Define the URLs from which to retrieve data
     urls = {
-        "degrees": "http://apps.unive.it/sitows/didattica/corsi",
-        "teachings": "http://apps.unive.it/sitows/didattica/insegnamenti",
-        "degrees_teachings": "http://apps.unive.it/sitows/didattica/corsiinsegnamenti",
-        "degrees_teachings": "http://apps.unive.it/sitows/didattica/corsiinsegnamenti",
-        "lecturers": "http://apps.unive.it/sitows/didattica/docenti",
-        "teachings_lecturers": "http://apps.unive.it/sitows/didattica/insegnamentidocenti",
-        "teachings_lecturers": "http://apps.unive.it/sitows/didattica/insegnamentidocenti",
-        "lectures": "http://apps.unive.it/sitows/didattica/lezioni",
-        "classrooms": "http://apps.unive.it/sitows/didattica/aule",
-        "locations": "http://apps.unive.it/sitows/didattica/sedi",
+        "degrees":
+            "http://apps.unive.it/sitows/didattica/corsi",
+        "teachings":
+            "http://apps.unive.it/sitows/didattica/insegnamenti",
+        "degrees_teachings":
+            "http://apps.unive.it/sitows/didattica/corsiinsegnamenti",
+        "degrees_teachings":
+            "http://apps.unive.it/sitows/didattica/corsiinsegnamenti",
+        "lecturers":
+            "http://apps.unive.it/sitows/didattica/docenti",
+        "teachings_lecturers":
+            "http://apps.unive.it/sitows/didattica/insegnamentidocenti",
+        "teachings_lecturers":
+            "http://apps.unive.it/sitows/didattica/insegnamentidocenti",
+        "lectures":
+            "http://apps.unive.it/sitows/didattica/lezioni",
+        "classrooms":
+            "http://apps.unive.it/sitows/didattica/aule",
+        "locations":
+            "http://apps.unive.it/sitows/didattica/sedi",
     }
 
     # Use defined function to get urls_dataframe
@@ -232,8 +242,8 @@ def rename_and_convert(merged_dataframe: pd.DataFrame) -> pd.DataFrame:
     """
     drop_columns = [
         'CODICE', 'SETTORE', 'CREDITI', 'PESO_TOTALE',
-        'TIPO_CORSO_DES', 'TIPO_ATTIVITA', 'POSTI', 
-        'NOTE', 'ANNO_CORSO', 'CDS_DES','COORDINATE']
+        'TIPO_CORSO_DES', 'TIPO_ATTIVITA', 'POSTI',
+        'NOTE', 'ANNO_CORSO', 'CDS_DES', 'COORDINATE']
 
     merged_dataframe.drop(columns=drop_columns, inplace=True)
 
@@ -252,7 +262,11 @@ def rename_and_convert(merged_dataframe: pd.DataFrame) -> pd.DataFrame:
         'LECTURER_NAME'].str.upper()
 
     # Drop rows where DEGREE_TYPE is different from 'L' or 'LM'
-    merged_dataframe = merged_dataframe[(merged_dataframe['DEGREE_TYPE'] == 'L') | (merged_dataframe['DEGREE_TYPE'] == 'LM')]
+    merged_dataframe = merged_dataframe[(
+        merged_dataframe['DEGREE_TYPE'] == 'L'
+        ) | (
+        merged_dataframe['DEGREE_TYPE'] == 'LM'
+    )]
 
     return merged_dataframe
 
@@ -262,48 +276,59 @@ def unive_lecturer_urls(ordered_dataframe: pd.DataFrame) -> pd.DataFrame:
     Enriches the main DataFrame with URLs of lecturers.
 
     Parameters:
-    ordered_dataframe (pd.DataFrame): The main DataFrame containing lecturer names.
+    ordered_dataframe (pd.DataFrame): The DataFrame containing lecturer names.
 
     Returns:
     pd.DataFrame: The updated DataFrame with added URLs of lecturers.
 
     The function performs the following steps:
     1. Retrieves data about lecturers from a JSON URL.
-    2. Creates a new column 'LECTURER_NAME' by concatenating 'COGNOME' and 'NOME' columns.
-    3. Selects only 'LECTURER_NAME' and 'DOCENTE_ID' columns from the lecturers DataFrame.
-    4. Merges the main DataFrame with the lecturers DataFrame on 'LECTURER_NAME'.
+    2. Creates a new column 'LECTURER_NAME' using 'COGNOME' and 'NOME' columns.
+    3. Selects only 'LECTURER_NAME' and 'DOCENTE_ID' columns
+        from new DataFrame.
+    4. Merges main DataFrame with lecturers DataFrame on 'LECTURER_NAME'.
     5. Fills NaN values in 'DOCENTE_ID' column with -1.
-    6. Creates a new column 'URL_DOCENTE' by concatenating a base URL and 'DOCENTE_ID' column.
+    6. Creates a new column 'URL_DOCENTE' using a URL and 'DOCENTE_ID' column.
     7. Returns the updated DataFrame.
     """
     lecturers = pd.read_json("http://apps.unive.it/sitows/didattica/docenti")
-    lecturers['LECTURER_NAME'] = (lecturers['COGNOME'] + '' + lecturers['NOME']).str.upper()
-    lecturers = lecturers[['LECTURER_NAME','DOCENTE_ID']]
+    lecturers['LECTURER_NAME'] = (
+        lecturers['COGNOME'] + '' + lecturers['NOME']
+    ).str.upper()
+    lecturers = lecturers[['LECTURER_NAME', 'DOCENTE_ID']]
 
     # Merge of the main DataFrame with lecturer's data
-    final_urls_dataframe = pd.merge(ordered_dataframe, lecturers, on='LECTURER_NAME', how='left')
-    final_urls_dataframe['DOCENTE_ID'] = final_urls_dataframe['DOCENTE_ID'].fillna(-1)
-    
+    final_urls_dataframe = pd.merge(
+        ordered_dataframe, lecturers, on='LECTURER_NAME', how='left'
+    )
+    final_urls_dataframe['DOCENTE_ID'] = final_urls_dataframe[
+        'DOCENTE_ID'].fillna(-1)
+
     # Convert to integer and then to string
     url_lecturers = 'https://www.unive.it/data/persone/'
-    final_urls_dataframe['URL_DOCENTE'] = url_lecturers + final_urls_dataframe[
+    new_link = url_lecturers + final_urls_dataframe[
         'DOCENTE_ID'].astype(int).astype(str)
-    
+    final_urls_dataframe['URL_DOCENTE'] = new_link
+
     return final_urls_dataframe
 
 
 def unive_teaching_urls(final_urls_dataframe: pd.DataFrame) -> pd.DataFrame:
     """
-    This function adds a new column to the DataFrame containing URLs of teachings.
+    This function adds a new column to the DataFrame
+    containing URLs of teachings.
 
     Parameters:
-    final_urls_dataframe (pd.DataFrame): The DataFrame to which the new column will be added.
-        The DataFrame should contain a column named 'AF_ID' which contains the IDs of the teachings.
+    final_urls_dataframe (pd.DataFrame):
+    The DataFrame to which the new column will be added.
+    The DataFrame should contain a column named 'AF_ID',
+    which contains the IDs of the teachings.
 
     Returns:
-    pd.DataFrame: The updated DataFrame with a new column 'URLS_INSEGNAMENTO' containing the URLs of teachings.
-        The URLs are constructed by concatenating the base URL 'https://www.unive.it/data/insegnamento/'
-        with the IDs from the 'AF_ID' column, converted to strings.
+    pd.DataFrame: The updated DataFrame with a new column 'URLS_INSEGNAMENTO'
+    containing the URLs of teachings.The URLs are constructed by
+    concatenating the base URL 'https://www.unive.it/data/insegnamento/'
+    with the IDs from the 'AF_ID' column, converted to strings.
 
     Raises:
     ValueError: If the 'AF_ID' column is not found in the DataFrame.
@@ -313,22 +338,32 @@ def unive_teaching_urls(final_urls_dataframe: pd.DataFrame) -> pd.DataFrame:
     if 'AF_ID' not in final_urls_dataframe.columns:
         raise ValueError("'AF_ID' column not found in the DataFrame")
 
-    # Construct the URLs by concatenating the base URL and the IDs from 'AF_ID' column
-    final_urls_dataframe["URLS_INSEGNAMENTO"] = 'https://www.unive.it/data/insegnamento/' + final_urls_dataframe['AF_ID'].astype(str)
+    # Construct the URLs using the base URL and the IDs from 'AF_ID' column
+    old_link = 'https://www.unive.it/data/insegnamento/'
+    new_link = old_link + final_urls_dataframe['AF_ID'].astype(str)
+    final_urls_dataframe["URLS_INSEGNAMENTO"] = new_link
 
     return final_urls_dataframe
+
 
 def format_iso8601(final_urls_dataframe):
     def format_to_iso8601(date_str, time_str):
         # Create a datetime object from date and time strings
-        full_datetime = datetime.datetime.strptime(f"{date_str} {time_str}", "%Y-%m-%d %H:%M")
+        full_datetime = datetime.datetime.strptime(
+            f"{date_str} {time_str}", "%Y-%m-%d %H:%M"
+        )
         return full_datetime.isoformat()
 
-    # Apply the formatting function to create new columns for ISO 8601 formatted dates
+    # Apply the formatting function to create new columns in ISO 8601 format
     final_urls_dataframe['START_ISO8601'] = final_urls_dataframe.apply(
-        lambda row: format_to_iso8601(row['LECTURE_DAY'], row['LECTURE_START']), axis=1)
+        lambda row: format_to_iso8601(
+            row['LECTURE_DAY'], row['LECTURE_START']
+        ), axis=1)
     final_urls_dataframe['END_ISO8601'] = final_urls_dataframe.apply(
-        lambda row: format_to_iso8601(row['LECTURE_DAY'], row['LECTURE_END']), axis=1)
+        lambda row: format_to_iso8601(
+            row['LECTURE_DAY'], row['LECTURE_END']
+        ), axis=1)
+
     return final_urls_dataframe
 
 
@@ -337,7 +372,8 @@ def modify_values(final_urls_dataframe: pd.DataFrame) -> pd.DataFrame:
     Modify values in the DataFrame according to specified rules.
 
     This function performs several modifications on the input DataFrame:
-    - Replaces 'L' with 'Bachelor' and 'LM' with 'Master' in the 'DEGREE_TYPE' column.
+    - Replaces 'L' with 'Bachelor' and 'LM' with 'Master'
+        in the 'DEGREE_TYPE' column.
     - Replaces 'PADOVA' with 'VENEZIA' in the 'SITE' column.
     - Fills missing values in the 'SITE' column with 'Not defined yet'.
     - Fills missing values in the 'PARTITION' column with an empty string.
@@ -351,19 +387,25 @@ def modify_values(final_urls_dataframe: pd.DataFrame) -> pd.DataFrame:
     pd.DataFrame: The modified DataFrame.
     """
     # Replace degree types with their full names
-    final_urls_dataframe['DEGREE_TYPE'] = final_urls_dataframe['DEGREE_TYPE'].replace({'L': 'Bachelor', 'LM': 'Master'})
+    final_urls_dataframe['DEGREE_TYPE'] = final_urls_dataframe[
+        'DEGREE_TYPE'].replace({'L': 'Bachelor', 'LM': 'Master'})
 
     # Replace 'PADOVA' with 'VENEZIA' in the 'SITE' column
-    final_urls_dataframe['SITE'] = final_urls_dataframe['SITE'].replace({'PADOVA': 'VENEZIA'})
+    final_urls_dataframe['SITE'] = final_urls_dataframe[
+        'SITE'].replace({'PADOVA': 'VENEZIA'})
 
     # Fill missing values in the 'SITE' column
-    final_urls_dataframe['SITE'] = final_urls_dataframe['SITE'].fillna("Not defined yet")
+    final_urls_dataframe['SITE'] = final_urls_dataframe[
+        'SITE'].fillna("Not defined yet")
 
     # Fill missing values in the 'PARTITION' column with an empty string
-    final_urls_dataframe['PARTITION'] = final_urls_dataframe['PARTITION'].fillna("")
+    final_urls_dataframe['PARTITION'] = final_urls_dataframe[
+        'PARTITION'].fillna("")
 
     # Remove rows where 'CYCLE' is 'Precorsi'
-    final_urls_dataframe = final_urls_dataframe[final_urls_dataframe['CYCLE'] != 'Precorsi']
+    final_urls_dataframe = final_urls_dataframe[
+        final_urls_dataframe['CYCLE'] != 'Precorsi'
+    ]
 
     # Iterate over the DataFrame using the index and semester value
     for index, semester in final_urls_dataframe['CYCLE'].items():

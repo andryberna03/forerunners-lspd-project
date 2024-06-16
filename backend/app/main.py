@@ -5,6 +5,7 @@ This module defines a FastAPI application that serves
 as the backend for the project.
 """
 
+
 from fastapi import FastAPI, HTTPException, Response
 from fastapi.middleware.cors import CORSMiddleware
 import pandas as pd
@@ -19,7 +20,7 @@ from .mymodules.df_creating import df_creating
 
 app = FastAPI()
 
-# Add Cross-Origin Resource Sharing (CORS) middleware to the FastAPI application.
+# Add Cross-Origin Resource Sharing (CORS) middleware to the FastAPI app.
 # This middleware allows all origins to access the API endpoints.
 # It also allows credentials, all HTTP methods, and all headers.
 app.add_middleware(
@@ -41,8 +42,10 @@ def read_root():
     """
     return {"Hello": "World"}
 
+
 final_path_csv = 'app/final.csv'
 final_urls_dataframe = pd.read_csv(final_path_csv)
+
 
 @app.get('/df_show')
 def read_and_return_df():
@@ -64,17 +67,20 @@ def get_csv_creation_date():
     """
     Retrieve the creation date of a CSV file.
 
-    This function checks if a CSV file exists at the hardcoded path 'app/final.csv'.
-    If the file exists, it retrieves and returns the creation date as a datetime object.
-
+    This function checks if a CSV file exists
+    at the hardcoded path 'app/final.csv'.
+    If the file exists, it retrieves and returns
+    the creation dateas a datetime object.
     Returns:
-        datetime: The creation date of the CSV file if it exists, otherwise None.
-
+        datetime: The creation date of the CSV file
+        if it exists, otherwise None.
     Note:
-        The function uses os.path.exists() and os.path.getctime() to check the file existence
-        and get the creation time. The creation time is converted from a timestamp to a datetime
-        object using datetime.fromtimestamp().
+        The function uses os.path.exists() and os.path.getctime() to check
+        the file existenceand get the creation time.
+        The creation time is converted from a timestamp
+        to a datetime object using datetime.fromtimestamp().
     """
+
     file_path_final = 'app/final.csv'
     if os.path.exists(file_path_final):
         # Get the creation time of the file
@@ -87,30 +93,37 @@ def get_csv_creation_date():
 
 
 @app.get("/csv_creation_date")
-async def csv_creation_date(response):
+async def csv_creation_date(response: Response):
     """
-    Retrieve the creation date of the CSV file and set a cookie with the date.
+    Retrieve the creation date of the CSV file
+    and set a cookie with the date.
 
-    This endpoint retrieves the creation date of the CSV file at the hardcoded path 'app/final.csv'.
-    If the file exists, it formats the creation date in 'Day, DD-MMM-YYYY HH:MM:SS TZ' format,
+    This endpoint retrieves the creation date of the CSV file
+    at the hardcoded path 'app/final.csv'.If the file exists,
+    it formats the creation date in 'Day, DD-MMM-YYYY HH:MM:SS TZ' format,
     sets it as a cookie named 'creation_date', and returns the formatted date.
 
     Parameters:
         response (Response): The FastAPI Response object to set the cookie.
 
     Returns:
-        str: The formatted creation date of the CSV file in 'Day, DD-MMM-YYYY HH:MM:SS TZ' format.
+        str: The formatted creation date of the CSV file in 'Day,
+        DD-MMM-YYYY HH:MM:SS TZ' format.
 
     Raises:
-        HTTPException: If the CSV file does not exist, a 404 Not Found exception is raised.
+        HTTPException: If the CSV file does not exist,
+        a 404 Not Found exception is raised.
 
     Note:
-        The function uses os.path.exists() and os.path.getctime() to check the file existence
-        and get the creation time. The creation time is converted from a timestamp to a datetime
-        object using datetime.fromtimestamp(). The datetime object is then converted to the
-        'Europe/Rome' timezone using pytz.timezone(). The formatted date is set as a cookie
-        using Response.set_cookie().
+        The function uses os.path.exists() and os.path.getctime() to check
+        the file existence and get the creation time.
+        The creation time is converted from a timestamp to a datetime
+        object using datetime.fromtimestamp().
+        The datetime object is then converted to the
+        'Europe/Rome' timezone using pytz.timezone().
+        The formatted date is set as a cookie using Response.set_cookie().
     """
+
     # Get the creation date of the CSV file
     creation_date = get_csv_creation_date()
     if creation_date:
@@ -119,7 +132,9 @@ async def csv_creation_date(response):
         # Convert the creation date to Rome timezone
         creation_date_rome = creation_date.astimezone(rome_tz)
         # Format the date in the required format
-        cookie_date_format = creation_date_rome.strftime('%A, %d-%b-%Y %H:%M:%S %Z')
+        cookie_date_format = creation_date_rome.strftime(
+            '%A, %d-%b-%Y %H:%M:%S %Z'
+        )
         # Set the cookie with the formatted date
         response.set_cookie(key='creation_date', value=cookie_date_format)
         return cookie_date_format
@@ -131,21 +146,33 @@ async def csv_creation_date(response):
 @app.get("/query/{location}/{degreetype}/{cycle}")
 def get_courses_taught_by_person(location, degreetype, cycle):
     """
-    This function retrieves and returns a list of teachings based on the provided location, degree type, and cycle.
+    This function retrieves and returns a list of teachings
+    based on the provided location, degree type, and cycle.
 
     Parameters:
-    location (str): A comma-separated string of locations (MESTRE, VENEZIA, RONCADE, TREVISO). If empty, all locations are considered.
-    degreetype (str): A comma-separated string of degree types (Bachelor, Master). If empty, all degree types are considered.
+
+    location (str):
+    A comma-separated string of locations
+    (MESTRE, VENEZIA, RONCADE, TREVISO).
+    If empty, all locations are considered.
+
+    degreetype (str):
+    A comma-separated string of degree types (Bachelor, Master).
+    If empty, all degree types are considered.
+
     cycle (str): The cycle to filter the teachings.
 
     Returns:
     str: A JSON string containing a dictionary of unique teachings.
 
     Note:
-    The function filters the dataframe based on the provided parameters and returns a list of unique teachings.
+    The function filters the dataframe based on the provided parameters
+    and returns a list of unique teachings.
     The degree types are mapped to their corresponding codes in the DataFrame.
-    The function fills any missing values in the dataframe with the string 'null'.
+    The function fills any missing values
+    in the dataframe with the string 'null'.
     """
+
     filtered_df = final_urls_dataframe
 
     # Filter by location
@@ -154,7 +181,7 @@ def get_courses_taught_by_person(location, degreetype, cycle):
         filtered_df = filtered_df[filtered_df['SITE'].isin(site_list)]
 
     # Filter by degreetype
-    # Dictionary to map the degree types to the corresponding codes in the DataFrame
+    # Dictionary to map the degree types to the corresponding codes in the DF
     degree_mapping = {
         'Bachelor': 'Bachelor',
         'Master': 'Master'}
@@ -164,7 +191,7 @@ def get_courses_taught_by_person(location, degreetype, cycle):
     code_list = []
     for degreetype in degreetype_list:
         code_list.append(degree_mapping[degreetype])
- 
+
     if code_list:
         filtered_df = filtered_df[filtered_df['DEGREE_TYPE'].isin(code_list)]
 
@@ -189,20 +216,27 @@ def get_teaching(final_teaching):
     Retrieve and return a specific teaching record from the dataframe.
 
     Parameters:
-    final_teaching (str): The unique identifier of the teaching record to retrieve.
+    final_teaching (str):
+    The unique identifier of the teaching record to retrieve.
 
     Returns:
-    JSONResponse: A JSON response containing the details of the specified teaching record.
+    JSONResponse:
+    A JSON response containing the details of the specified teaching record.
 
     Note:
-    The function filters the dataframe based on the 'TEACHING' column and the provided 'final_teaching' parameter.
+    The function filters the dataframe based on the 'TEACHING' column
+    and the provided 'final_teaching' parameter.
     It then fills any missing values in the dataframe with the string 'null'.
-    The filtered dataframe is converted to a dictionary with 'index' orientation, and a JSON response is created using the dictionary.
-    The JSON response is then returned.
+    The filtered dataframe is converted to a dictionary
+    with 'index' orientation,and a JSON response is created
+    using the dictionary.The JSON response is then returned.
     """
 
-    # Filter the dataframe based on the 'TEACHING' column and the provided 'final_teaching' parameter
-    filtered_df = final_urls_dataframe[final_urls_dataframe['TEACHING'] == final_teaching]
+    # Filter the dataframe based on the 'TEACHING' column
+    # and on provided 'final_teaching' parameter
+    filtered_df = final_urls_dataframe[
+        final_urls_dataframe['TEACHING'] == final_teaching
+    ]
 
     # Fill any missing values in the dataframe with the string 'null'
     filtered_df.fillna("null", inplace=True)
