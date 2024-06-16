@@ -82,32 +82,13 @@ def test_csv_creation_date():
 # a) @app.get("/query/{location}/{degreetype}/{cycle}")
 # def get_all_teachings(location: str, degreetype: str, cycle: str) -> json:
 
-@patch("app.main.get_all_teachings") #Mock the get_all_teaching function
+@patch("app.main.get_all_teachings")  # Mock the get_all_teachings function
 def test_get_all_teachings(mock_get_all_teachings):
     # Create sample returned list
-    mock_teachings = {
-        "E-BUSINESS, ENTREPRENEURSHIP AND DIGITAL TRANSFORMATION-1": "E-BUSINESS, ENTREPRENEURSHIP AND DIGITAL TRANSFORMATION-1",
-        "E-BUSINESS, ENTREPRENEURSHIP AND DIGITAL TRANSFORMATION-2": "E-BUSINESS, ENTREPRENEURSHIP AND DIGITAL TRANSFORMATION-2",
-        "ECONOMICS OF INNOVATION, GROWTH THEORY AND ECONOMICS DEVELOPMENT-2": "ECONOMICS OF INNOVATION, GROWTH THEORY AND ECONOMICS DEVELOPMENT-2",
-        "ECONOMICS OF INNOVATION, GROWTH THEORY AND ECONOMICS DEVELOPMENT-2 PRACTICE": "ECONOMICS OF INNOVATION, GROWTH THEORY AND ECONOMICS DEVELOPMENT-2 PRACTICE",
-        "FUNDAMENTALS OF IT LAW": "FUNDAMENTALS OF IT LAW",
-        "INTRODUCTION TO DIGITAL MANAGEMENT-1": "INTRODUCTION TO DIGITAL MANAGEMENT-1",
-        "INTRODUCTION TO DIGITAL MANAGEMENT-2": "INTRODUCTION TO DIGITAL MANAGEMENT-2",
-        "INTRODUCTION TO DIGITAL MANAGEMENT-2 PRACTICE": "INTRODUCTION TO DIGITAL MANAGEMENT-2 PRACTICE",
-        "LAB OF SOFTWARE PROJECT DEVELOPMENT": "LAB OF SOFTWARE PROJECT DEVELOPMENT",
-        "LAB OF WEB TECHNOLOGIES": "LAB OF WEB TECHNOLOGIES",
-        "MATHEMATICS FOR DECISION SCIENCES-1": "MATHEMATICS FOR DECISION SCIENCES-1",
-        "MATHEMATICS FOR DECISION SCIENCES-1 PRACTICE": "MATHEMATICS FOR DECISION SCIENCES-1 PRACTICE",
-        "MATHEMATICS FOR DECISION SCIENCES-2": "MATHEMATICS FOR DECISION SCIENCES-2",
-        "MATHEMATICS FOR DECISION SCIENCES-2 PRACTICE": "MATHEMATICS FOR DECISION SCIENCES-2 PRACTICE",
-        "ORGANIZING IN A DIGITAL WORLD": "ORGANIZING IN A DIGITAL WORLD",
-        "PLANNING AND MANAGEMENT CONTROL SYSTEMS": "PLANNING AND MANAGEMENT CONTROL SYSTEMS",
-        "PLANNING AND MANAGEMENT CONTROL SYSTEMS-PRACTICE": "PLANNING AND MANAGEMENT CONTROL SYSTEMS-PRACTICE",
-        "STRATEGIC AND DIGITAL MARKETING": "STRATEGIC AND DIGITAL MARKETING"
-    }
+    mock_teachings = "{\"MATHEMATICS FOR DECISION SCIENCES 2-PRACTICE\": \"MATHEMATICS FOR DECISION SCIENCES 2-PRACTICE\", \"INTRODUCTION TO DIGITAL MANAGEMENT-1\": \"INTRODUCTION TO DIGITAL MANAGEMENT-1\", \"LAB OF WEB TECHNOLOGIES\": \"LAB OF WEB TECHNOLOGIES\", \"INTRODUCTION TO DIGITAL MANAGEMENT-2\": \"INTRODUCTION TO DIGITAL MANAGEMENT-2\", \"STRATEGIC AND DIGITAL MARKETING\": \"STRATEGIC AND DIGITAL MARKETING\", \"E-BUSINESS, ENTREPRENEURSHIP AND DIGITAL TRANSFORMATION-2\": \"E-BUSINESS, ENTREPRENEURSHIP AND DIGITAL TRANSFORMATION-2\", \"INTRODUCTION TO DIGITAL MANAGEMENT-2 PRACTICE\": \"INTRODUCTION TO DIGITAL MANAGEMENT-2 PRACTICE\", \"MATHEMATICS FOR DECISION SCIENCES-2\": \"MATHEMATICS FOR DECISION SCIENCES-2\", \"MATHEMATICS FOR DECISION SCIENCES 1\": \"MATHEMATICS FOR DECISION SCIENCES 1\", \"LAB OF SOFTWARE PROJECT DEVELOPMENT\": \"LAB OF SOFTWARE PROJECT DEVELOPMENT\", \"MATHEMATICS FOR DECISION SCIENCES 1-PRACTICE\": \"MATHEMATICS FOR DECISION SCIENCES 1-PRACTICE\", \"FUNDAMENTALS OF IT LAW\": \"FUNDAMENTALS OF IT LAW\", \"PLANNING AND MANAGEMENT CONTROL SYSTEMS\": \"PLANNING AND MANAGEMENT CONTROL SYSTEMS\", \"E-BUSINESS, ENTREPRENEURSHIP AND DIGITAL TRANSFORMATION-1\": \"E-BUSINESS, ENTREPRENEURSHIP AND DIGITAL TRANSFORMATION-1\", \"ECONOMICS OF INNOVATION, GROWTH THEORY AND ECONOMICS DEVELOPMENT-2\": \"ECONOMICS OF INNOVATION, GROWTH THEORY AND ECONOMICS DEVELOPMENT-2\", \"ORGANIZING IN A DIGITAL WORLD\": \"ORGANIZING IN A DIGITAL WORLD\", \"ECONOMICS OF INNOVATION, GROWTH THEORY AND ECONOMICS DEVELOPMENT-2 PRACTICE\": \"ECONOMICS OF INNOVATION, GROWTH THEORY AND ECONOMICS DEVELOPMENT-2 PRACTICE\", \"PLANNING AND MANAGEMENT CONTROL SYSTEMS-PRACTICE\": \"PLANNING AND MANAGEMENT CONTROL SYSTEMS-PRACTICE\"}"
     
-    # Mock the return value of get_courses_taught_by_person to return the parameters object
-    mock_get_all_teachings.return_value = json.dumps(mock_teachings)
+    # Mock the return value of get_all_teachings
+    mock_get_all_teachings.return_value = mock_teachings
 
     # Define query parameters: testing with digital management courses
     location_str = 'RONCADE'
@@ -117,16 +98,13 @@ def test_get_all_teachings(mock_get_all_teachings):
     # Send a GET request
     response = client.get(f"/query/{location_str}/{degreetype_str}/{cycle_str}")
 
-    # Assert response status code is 200 wehn the file exists
+    # Assert response status code is 200 when the file exists
     assert response.status_code == 200
 
     # Parse the JSON response into a dictionary
     actual_teachings = response.json()
 
-    # Get the JSON response as a Python dictionary
-    actual_teachings = response.json()
-
-    # Assert that the actual teachings match the expected mock teachings --> the test passes but the order is not the same. sort doesnt work
+    # Check if every key in actual_teachings is in mock_teachings and vice versa
     assert actual_teachings == mock_teachings
 
     # No need to test "if"s of this query because the options of the filters
@@ -152,29 +130,22 @@ def test_get_all_teachings_empty(mock_get_all_teachings):
     assert response.json() == empty_teachings
 
 
-# DA FINIRE
-# b) @app.get("/query/{final_teaching}")
-# def get_specific_teaching(final_teaching: str) -> JSONResponse:
 
-@patch("app.main.get_specific_teachings") #Mock the get_specific_teaching function
-def test_get_specific_teachings(mock_get_specific_teachings):
-    
-    # Create sample returned list
-    mock_lesson = {
-        ## metti specifiche della prima lezione di final teaching
-    } 
-    
-    # Mock the return value of get_courses_taught_by_person to return the parameters object
-    mock_get_specific_teachings.return_value = mock_lesson
 
+def test_get_teaching():
     # Define query parameters: testing with digital management courses
-    final_teaching = ""
+    test_teaching = "MATHEMATICS FOR DECISION SCIENCES 2-PRACTICE"
 
     # Send a GET request
-    response = client.get(f"/query/{final_teaching}")
+    response = client.get(f"/query/{test_teaching}")
 
-    # Assert response status code is 200 wehn the file exists
+    # Assert response status code is 200 when the file exists
     assert response.status_code == 200
 
      # Extract the actual course data from the response
-    assert response.json()[0] == mock_lesson
+    choosen_teaching = response.json()
+
+    for key, value in choosen_teaching.items():
+        assert value["TEACHING"] == test_teaching
+
+    

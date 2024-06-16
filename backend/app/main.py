@@ -87,7 +87,7 @@ def get_csv_creation_date():
 
 
 @app.get("/csv_creation_date")
-async def csv_creation_date(response):
+async def csv_creation_date(response: Response):
     """
     Retrieve the creation date of the CSV file and set a cookie with the date.
 
