@@ -122,31 +122,6 @@ def test_create_new_dataframe():
     # Assert that the DataFrame has the expected headers
     assert list(result_df.columns) == expected_header, "The DataFrame headers do not match the expected headers."
     
-    # # Define the expected types for each column
-    # expected_types = {
-    #     "AF_ID": int,
-    #     "TEACHING": str,
-    #     "CYCLE": str,
-    #     "SITE": str,
-    #     "CREDITS": int,
-    #     "DEGREE_TYPE": str,
-    #     "LECTURE_DAY": str,
-    #     "LECTURE_START": str,
-    #     "LECTURE_END": str,
-    #     "CLASSROOM_NAME": str,
-    #     "LOCATION_NAME": str,
-    #     "DOCENTE_ID": int,
-    #     "URL_DOCENTE": str,
-    #     "URLS_INSEGNAMENTO": str,
-    #     "START_ISO8601": str,
-    #     "END_ISO8601": str
-    # }
-    
-    # # Assert that the columns have the expected types
-    # for column, expected_type in expected_types.items():
-    #     for item in result_df[column]:
-    #         assert isinstance(item, expected_type), f"Column {column} should be of type {expected_type}."
-
 
 #TESTING final.csv
 def test_file_is_csv():
@@ -180,52 +155,29 @@ def test_file_is_csv():
 
 def test_file_created_within_24_hours():
     """
-    Test to verify that the file 'app/final.csv' was created within the last 24 hours.
+    Test to verify that the file 'final.csv' was created within the last 24 hours.
 
-    - Checks if the file 'app/final.csv' exists.
+    - Checks if the file 'final.csv' exists.
     - Retrieves the creation time of the file.
     - Calculates the current time and the time 24 hours ago.
     - Asserts that the file was created less than 24 hours ago.
 
-    Requires the 'app/final.csv' file to exist for accurate testing.
+    Requires the 'final.csv' file to exist for accurate testing.
     """
-    # Ottenere il tempo di creazione del file
-    file_stat = os.stat(file_path)
-    creation_time = file_stat.st_ctime
+    file_path = 'app/final.csv'  # Ensure the correct path to your CSV file
 
-    # Calcolare l'ora corrente e l'intervallo di 24 ore fa
-    now = datetime.datetime.now().timestamp()
-    twenty_four_hours_ago = now - 24 * 60 * 60
+    # Ensure the file exists before proceeding with the test
+    assert os.path.exists(file_path), f"File '{file_path}' does not exist."
 
-    # Verificare che il file sia stato creato meno di 24 ore fa
-    assert creation_time > twenty_four_hours_ago, "Il file final.csv è stato creato più di 24 ore fa."
+    # Obtain the creation time of the file
+    creation_time = os.path.getctime(file_path)
+    creation_time_dt = datetime.datetime.fromtimestamp(creation_time)
+    now_dt = datetime.datetime.now()
 
+    # Calculate 24 hours ago from now
+    twenty_four_hours_ago = now_dt - datetime.timedelta(days=1)
 
-
-
-
-# # Test 2: Test for non-existing file
-
-# # Test 3: Test for outdated file
+    # Verify that the file was created less than 24 hours ago
+    assert creation_time_dt > twenty_four_hours_ago, "Il file final.csv è stato creato più di 24 ore fa."
 
 
-# # Test 4: Test for API requests
-# @patch('app.mymodules.df_creating.requests.get')
-# def test_api_requests(mock_get):
-#     # Mock API responses
-#     mock_responses = {
-#         'degrees': {'col1': [1, 2, 3], 'col2': ['a', 'b', 'c']},
-#         # Add mock responses for other URLs as needed
-#     }
-#     mock_get.side_effect = lambda url: mock_responses[url.split('/')[-1]]
-#     # Call df_creating and assert it retrieves data from mocked responses
-#     final_df = df_creating()
-#     expected_df = pd.DataFrame(mock_responses['degrees'])
-#     assert final_df.equals(expected_df)
-
-# # Test 5: Test for data consistency and correctness
-# def test_data_consistency_and_correctness():
-#     # Call df_creating
-#     final_df = df_creating()
-#     # Perform assertions to check data consistency and correctness
-#     # For example, check column names, data types, presence of expected data, etc.
