@@ -139,7 +139,7 @@ The user chooses their teaching features using filters and then asks for data. F
 ### *Calendar display:*
 The user select their specific teaching and JavaScript make two AJAX calls to retrieve data. The first one is used to populate the calendar design showing classess. By moving the cursor over the slot the user gains detailed information about each lecture, including the course title, lecturer, time, and location. This detailed view provides users with a clear and organised schedule, making it easy to manage their academic commitment. Additionally, if you click on the time slot it will take the user to Ca’ Foscari official web page for that teaching. The second one is used to create the iCal file.
 
-### *User download teaching in iCal:*
+### *User download teaching in iCal format:*
 When the download button is clicked by the user, `calendar.ics` file is created based on information retrived in the most recent query using JavaScript AJAX call. As soon as the file is created, it is immediately downloaded by the browser using timezone CET. This allows the user to directly add the lectures to their preferred calendar client.
 
 ## **Shutting Down the Docker Containers**
@@ -190,11 +190,43 @@ Make sure to replace `frontend` and `backend` with the appropriate service names
 
 ## **Testing**
 
-QUI PISCO DEVE METTERE LE INFO SUL TESTING
+The tests focus on the backend of the project, including the handling of data, file operations, and API endpoint responses. These tests are needed to meet the project's requirements and to guarantee that the system behaves as expected under different conditions.
+
+The tests cover the following scenarios:
+
+1. **DataFrame Creation (`df_creating` function)**:
+   - **Existing File (Recent)**: Verifies that the `df_creating` function correctly loads a DataFrame from a CSV file that was created less than a day ago.
+   - **Existing File (Old)**: Ensures that the function creates a new DataFrame if the existing file is older than a day.
+   - **Non-Existing File**: Checks that the function creates a new DataFrame when the specified file does not exist.
+
+2. **DataFrame Structure (`create_new_dataframe` function)**:
+   - Validates that the `create_new_dataframe` function produces a DataFrame with the expected structure and content.
+
+3. **File Validation**:
+   - **CSV Format Check**: Ensures that the `final.csv` file is a valid CSV with the correct headers.
+   - **File Creation Date**: Confirms that the `final.csv` file was created within the last 24 hours.
+
+4. **API Endpoints**:
+   - **Main Endpoint (`/`)**: Tests the root endpoint to ensure it returns the expected response.
+   - **DataFrame Endpoint (`/df_show`)**: Verifies that the endpoint returns a JSON representation of the DataFrame.
+   - **CSV Creation Date Endpoint**: Check if the HTTPException is correctly thrown.
+   - **Teaching Query Endpoint (`/query`)**:
+     - Checks the response for valid teaching queries.
+     - Ensures correct behavior when no teachings match the query filters.
+   - **Single Teaching Query (`/query/{teaching_name}`)**: Validates the response for a specific teaching query.
+
+To execute these tests, navigate to the `backend/` directory and run the following command in the terminal:
+
+```
+pytest --cov=app --cov-report=html tests/
+```
+
+These tests utilize `pytest` for testing functionalities and `pytest-mock` for mocking dependencies, be sure you have them installed. The `TestClient` from FastAPI is used for testing API endpoints, allowing for the simulation of HTTP requests and responses. This approach ensures that the application is robust, reliable, and meets the specified requirements.
 
 ## **Limitations**
 Despite our efforts to create an excellent website, it has some limitations:
 - It is not possible to search for more than one teaching at a time; therefore, the user must make a separate query for each course users intend to search for.
+- If "Enter teaching name:" filter has no values, the previous query was wrong (ex. RONCADE has no master degrees).
 - The dataset contains 20,000 rows with NaN values in the "SITE" column; consequently, these values have been filled with 'Not defined yet'.
 
 ## **Contact**

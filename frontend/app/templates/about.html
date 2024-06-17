@@ -133,7 +133,7 @@
                     </ol>
                 </li>
                 <li>
-                    <strong>Second user's query</strong>:
+                    <strong>Calendar display</strong>:
                     <ol>
                         <li>User select their specific teaching and send it.</li>
                         <li>JavaScript make AJAX call to retrieve data in JSON format.</li>
@@ -154,7 +154,57 @@
     <!-- Testing section -->
     <div class="container justify-content-center align-items-center">
         <h2 class="text-center mt-5 mb-4">Testing</h2>
-        <p class="lead">PISCO INSERISCI QUI LE INFO SUL TESTING</p>
+        <p class="lead">The tests focus on the backend of the project, including the handling of data, file operations, and API endpoint
+        responses. The tests cover the following scenarios:</p>
+        <ul class="lead">
+            <li>
+                <strong>DataFrame Creation (<code>df_creating</code> function):</strong>
+                <ul>
+                    <li><strong>Existing File (Recent):</strong> Verifies that the <code>df_creating</code> function correctly
+                        loads a DataFrame from a CSV file that was created less than a day ago.</li>
+                    <li><strong>Existing File (Old):</strong> Ensures that the function creates a new DataFrame if the existing
+                        file is older than a day.</li>
+                    <li><strong>Non-Existing File:</strong> Checks that the function creates a new DataFrame when the specified
+                        file does not exist.</li>
+                </ul>
+            </li>
+            <li>
+                <strong>DataFrame Structure (<code>create_new_dataframe</code> function):</strong>
+                <ul>
+                    <li>Validates that the <code>create_new_dataframe</code> function produces a DataFrame with the expected
+                        structure and content.</li>
+                </ul>
+            </li>
+            <li>
+                <strong>File Validation:</strong>
+                <ul>
+                    <li><strong>CSV Format Check:</strong> Ensures that the <code>final.csv</code> file is a valid CSV with the
+                        correct headers.</li>
+                    <li><strong>File Creation Date:</strong> Confirms that the <code>final.csv</code> file was created within
+                        the last 24 hours.</li>
+                </ul>
+            </li>
+            <li>
+                <strong>API Endpoints:</strong>
+                <ul>
+                    <li><strong>Main Endpoint (<code>/</code>):</strong> Tests the root endpoint to ensure it returns the
+                        expected response.</li>
+                    <li><strong>DataFrame Endpoint (<code>/df_show</code>):</strong> Verifies that the endpoint returns a JSON
+                        representation of the DataFrame.</li>
+                    <li><strong>CSV Creation Date Endpoint:</strong> Check if the <code>HTTPException</code> is correctly thrown.</li>
+                    <li>
+                        <strong>Teaching Query Endpoint (<code>/query</code>):</strong>
+                        <ul>
+                            <li>Checks the response for valid teaching queries.</li>
+                            <li>Ensures correct behavior when no teachings match the query filters.</li>
+                        </ul>
+                    </li>
+                    <li><strong>Single Teaching Query (<code>/query/{teaching_name}</code>):</strong> Validates the response for
+                        a specific teaching query.</li>
+                </ul>
+            </li>
+        </ul>
+
     </div>
 
     <!-- Team Member section -->

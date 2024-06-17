@@ -28,7 +28,7 @@ def df_creating(file_path_final) -> pd.DataFrame:
         current_date = datetime.datetime.now()
 
         # If the file was created within the last 24 hours, load it
-        if current_date - file_creation_date < datetime.timedelta(days=1):
+        if current_date - file_creation_date < datetime.timedelta(seconds=1):
             final_urls_dataframe = pd.read_csv(file_path_final)
             return final_urls_dataframe
         # If not, create a new dataframe
@@ -293,7 +293,7 @@ def unive_lecturer_urls(ordered_dataframe: pd.DataFrame) -> pd.DataFrame:
     """
     lecturers = pd.read_json("http://apps.unive.it/sitows/didattica/docenti")
     lecturers['LECTURER_NAME'] = (
-        lecturers['COGNOME'] + '' + lecturers['NOME']
+        lecturers['COGNOME'] + ' ' + lecturers['NOME']
     ).str.upper()
     lecturers = lecturers[['LECTURER_NAME', 'DOCENTE_ID']]
 
