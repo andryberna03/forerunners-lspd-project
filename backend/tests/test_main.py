@@ -1,11 +1,18 @@
-from fastapi.testclient import TestClient
-from unittest.mock import patch
-from app.main import app
-
 """
 Execute this test by running on the terminal (from the app/) the command:
 pytest --cov=app --cov-report=html tests/
 """
+
+from fastapi.testclient import TestClient
+from unittest.mock import patch
+from app.main import app
+import pytest
+import os
+import pandas as pd
+from datetime import datetime
+from pytz import timezone
+
+pd.options.mode.chained_assignment = None
 
 client = TestClient(app)
 
@@ -26,9 +33,11 @@ def test_read_main():
     # Assert that the JSON response matches {"Hello": "World"}
     assert response.json() == {"Hello": "World"}
 
+
 def test_read_and_return_df():
     """
-    Test the endpoint "/df_show" to ensure it returns a DataFrame-like JSON structure.
+    Test the endpoint "/df_show" to ensure
+    it returns a DataFrame-like JSON structure.
 
     Sends a GET request to "/df_show" and performs the following checks:
     - Asserts that the response status code is 200.
@@ -50,7 +59,12 @@ def test_read_and_return_df():
     assert len(response_data) > 0
 
     # Expected keys in the response data
-    expected_keys = ['AF_ID', 'TEACHING', 'CYCLE', 'PARTITION', 'SITE', 'CREDITS', 'DEGREE_TYPE', 'LECTURE_DAY', 'LECTURE_START', 'LECTURE_END', 'LECTURER_NAME', 'CLASSROOM_NAME', 'LOCATION_NAME', 'ADDRESS', 'DOCENTE_ID', 'URL_DOCENTE', 'URLS_INSEGNAMENTO', 'START_ISO8601', 'END_ISO8601']
+    expected_keys = ['AF_ID', 'TEACHING', 'CYCLE', 'PARTITION', 'SITE',
+                     'CREDITS', 'DEGREE_TYPE', 'LECTURE_DAY', 'LECTURE_START',
+                     'LECTURE_END', 'LECTURER_NAME', 'CLASSROOM_NAME',
+                     'LOCATION_NAME', 'ADDRESS', 'DOCENTE_ID', 'URL_DOCENTE',
+                     'URLS_INSEGNAMENTO', 'START_ISO8601', 'END_ISO8601'
+    ]
 
     # Check the structure and non-empty values for each item in the response data
     for item in response_data:
@@ -61,22 +75,51 @@ def test_read_and_return_df():
         assert all(item[key] is not None and item[key] != '' for key in expected_keys)
 
 
-#not ok
 def test_csv_creation_date():
     """
+    This function tests the endpoint "/csv_creation_date"
+    to ensure it returns the creation date of the CSV file.
+
+    Parameters:
+    None
+
+    Returns:
+    None
+
+    Raises:
+    None
+
+    Note:
+    - The function sends a GET request to "/csv_creation_date" endpoint.
+    - It asserts the response status code is 200 when the function works.
+    - It asserts the response is in the right date format.
+    - It asserts the date has the correct timezone (Europe/Rome).
     """
     response = client.get("/csv_creation_date")
 
+    date = response.json()
+
+    # Assert response status code is 200 when the function works
     assert response.status_code == 200
+    # Assert response in the right date format 
+    assert datetime.strptime(date, '%A, %d-%b-%Y %H:%M:%S %Z')
+    # Assert date with the correct timezone (Europe/Rome)
+    assert date.endswith('CEST')
 
-    # QUI DEVO CAPIRE CHE ASSERT DEVO FARE, PER IL FORMAT? %A, %d-%b-%Y %H:%M:%S %Z
 
+@pytest.mark.asyncio
+async def test_csv_creation_date_not_exists(monkeypatch):
+    # Simula l'assenza del file CSV
+    monkeypatch.setattr(os.path, 'exists', lambda x: False)
+    response = client.get("/csv_creation_date")
+    assert response.status_code == 404
+    assert response.json() == {"detail": "File CSV not found"}
 
 @patch("app.main.get_all_teachings")  # Mock the get_all_teachings function
 def test_get_all_teachings(mock_get_all_teachings):
     # Create sample returned list
-    mock_teachings = "{\"MATHEMATICS FOR DECISION SCIENCES 2-PRACTICE\": \"MATHEMATICS FOR DECISION SCIENCES 2-PRACTICE\", \"INTRODUCTION TO DIGITAL MANAGEMENT-1\": \"INTRODUCTION TO DIGITAL MANAGEMENT-1\", \"LAB OF WEB TECHNOLOGIES\": \"LAB OF WEB TECHNOLOGIES\", \"INTRODUCTION TO DIGITAL MANAGEMENT-2\": \"INTRODUCTION TO DIGITAL MANAGEMENT-2\", \"STRATEGIC AND DIGITAL MARKETING\": \"STRATEGIC AND DIGITAL MARKETING\", \"E-BUSINESS, ENTREPRENEURSHIP AND DIGITAL TRANSFORMATION-2\": \"E-BUSINESS, ENTREPRENEURSHIP AND DIGITAL TRANSFORMATION-2\", \"INTRODUCTION TO DIGITAL MANAGEMENT-2 PRACTICE\": \"INTRODUCTION TO DIGITAL MANAGEMENT-2 PRACTICE\", \"MATHEMATICS FOR DECISION SCIENCES-2\": \"MATHEMATICS FOR DECISION SCIENCES-2\", \"MATHEMATICS FOR DECISION SCIENCES 1\": \"MATHEMATICS FOR DECISION SCIENCES 1\", \"LAB OF SOFTWARE PROJECT DEVELOPMENT\": \"LAB OF SOFTWARE PROJECT DEVELOPMENT\", \"MATHEMATICS FOR DECISION SCIENCES 1-PRACTICE\": \"MATHEMATICS FOR DECISION SCIENCES 1-PRACTICE\", \"FUNDAMENTALS OF IT LAW\": \"FUNDAMENTALS OF IT LAW\", \"PLANNING AND MANAGEMENT CONTROL SYSTEMS\": \"PLANNING AND MANAGEMENT CONTROL SYSTEMS\", \"E-BUSINESS, ENTREPRENEURSHIP AND DIGITAL TRANSFORMATION-1\": \"E-BUSINESS, ENTREPRENEURSHIP AND DIGITAL TRANSFORMATION-1\", \"ECONOMICS OF INNOVATION, GROWTH THEORY AND ECONOMICS DEVELOPMENT-2\": \"ECONOMICS OF INNOVATION, GROWTH THEORY AND ECONOMICS DEVELOPMENT-2\", \"ORGANIZING IN A DIGITAL WORLD\": \"ORGANIZING IN A DIGITAL WORLD\", \"ECONOMICS OF INNOVATION, GROWTH THEORY AND ECONOMICS DEVELOPMENT-2 PRACTICE\": \"ECONOMICS OF INNOVATION, GROWTH THEORY AND ECONOMICS DEVELOPMENT-2 PRACTICE\", \"PLANNING AND MANAGEMENT CONTROL SYSTEMS-PRACTICE\": \"PLANNING AND MANAGEMENT CONTROL SYSTEMS-PRACTICE\"}"
-    
+    mock_teachings = "{\"MATHEMATICS FOR DECISION SCIENCES 2-PRACTICE\": \"MATHEMATICS FOR DECISION SCIENCES 2-PRACTICE\", \"INTRODUCTION TO DIGITAL MANAGEMENT-1\": \"INTRODUCTION TO DIGITAL MANAGEMENT-1\", \"LAB OF WEB TECHNOLOGIES\": \"LAB OF WEB TECHNOLOGIES\", \"INTRODUCTION TO DIGITAL MANAGEMENT-2\": \"INTRODUCTION TO DIGITAL MANAGEMENT-2\", \"STRATEGIC AND DIGITAL MARKETING\": \"STRATEGIC AND DIGITAL MARKETING\", \"E-BUSINESS, ENTREPRENEURSHIP AND DIGITAL TRANSFORMATION-2\": \"E-BUSINESS, ENTREPRENEURSHIP AND DIGITAL TRANSFORMATION-2\", \"INTRODUCTION TO DIGITAL MANAGEMENT-2 PRACTICE\": \"INTRODUCTION TO DIGITAL MANAGEMENT-2 PRACTICE\", \"MATHEMATICS FOR DECISION SCIENCES-2\": \"MATHEMATICS FOR DECISION SCIENCES-2\", \"MATHEMATICS FOR DECISION SCIENCES 1\": \"MATHEMATICS FOR DECISION SCIENCES 1\", \"LAB OF SOFTWARE PROJECT DEVELOPMENT\": \"LAB OF SOFTWARE PROJECT DEVELOPMENT\", \"MATHEMATICS FOR DECISION SCIENCES 1-PRACTICE\": \"MATHEMATICS FOR DECISION SCIENCES 1-PRACTICE\", \"PLANNING AND MANAGEMENT CONTROL SYSTEMS\": \"PLANNING AND MANAGEMENT CONTROL SYSTEMS\", \"FUNDAMENTALS OF IT LAW\": \"FUNDAMENTALS OF IT LAW\", \"E-BUSINESS, ENTREPRENEURSHIP AND DIGITAL TRANSFORMATION-1\": \"E-BUSINESS, ENTREPRENEURSHIP AND DIGITAL TRANSFORMATION-1\", \"ECONOMICS OF INNOVATION, GROWTH THEORY AND ECONOMICS DEVELOPMENT-2\": \"ECONOMICS OF INNOVATION, GROWTH THEORY AND ECONOMICS DEVELOPMENT-2\", \"ORGANIZING IN A DIGITAL WORLD\": \"ORGANIZING IN A DIGITAL WORLD\", \"ECONOMICS OF INNOVATION, GROWTH THEORY AND ECONOMICS DEVELOPMENT-2 PRACTICE\": \"ECONOMICS OF INNOVATION, GROWTH THEORY AND ECONOMICS DEVELOPMENT-2 PRACTICE\", \"PLANNING AND MANAGEMENT CONTROL SYSTEMS-PRACTICE\": \"PLANNING AND MANAGEMENT CONTROL SYSTEMS-PRACTICE\"}"
+
     # Mock the return value of get_all_teachings
     mock_get_all_teachings.return_value = mock_teachings
 
@@ -100,7 +143,7 @@ def test_get_all_teachings(mock_get_all_teachings):
     # No need to test "if"s of this query because the options of the filters
     # are generated from the dataframe itself.
 
-# Testing if there are no teachings corrisponding to filters --> PASSED!!!
+# Testing if there are no teachings corrisponding to filters
 # If I imput Master and then Roncade it should yield empty list. 
 @patch("app.main.get_all_teachings") #Mock the get_all_teaching function
 def test_get_all_teachings_empty(mock_get_all_teachings):
@@ -120,8 +163,6 @@ def test_get_all_teachings_empty(mock_get_all_teachings):
     assert response.json() == empty_teachings
 
 
-
-
 def test_get_teaching():
     # Define query parameters: testing with digital management courses
     test_teaching = "MATHEMATICS FOR DECISION SCIENCES 2-PRACTICE"
@@ -137,5 +178,3 @@ def test_get_teaching():
 
     for key, value in choosen_teaching.items():
         assert value["TEACHING"] == test_teaching
-
-    

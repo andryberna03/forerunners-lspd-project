@@ -135,8 +135,6 @@ async def csv_creation_date(response: Response):
         cookie_date_format = creation_date_rome.strftime(
             '%A, %d-%b-%Y %H:%M:%S %Z'
         )
-        # Set the cookie with the formatted date
-        response.set_cookie(key='creation_date', value=cookie_date_format)
         return cookie_date_format
     else:
         # Raise a 404 Not Found exception if the CSV file does not exist
