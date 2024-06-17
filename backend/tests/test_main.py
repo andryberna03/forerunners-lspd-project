@@ -1,6 +1,11 @@
 from fastapi.testclient import TestClient
 from unittest.mock import patch
 from app.main import app
+import pytest
+import os
+import pandas as pd
+
+pd.options.mode.chained_assignment = None
 
 """
 Execute this test by running on the terminal (from the app/) the command:
@@ -71,6 +76,13 @@ def test_csv_creation_date():
 
     # QUI DEVO CAPIRE CHE ASSERT DEVO FARE, PER IL FORMAT? %A, %d-%b-%Y %H:%M:%S %Z
 
+@pytest.mark.asyncio
+async def test_csv_creation_date_not_exists(monkeypatch):
+    # Simula l'assenza del file CSV
+    monkeypatch.setattr(os.path, 'exists', lambda x: False)
+    response = client.get("/csv_creation_date")
+    assert response.status_code == 404
+    assert response.json() == {"detail": "File CSV not found"}
 
 @patch("app.main.get_all_teachings")  # Mock the get_all_teachings function
 def test_get_all_teachings(mock_get_all_teachings):
@@ -100,7 +112,7 @@ def test_get_all_teachings(mock_get_all_teachings):
     # No need to test "if"s of this query because the options of the filters
     # are generated from the dataframe itself.
 
-# Testing if there are no teachings corrisponding to filters --> PASSED!!!
+# Testing if there are no teachings corrisponding to filters
 # If I imput Master and then Roncade it should yield empty list. 
 @patch("app.main.get_all_teachings") #Mock the get_all_teaching function
 def test_get_all_teachings_empty(mock_get_all_teachings):
@@ -118,8 +130,6 @@ def test_get_all_teachings_empty(mock_get_all_teachings):
     response = client.get(f"/query/{location_str}/{degreetype_str}/{cycle_str}")
 
     assert response.json() == empty_teachings
-
-
 
 
 def test_get_teaching():

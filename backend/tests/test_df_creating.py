@@ -3,6 +3,8 @@ import datetime
 from app.mymodules.df_creating import df_creating, create_new_dataframe
 import pandas as pd
 import pytest
+import subprocess
+import time
 
 """
 Execute this test by running on the terminal (from the app/) the command:
@@ -10,6 +12,29 @@ pytest --cov=app --cov-report=html tests/
 """
 
 file_path = 'app/final.csv'
+
+# def test_name_main():
+#     file_path_main = 'app/final.csv'
+#     # Rimuove il file se esiste già
+#     if os.path.exists(file_path_main):
+#         os.remove(file_path_main)
+
+#     # Esegue il file come script
+#     result = subprocess.run(["C:\Users\utente\AppData\Local\Microsoft\WindowsApps\python.exe", 'app/mymodules/df_creating.py'], check=True)
+
+#     # Metti in pausa per 30 secondi per aspettare che si crea il dataframe
+#     time.sleep(30)
+
+#     # Controlla se il file CSV è stato creato
+#     assert os.path.exists(file_path), "Il file CSV non è stato creato."
+
+#     # Controlla se il file creato è un DataFrame valido
+#     df = pd.read_csv(file_path)
+#     assert isinstance(df, pd.DataFrame), "Il file CSV non contiene un DataFrame valido."
+
+#     # Esempio di ulteriori controlli sul contenuto del DataFrame
+#     assert not df.empty, "Il DataFrame è vuoto."
+
 
 # Test the function with an existing file that is more than a day old
 def test_existing_file_recent(mocker):
@@ -121,7 +146,7 @@ def test_create_new_dataframe():
     
     # Assert that the DataFrame has the expected headers
     assert list(result_df.columns) == expected_header, "The DataFrame headers do not match the expected headers."
-    
+
 
 #TESTING final.csv
 def test_file_is_csv():
@@ -152,7 +177,6 @@ def test_file_is_csv():
         f"CSV header does not match expected header. Found: {list(df.columns)}, Expected: {expected_header}"
 
 
-
 def test_file_created_within_24_hours():
     """
     Test to verify that the file 'final.csv' was created within the last 24 hours.
@@ -179,5 +203,3 @@ def test_file_created_within_24_hours():
 
     # Verify that the file was created less than 24 hours ago
     assert creation_time_dt > twenty_four_hours_ago, "Il file final.csv è stato creato più di 24 ore fa."
-
-

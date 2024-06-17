@@ -31,3 +31,8 @@ requests==2.31.0
 fastapi_cors==0.0.6
 jsonify
 ics
+pytest-mock
+pytest-asyncio
+pytest-tornasync
+pytest-twisted
+twisted
