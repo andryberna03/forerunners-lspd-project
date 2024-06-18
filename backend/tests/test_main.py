@@ -146,16 +146,16 @@ async def test_csv_creation_date_not_exists(monkeypatch):
     assert response.json() == {"detail": "File CSV not found"}
 
 
-@patch("app.main.get_all_teachings")  # Mock the get_all_teachings function
-def test_get_all_teachings(mock_get_all_teachings):
+def test_get_all_teachings():
     """
     Test the endpoint "/query/{location_str}/{degreetype_str}/{cycle_str}"
-    to ensure it returns the correct list of teachings
-    based on the query parameters.
+    to ensure it returns a dictionary of all teachings
+    that match the query parameters.
 
     Parameters:
-    mock_get_all_teachings (unittest.mock.Mock): A mock object for
-                                                the get_all_teachings function.
+    location_str (str): The location of the courses to be queried.
+    degreetype_str (str): The degree type of the courses to be queried.
+    cycle_str (str): The cycle of the courses to be queried.
 
     Returns:
     None
@@ -164,18 +164,14 @@ def test_get_all_teachings(mock_get_all_teachings):
     None
 
     Note:
-    - This function creates a mock return value for
-      the get_all_teachings function.
-    - It sends a GET request to
+    - This function sends a GET request to
       the "/query/{location_str}/{degreetype_str}/{cycle_str}" endpoint.
     - It asserts the response status code is 200 when the function works.
-    - It asserts the response JSON matches the expected mock teachings.
+    - It asserts the response JSON matches
+      the expected dictionary of teachings.
     """
     # Create sample returned list
     mock_teachings = "{\"E-BUSINESS, ENTREPRENEURSHIP AND DIGITAL TRANSFORMATION-1\": \"E-BUSINESS, ENTREPRENEURSHIP AND DIGITAL TRANSFORMATION-1\", \"E-BUSINESS, ENTREPRENEURSHIP AND DIGITAL TRANSFORMATION-2\": \"E-BUSINESS, ENTREPRENEURSHIP AND DIGITAL TRANSFORMATION-2\", \"ECONOMICS OF INNOVATION, GROWTH THEORY AND ECONOMICS DEVELOPMENT-2\": \"ECONOMICS OF INNOVATION, GROWTH THEORY AND ECONOMICS DEVELOPMENT-2\", \"ECONOMICS OF INNOVATION, GROWTH THEORY AND ECONOMICS DEVELOPMENT-2 PRACTICE\": \"ECONOMICS OF INNOVATION, GROWTH THEORY AND ECONOMICS DEVELOPMENT-2 PRACTICE\", \"FUNDAMENTALS OF IT LAW\": \"FUNDAMENTALS OF IT LAW\", \"INTRODUCTION TO DIGITAL MANAGEMENT-1\": \"INTRODUCTION TO DIGITAL MANAGEMENT-1\", \"INTRODUCTION TO DIGITAL MANAGEMENT-2\": \"INTRODUCTION TO DIGITAL MANAGEMENT-2\", \"INTRODUCTION TO DIGITAL MANAGEMENT-2 PRACTICE\": \"INTRODUCTION TO DIGITAL MANAGEMENT-2 PRACTICE\", \"LAB OF SOFTWARE PROJECT DEVELOPMENT\": \"LAB OF SOFTWARE PROJECT DEVELOPMENT\", \"LAB OF WEB TECHNOLOGIES\": \"LAB OF WEB TECHNOLOGIES\", \"MATHEMATICS FOR DECISION SCIENCES 1\": \"MATHEMATICS FOR DECISION SCIENCES 1\", \"MATHEMATICS FOR DECISION SCIENCES 1-PRACTICE\": \"MATHEMATICS FOR DECISION SCIENCES 1-PRACTICE\", \"MATHEMATICS FOR DECISION SCIENCES 2-PRACTICE\": \"MATHEMATICS FOR DECISION SCIENCES 2-PRACTICE\", \"MATHEMATICS FOR DECISION SCIENCES-2\": \"MATHEMATICS FOR DECISION SCIENCES-2\", \"ORGANIZING IN A DIGITAL WORLD\": \"ORGANIZING IN A DIGITAL WORLD\", \"PLANNING AND MANAGEMENT CONTROL SYSTEMS\": \"PLANNING AND MANAGEMENT CONTROL SYSTEMS\", \"PLANNING AND MANAGEMENT CONTROL SYSTEMS-PRACTICE\": \"PLANNING AND MANAGEMENT CONTROL SYSTEMS-PRACTICE\", \"STRATEGIC AND DIGITAL MARKETING\": \"STRATEGIC AND DIGITAL MARKETING\"}"
-
-    # Mock the return value of get_all_teachings
-    mock_get_all_teachings.return_value = mock_teachings
 
     # Define query parameters: testing with digital management courses
     location_str = 'RONCADE'
@@ -196,15 +192,16 @@ def test_get_all_teachings(mock_get_all_teachings):
     assert actual_teachings == mock_teachings
 
 
-@patch("app.main.get_all_teachings")
-def test_get_all_teachings_empty(mock_get_all_teachings):
+def test_get_all_teachings_empty():
     """
     Test the endpoint "/query/{location_str}/{degreetype_str}/{cycle_str}"
-    when the returned list of teachings is empty.
+    to ensure it returns an empty dictionary
+    when no courses match the query parameters.
 
     Parameters:
-    mock_get_all_teachings (unittest.mock.Mock): A mock object for the
-                                                 get_all_teachings function.
+    location_str (str): The location of the courses to be queried.
+    degreetype_str (str): The degree type of the courses to be queried.
+    cycle_str (str): The cycle of the courses to be queried.
 
     Returns:
     None
@@ -213,17 +210,11 @@ def test_get_all_teachings_empty(mock_get_all_teachings):
     None
 
     Note:
-    - This function creates a mock return value for
-      the get_all_teachings function as an empty JSON object.
-    - It sends a GET request to
+    - This function sends a GET request to
       the "/query/{location_str}/{degreetype_str}/{cycle_str}" endpoint.
     - It asserts the response status code is 200 when the function works.
-    - It asserts the response JSON matches the expected empty mock teachings.
+    - It asserts the response JSON matches an empty dictionary.
     """
-
-    empty_teachings = '{}'
-    # Mock the return value to be an empty JSON object
-    mock_get_all_teachings.return_value = empty_teachings
 
     # Define query parameters: testing with digital management courses
     location_str = 'RONCADE'
@@ -234,6 +225,11 @@ def test_get_all_teachings_empty(mock_get_all_teachings):
     query = f"/query/{location_str}/{degreetype_str}/{cycle_str}"
     response = client.get(query)
 
+    # Assert response status code is 200 when the file exists
+    assert response.status_code == 200
+
+    # Check if the returned dictionary is empty
+    empty_teachings = '{}'
     assert response.json() == empty_teachings
 
 

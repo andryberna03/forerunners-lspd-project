@@ -137,70 +137,48 @@ async def csv_creation_date():
 
 
 @app.get("/query/{location}/{degreetype}/{cycle}")
-def get_all_teachings(location: str, degreetype: str, cycle: str):
+def get_all_teachings(location: str, degreetype: str, cycle: str) -> str:
     """
-    This function retrieves and returns a list of teachings
-    based on the provided location, degree type, and cycle.
+    Retrieve and return a list of unique teachings
+    based on location, degree type, and cycle.
 
     Parameters:
-
-    location (str):
-    A comma-separated string of locations
-    (MESTRE, VENEZIA, RONCADE, TREVISO).
-    If empty, all locations are considered.
-
-    degreetype (str):
-    A comma-separated string of degree types (Bachelor, Master).
-    If empty, all degree types are considered.
-
-    cycle (str): The cycle to filter the teachings.
+    location (str): The location of the teachings.
+    degreetype (str): The type of degree.
+    cycle (str): The cycle of the teachings.
 
     Returns:
-    str: A JSON string containing a dictionary of unique teachings.
+    str: A JSON string containing a list of unique teachings.
 
     Note:
-    The function filters the dataframe based on the provided parameters
-    and returns a list of unique teachings.
-    The degree types are mapped to their corresponding codes in the DataFrame.
-    The function fills any missing values
-    in the dataframe with the string 'null'.
+    This function filters the dataframe based on the provided parameters,
+    extracts the unique teachings, and returns them as a sorted JSON string.
     """
-    filtered_df = final_urls_dataframe
-
-    # Filter by location
-    site_list = location.split(",") if location else []
-    if site_list:
-        filtered_df = filtered_df[filtered_df['SITE'].isin(site_list)]
-
-    # Filter by degreetype
-    # Dictionary to map the degree types to the corresponding codes in the DF
-    degree_mapping = {
-        'Bachelor': 'Bachelor',
-        'Master': 'Master'}
-
-    # Convert the degreetype_list from friendly names to codes
-    degreetype_list = degreetype.split(",") if degreetype else []
-    code_list = []
-    for degreetype in degreetype_list:
-        code_list.append(degree_mapping[degreetype])
-
-    if code_list:
-        filtered_df = filtered_df[filtered_df['DEGREE_TYPE'].isin(code_list)]
-
+    # Filter the dataframe based on the provided parameters
+    filtered_df = final_urls_dataframe[
+        final_urls_dataframe['DEGREE_TYPE'] == degreetype
+    ]
+    filtered_df = filtered_df[filtered_df['SITE'] == location]
     filtered_df = filtered_df[filtered_df['CYCLE'] == cycle]
 
+    # Fill any missing values in the dataframe with the string 'null'
     filtered_df.fillna("null", inplace=True)
 
+    # Extract the unique teachings from the filtered dataframe
     teachings = filtered_df['TEACHING']
 
+    # Create a dictionary with unique teachings
     final_teachings = dict()
     for teaching in teachings:
         final_teachings[teaching] = teaching
 
+    # Sort the dictionary
     final_teachings = dict(sorted(final_teachings.items()))
 
+    # Convert the dictionary to a JSON string
     final_teachings = json.dumps(final_teachings)
 
+    # Return the JSON string
     return final_teachings
 
 
