@@ -1,4 +1,6 @@
 """
+Test module of backend main module.
+
 Execute this test by running on the terminal (from the app/) the command:
 pytest --cov=app --cov-report=html tests/
 """
@@ -10,7 +12,6 @@ import pytest
 import os
 import pandas as pd
 from datetime import datetime
-from pytz import timezone
 
 pd.options.mode.chained_assignment = None
 
@@ -112,15 +113,64 @@ def test_csv_creation_date():
 
 @pytest.mark.asyncio
 async def test_csv_creation_date_not_exists(monkeypatch):
-    # Simula l'assenza del file CSV
+    """
+    Test the endpoint "/csv_creation_date" when the CSV file does not exist.
+
+    Parameters:
+    monkeypatch (pytest.MonkeyPatch): A pytest fixture for patching objects
+                                      in the test environment.
+
+    Returns:
+    None
+
+    Raises:
+    None
+
+    Note:
+    - This function simulates the absence of the CSV file
+      by patching the 'os.path.exists' function.
+    - It sends a GET request to the "/csv_creation_date" endpoint.
+    - It asserts the response status code is 404 when the file does not exist.
+    - It asserts the response JSON matches the expected error message.
+    """
+    # Simulate the absence of the CSV file
     monkeypatch.setattr(os.path, 'exists', lambda x: False)
+
+    # Send a GET request to the endpoint
     response = client.get("/csv_creation_date")
+
+    # Assert response status code is 404 when the file does not exist
     assert response.status_code == 404
+
+    # Assert response JSON matches the expected error message
     assert response.json() == {"detail": "File CSV not found"}
 
 
 @patch("app.main.get_all_teachings")  # Mock the get_all_teachings function
 def test_get_all_teachings(mock_get_all_teachings):
+    """
+    Test the endpoint "/query/{location_str}/{degreetype_str}/{cycle_str}"
+    to ensure it returns the correct list of teachings
+    based on the query parameters.
+
+    Parameters:
+    mock_get_all_teachings (unittest.mock.Mock): A mock object for
+                                                the get_all_teachings function.
+
+    Returns:
+    None
+
+    Raises:
+    None
+
+    Note:
+    - This function creates a mock return value for
+      the get_all_teachings function.
+    - It sends a GET request to
+      the "/query/{location_str}/{degreetype_str}/{cycle_str}" endpoint.
+    - It asserts the response status code is 200 when the function works.
+    - It asserts the response JSON matches the expected mock teachings.
+    """
     # Create sample returned list
     mock_teachings = "{\"E-BUSINESS, ENTREPRENEURSHIP AND DIGITAL TRANSFORMATION-1\": \"E-BUSINESS, ENTREPRENEURSHIP AND DIGITAL TRANSFORMATION-1\", \"E-BUSINESS, ENTREPRENEURSHIP AND DIGITAL TRANSFORMATION-2\": \"E-BUSINESS, ENTREPRENEURSHIP AND DIGITAL TRANSFORMATION-2\", \"ECONOMICS OF INNOVATION, GROWTH THEORY AND ECONOMICS DEVELOPMENT-2\": \"ECONOMICS OF INNOVATION, GROWTH THEORY AND ECONOMICS DEVELOPMENT-2\", \"ECONOMICS OF INNOVATION, GROWTH THEORY AND ECONOMICS DEVELOPMENT-2 PRACTICE\": \"ECONOMICS OF INNOVATION, GROWTH THEORY AND ECONOMICS DEVELOPMENT-2 PRACTICE\", \"FUNDAMENTALS OF IT LAW\": \"FUNDAMENTALS OF IT LAW\", \"INTRODUCTION TO DIGITAL MANAGEMENT-1\": \"INTRODUCTION TO DIGITAL MANAGEMENT-1\", \"INTRODUCTION TO DIGITAL MANAGEMENT-2\": \"INTRODUCTION TO DIGITAL MANAGEMENT-2\", \"INTRODUCTION TO DIGITAL MANAGEMENT-2 PRACTICE\": \"INTRODUCTION TO DIGITAL MANAGEMENT-2 PRACTICE\", \"LAB OF SOFTWARE PROJECT DEVELOPMENT\": \"LAB OF SOFTWARE PROJECT DEVELOPMENT\", \"LAB OF WEB TECHNOLOGIES\": \"LAB OF WEB TECHNOLOGIES\", \"MATHEMATICS FOR DECISION SCIENCES 1\": \"MATHEMATICS FOR DECISION SCIENCES 1\", \"MATHEMATICS FOR DECISION SCIENCES 1-PRACTICE\": \"MATHEMATICS FOR DECISION SCIENCES 1-PRACTICE\", \"MATHEMATICS FOR DECISION SCIENCES 2-PRACTICE\": \"MATHEMATICS FOR DECISION SCIENCES 2-PRACTICE\", \"MATHEMATICS FOR DECISION SCIENCES-2\": \"MATHEMATICS FOR DECISION SCIENCES-2\", \"ORGANIZING IN A DIGITAL WORLD\": \"ORGANIZING IN A DIGITAL WORLD\", \"PLANNING AND MANAGEMENT CONTROL SYSTEMS\": \"PLANNING AND MANAGEMENT CONTROL SYSTEMS\", \"PLANNING AND MANAGEMENT CONTROL SYSTEMS-PRACTICE\": \"PLANNING AND MANAGEMENT CONTROL SYSTEMS-PRACTICE\", \"STRATEGIC AND DIGITAL MARKETING\": \"STRATEGIC AND DIGITAL MARKETING\"}"
 
@@ -136,7 +186,7 @@ def test_get_all_teachings(mock_get_all_teachings):
     query = f"/query/{location_str}/{degreetype_str}/{cycle_str}"
     response = client.get(query)
 
-    # Assert response status code is 200 when the file exists
+    # Assert response status code is 200 when the function works
     assert response.status_code == 200
 
     # Parse the JSON response into a dictionary
@@ -145,14 +195,31 @@ def test_get_all_teachings(mock_get_all_teachings):
     # Check if every keys are equal in teachings
     assert actual_teachings == mock_teachings
 
-    # No need to test "if"s of this query because the options of the filters
-    # are generated from the dataframe itself.
 
-
-# Testing if there are no teachings corrisponding to filters
-# If I imput Master and then Roncade it should yield empty list.
 @patch("app.main.get_all_teachings")
 def test_get_all_teachings_empty(mock_get_all_teachings):
+    """
+    Test the endpoint "/query/{location_str}/{degreetype_str}/{cycle_str}"
+    when the returned list of teachings is empty.
+
+    Parameters:
+    mock_get_all_teachings (unittest.mock.Mock): A mock object for the
+                                                 get_all_teachings function.
+
+    Returns:
+    None
+
+    Raises:
+    None
+
+    Note:
+    - This function creates a mock return value for
+      the get_all_teachings function as an empty JSON object.
+    - It sends a GET request to
+      the "/query/{location_str}/{degreetype_str}/{cycle_str}" endpoint.
+    - It asserts the response status code is 200 when the function works.
+    - It asserts the response JSON matches the expected empty mock teachings.
+    """
 
     empty_teachings = '{}'
     # Mock the return value to be an empty JSON object
@@ -171,7 +238,27 @@ def test_get_all_teachings_empty(mock_get_all_teachings):
 
 
 def test_get_teaching():
-    # Define query parameters: testing with digital management courses
+    """
+    Test the endpoint "/query/{teaching_str}" to ensure it returns the correct
+    course data based on the query parameter.
+
+    Parameters:
+    teaching_str (str): The name of the teaching to be queried.
+
+    Returns:
+    None
+
+    Raises:
+    None
+
+    Note:
+    - This function sends a GET request to
+      the "/query/{teaching_str}" endpoint.
+    - It asserts the response status code is 200 when the function works.
+    - It asserts the response JSON matches the expected course data.
+    """
+
+    # Define query parameters: testing with a specific course
     test_teaching = "MATHEMATICS FOR DECISION SCIENCES 2-PRACTICE"
 
     # Send a GET request
@@ -183,5 +270,6 @@ def test_get_teaching():
     # Extract the actual course data from the response
     choosen_teaching = response.json()
 
+    # Check if the returned course data matches the expected course
     for key, value in choosen_teaching.items():
         assert value["TEACHING"] == test_teaching

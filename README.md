@@ -16,7 +16,7 @@ The Home page of the website explains why we decided to undertake this project a
 
 ![Index Page pt1](frontend/app/static/img/readme/imageindex1.png)
 ![Index Page pt2](frontend/app/static/img/readme/imageindex2.png)
- 
+
 ### *Calendar Page*
 The Calendar page allows users to apply filters to request specific teachings and generate a personalised schedule. This schedule can also be downloaded in iCal via a dedicated button, allowing users to insert it into their preferred calendar client.
 
@@ -84,6 +84,7 @@ Bidirectional communication is established between the Frontend (Flask) and Back
    - app/: Folder for dataset, Python modules, and Python main backend application
       - mymodules/: Folder for Python modules.
          - df_creating.py: Python module for creating dataset.
+      - dummy.csv: dataset used in testing phase.
       - final.csv: dataset created by df_creating.py.
       - main.py: Main backend application file.
    - test/: Folder for Python test of main backend application.
@@ -137,7 +138,7 @@ The `calendar.html` page is loaded, and meanwhile, the backend checks if 24 hour
 The user chooses their teaching features using filters and then asks for data. Flask sends a query to the FastAPI to retrieve the relevant data. FastAPI processes the query and responds with the requested information in JSON format. Upon receiving the data, Flask extracts and transforms it as necessary, making them available and ready for the second user's query when `calendar.html` template will be rendered again.
 
 ### *Calendar display:*
-The user select their specific teaching and JavaScript make two AJAX calls to retrieve data. The first one is used to populate the calendar design showing classess. By moving the cursor over the slot the user gains detailed information about each lecture, including the course title, lecturer, time, and location. This detailed view provides users with a clear and organised schedule, making it easy to manage their academic commitment. Additionally, if you click on the time slot it will take the user to Ca’ Foscari official web page for that teaching. The second one is used to create the iCal file.
+The user select their specific teaching and JavaScript makes two AJAX calls to retrieve data. The first one is used to populate the calendar design showing classess. By moving the cursor over the slot the user gains detailed information about each lecture, including the course title, lecturer, time, and location. This detailed view provides users with a clear and organised schedule, making it easy to manage their academic commitment. Additionally, if the user clicks on the time slot it will take the user to Ca’ Foscari official web page for that teaching. The second one is used to create the iCal file.
 
 ### *User download teaching in iCal format:*
 When the download button is clicked by the user, `calendar.ics` file is created based on information retrived in the most recent query using JavaScript AJAX call. As soon as the file is created, it is immediately downloaded by the browser using timezone CET. This allows the user to directly add the lectures to their preferred calendar client.
@@ -232,7 +233,7 @@ Despite our efforts to create an excellent website, it has some limitations:
 ## **Contact**
 Ca’ Foscari Exchange Calendar software development team:
 - Bernardo Andrea (894305) - [andrea.bernardo@student.h-farm.com](mailto:andrea.bernardo@student.h-farm.com)
-- Gnoni Mavarelli Antonio (894314)
-- Griselin Marta (894571)
-- Piscopello Francesco (893994)
-- Sartori Carlo Alberto (894176)
+- Gnoni Mavarelli Antonio (894314) - [antonio.gnonimavarelli@student.h-farm.com](mailto:antonio.gnonimavarelli@student.h-farm)
+- Griselin Marta (894571) - [marta.griselin@student.h-farm.com](mailto:marta.griselin@student.h-farm.com)
+- Piscopello Francesco (893994) - [francesco.piscopello@student.h-farm.com](mailto:francesco.piscopello@student.h-farm.com)
+- Sartori Carlo Alberto (894176) - [carlo.sartori@student.h-farm.com](mailto:carlo.sartori@student.h-farm.com)

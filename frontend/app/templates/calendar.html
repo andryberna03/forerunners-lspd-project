@@ -3,189 +3,189 @@
 {% block title %} Calendar {% endblock %}
 
 {% block content %}
-```html
-<!-- Import FullCalendar CSS for calendar styling -->
-<link href='https://cdn.jsdelivr.net/npm/fullcalendar/index.global.min.css' rel='stylesheet' />
+    <!-- Import FullCalendar CSS for calendar styling -->
+    <link href='https://cdn.jsdelivr.net/npm/fullcalendar/index.global.min.css' rel='stylesheet' />
 
-<!-- Import FullCalendar JS for calendar functionalities -->
-<script src='https://cdn.jsdelivr.net/npm/fullcalendar/index.global.min.js'></script>
+    <!-- Import FullCalendar JS for calendar functionalities -->
+    <script src='https://cdn.jsdelivr.net/npm/fullcalendar/index.global.min.js'></script>
 
-<!-- Import Tippy.js CSS for tooltips -->
-<link rel="stylesheet" href="https://unpkg.com/tippy.js@6/dist/tippy.css" />
+    <!-- Import Tippy.js CSS for tooltips -->
+    <link rel="stylesheet" href="https://unpkg.com/tippy.js@6/dist/tippy.css" />
 
-<!-- Import Popper.js, a dependency for Tippy.js -->
-<script src="https://unpkg.com/@popperjs/core@2"></script>
+    <!-- Import Popper.js, a dependency for Tippy.js -->
+    <script src="https://unpkg.com/@popperjs/core@2"></script>
 
-<!-- Import Tippy.js for enhanced tooltips -->
-<script src="https://unpkg.com/tippy.js@6"></script>
+    <!-- Import Tippy.js for enhanced tooltips -->
+    <script src="https://unpkg.com/tippy.js@6"></script>
 
-<!-- Import specific CSS file for the calendar page -->
-<link rel="stylesheet" href="static/css/calendarstyle.css">
+    <!-- Import specific CSS file for the calendar page -->
+    <link rel="stylesheet" href="static/css/calendarstyle.css">
 
-<!-- Greeting header section -->
-<div style="margin-top: 75px;">
-    <!-- Main header section with centered content -->
-    <header class="masthead">
-        <div class="container px-4 px-lg-5 d-flex h-100 align-items-center justify-content-center">
-            <div class="d-flex justify-content-center">
-                <div class="text-center">
-                    <!-- Main greeting text -->
-                    <h1 class="greeting-text mx-auto my-0 text-uppercase">LET'S FIND YOUR TEACHINGS!</h1>
+    <!-- Greeting header section -->
+    <div style="margin-top: 75px;">
+        <!-- Main header section with centered content -->
+        <header class="masthead">
+            <div class="container px-4 px-lg-5 d-flex h-100 align-items-center justify-content-center">
+                <div class="d-flex justify-content-center">
+                    <div class="text-center">
+                        <!-- Main greeting text -->
+                        <h1 class="greeting-text mx-auto my-0 text-uppercase">LET'S FIND YOUR TEACHINGS!</h1>
+                    </div>
                 </div>
             </div>
-        </div>
-    </header>
-</div>
+        </header>
+    </div>
 
-<!-- How to section explaining usage of the calendar -->
-<section>
-    <div class="container" style="display: grid; place-items: center;">
-        <h2 class="text-how_to text-center mt-5 mb-2">How to use Ca' Foscari Exchange Calendar</h2>
-        <div class="align-items-center">
-            <div>
-                <!-- Instructions on using the calendar -->
-                <p class="lead fw-normal text-muted mb-5 mb-lg-0">
-                    <ol class="lead">
+    <!-- How to section explaining usage of the calendar -->
+    <section>
+        <div class="container" style="display: grid; place-items: center;">
+            <h2 class="text-how_to text-center mt-5 mb-2">How to use Ca' Foscari Exchange Calendar</h2>
+            <div class="align-items-center">
+                <div style="text-align: center;">
+                    <!-- Instructions on using the calendar -->
+                    <ol class="lead" style="display: inline-block; text-align: left;">
                         <li>Prepare your query using all filters and send it to find more about a teaching.</li>
                         <li>Check the calendar to discover lecture scheduling.</li>
-                        <li>Download information in .ics to add lectures to your preferred calendar client.</li>
+                        <li>Download information in iCal format to add lectures to your preferred calendar client.</li>
                     </ol>
-                </p>
-                <!-- Note about search limitations -->
-                <p class="lead fw-normal text-muted mb-lg-0 text-center">
-                    NOTE: It is not possible to search for more than one teaching at a time.
-                    <br />
-                    NOTE: If "Enter teaching name:" has no values, the previous query was wrong (ex. RONCADE has no master degrees).
-                </p>
+                    <!-- Note about search limitations -->
+                    <p class="lead fw-normal text-muted mb-lg-0 text-center">
+                        NOTE: It is not possible to search for more than one teaching at a time.
+                        <br />
+                        NOTE: If "Enter teaching name:" has no values, the previous query was wrong (ex. RONCADE has no
+                        master degrees).
+                        <br />
+                        NOTE: The date format inside the calendar is MM/DD.
+                    </p>
+                </div>
             </div>
         </div>
+    </section>
+
+    <br>
+
+    <!-- Database updating section -->
+    <section class="database">
+        <!-- Information about the last database update -->
+        <p class="text-database py-3 align-items-center">
+            The calendar database was last updated at: {{ datatime_csv.datatime }}
+        </p>
+    </section>
+
+    <!-- Container for the filters form -->
+    <div class="container mt-5" id="filters-container">
+        <!-- WTForms form to get input from the user -->
+        <form method="POST" id="query-form">
+            {{ form.csrf_token }}
+            <div class="row">
+                <div class="col-md-4">
+                    <!-- Input for cycle -->
+                    <div class="form-group">
+                        {{ form.cycle.label }}
+                        {{ form.cycle(class="form-control", placeholder='Enter Cycle', id='cycle') }}
+                    </div>
+                </div>
+                <div class="col-md-4">
+                    <!-- Input for degree type -->
+                    <div class="form-group">
+                        {{ form.degreetype.label }}
+                        {{ form.degreetype(class="form-control", placeholder='Enter Degree Type', id='degreetype') }}
+                    </div>
+                </div>
+                <div class="col-md-4">
+                    <!-- Input for location -->
+                    <div class="form-group">
+                        {{ form.location.label }}
+                        {{ form.location(class="form-control", placeholder='Enter Location', id='location') }}
+                    </div>
+                </div>
+            </div>
+            <!-- Submit button for the filters form -->
+            <div class="row">
+                <div class="col-md-4">
+                    <div class="form-group">
+                        {{ form.submit(class="btn btn-primary") }}
+                    </div>
+                </div>
+            </div>
+        </form>
     </div>
-</section>
 
-<br>
-
-<!-- Database updating section -->
-<section class="database">
-    <!-- Information about the last database update -->
-    <p class="text-database py-3 align-items-center">
-        The calendar database was last updated at: {{ datatime_csv.datatime }}
-    </p>
-</section>
-
-<!-- Container for the filters form -->
-<div class="container mt-5" id="filters-container">
-    <!-- WTForms form to get input from the user -->
-    <form method="POST" id="query-form">
-        {{ form.csrf_token }}
-        <div class="row">
-            <div class="col-md-4">
-                <!-- Input for cycle -->
-                <div class="form-group">
-                    {{ form.cycle.label }}
-                    {{ form.cycle(class="form-control", placeholder='Enter Cycle', id='cycle') }}
+    <!-- Container for the teaching form -->
+    <div class="container mt-3" id="teaching-container" style="display: none;">
+        <!-- WTForms form to get input from the user -->
+        <form method="POST" id="teaching-form">
+            {{ form.csrf_token }}
+            <div class="row">
+                <div class="col-md-4">
+                    <!-- Input for teaching -->
+                    <div class="form-group">
+                        {{ form_lectures.teaching.label }}
+                        {{ form_lectures.teaching(class="form-control") }}
+                    </div>
                 </div>
             </div>
-            <div class="col-md-4">
-                <!-- Input for degree type -->
-                <div class="form-group">
-                    {{ form.degreetype.label }}
-                    {{ form.degreetype(class="form-control", placeholder='Enter Degree Type', id='degreetype') }}
+            <!-- Submit button for the teaching form -->
+            <div class="row">
+                <div class="col-md-4">
+                    <div class="form-group">
+                        {{ form_lectures.submit_teaching(class="btn btn-primary") }}
+                    </div>
                 </div>
             </div>
-            <div class="col-md-4">
-                <!-- Input for location -->
-                <div class="form-group">
-                    {{ form.location.label }}
-                    {{ form.location(class="form-control", placeholder='Enter Location', id='location') }}
-                </div>
-            </div>
-        </div>
-        <!-- Submit button for the filters form -->
-        <div class="row">
-            <div class="col-md-4">
-                <div class="form-group">
-                    {{ form.submit(class="btn btn-primary") }}
-                </div>
-            </div>
-        </div>
-    </form>
-</div>
+        </form>
+    </div>
 
-<!-- Container for the teaching form -->
-<div class="container mt-3" id="teaching-container" style="display: none;">
-    <!-- WTForms form to get input from the user -->
-    <form method="POST" id="teaching-form">
-        {{ form.csrf_token }}
-        <div class="row">
-            <div class="col-md-4">
-                <!-- Input for teaching -->
-                <div class="form-group">
-                    {{ form_lectures.teaching.label }}
-                    {{ form_lectures.teaching(class="form-control") }}
-                </div>
-            </div>
-        </div>
-        <!-- Submit button for the teaching form -->
-        <div class="row">
-            <div class="col-md-4">
-                <div class="form-group">
-                    {{ form_lectures.submit_teaching(class="btn btn-primary") }}
-                </div>
-            </div>
-        </div>
-    </form>
-</div>
+    <script>
+        document.addEventListener("DOMContentLoaded", function () {
+            // Get the query form element
+            const queryForm = document.getElementById("query-form");
 
-<script>
-    document.addEventListener("DOMContentLoaded", function () {
-        // Get the query form element
-        const queryForm = document.getElementById("query-form");
-
-        // Add event listener for form submission
-        queryForm.addEventListener("submit", function () {
-            // Store a flag in localStorage to show the teaching container
-            localStorage.setItem("showTeachingContainer", "true");
+            // Add event listener for form submission
+            queryForm.addEventListener("submit", function () {
+                // Store a flag in localStorage to show the teaching container
+                localStorage.setItem("showTeachingContainer", "true");
+            });
         });
-    });
 
-    document.addEventListener("DOMContentLoaded", function () {
-        // Get the teaching container element
-        const teachingContainer = document.getElementById("teaching-container");
+        document.addEventListener("DOMContentLoaded", function () {
+            // Get the teaching container element
+            const teachingContainer = document.getElementById("teaching-container");
 
-        // Check if the flag is set in localStorage
-        if (localStorage.getItem("showTeachingContainer") === "true") {
-            // Display the teaching container if the flag is set
-            teachingContainer.style.display = "block";
-            // Remove the flag from localStorage
-            localStorage.removeItem("showTeachingContainer");
-        }
-    });
-</script>
+            // Check if the flag is set in localStorage
+            if (localStorage.getItem("showTeachingContainer") === "true") {
+                // Display the teaching container if the flag is set
+                teachingContainer.style.display = "block";
+                // Remove the flag from localStorage
+                localStorage.removeItem("showTeachingContainer");
+            }
+        });
+    </script>
 
-<div class="container mt-5">
-    <!-- Container for error messages -->
-    <div id="error-message" class="mt-3 text-danger"></div>
+    <div class="container mt-5">
+        <!-- Container for error messages -->
+        <div id="error-message" class="mt-3 text-danger"></div>
 
-    <!-- Container for the calendar -->
-    <div id='calendar-container' class='mt-3' style='display: none; overflow: auto;'>
-        <div id='calendar'></div>
+        <!-- Container for the calendar -->
+        <div id='calendar-container' class='mt-3' style='display: none; overflow: auto;'>
+            <div id='calendar'></div>
+        </div>
+        <br>
+        <br>
+
+        <!-- Script for displaying the calendar -->
+        <script src="../static/js/display_calendar.js"></script>
     </div>
+
+    <!-- Container for the download button -->
+    <div class="d-grid gap-2 col-6 mx-auto text-center" id="download-container" style="display: none;">
+        <button id="download-button" class="btn btn-primary" type="button">Download lectures in iCal</button>
+    </div>
+
+    <!-- Script for downloading lectures in iCal format -->
+    <script src="../static/js/download_ical.js"></script>
+
     <br>
     <br>
 
-    <!-- Script for displaying the calendar -->
-    <script src="../static/js/display_calendar.js"></script>
-</div>
-
-<!-- Container for the download button -->
-<div class="d-grid gap-2 col-6 mx-auto text-center" id="download-container" style="display: none;">
-    <button id="download-button" class="btn btn-primary" type="button">Download lectures in iCal</button>
-</div>
-
-<!-- Script for downloading lectures in iCal format -->
-<script src="../static/js/download_ical.js"></script>
-
-<br>
-<br>
-```
 {% endblock %}

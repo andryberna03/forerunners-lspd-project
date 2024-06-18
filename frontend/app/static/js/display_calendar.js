@@ -9,6 +9,7 @@ document.addEventListener('DOMContentLoaded', function() {
     var calendarEl = document.getElementById('calendar');
     var calendar = new FullCalendar.Calendar(calendarEl, {
         initialView: 'dayGridWeek', // Initial view of the calendar
+        firstDay: 1, // Start the week on Monday
         eventClick: function(info) {
             info.jsEvent.preventDefault(); // Prevent the default event behavior
             if (info.event.url) {

@@ -36,10 +36,31 @@ document.getElementById('download-button').addEventListener('click', function ()
   if (events && Object.keys(events).length > 0) {
     // Start constructing the ICS content
     let icsContent = `BEGIN:VCALENDAR
-VERSION:2.0
-PRODID:-//Your Product//Your Application//EN
-CALSCALE:GREGORIAN
-TZID:Europe/Rome\n`; // Added TZID parameter with Rome time zone
+                      PRODID:-//zoom.us//iCalendar Event//EN
+                      VERSION:2.0
+                      CALSCALE:GREGORIAN
+                      METHOD:PUBLISH
+                      CLASS:PUBLIC
+                      BEGIN:VTIMEZONE
+                      TZID:Europe/Rome
+                      LAST-MODIFIED:20220317T223602Z
+                      TZURL:http://tzurl.org/zoneinfo-outlook/Europe/Rome
+                      X-LIC-LOCATION:Europe/Rome
+                      BEGIN:DAYLIGHT
+                      TZNAME:CEST
+                      TZOFFSETFROM:+0100
+                      TZOFFSETTO:+0200
+                      DTSTART:19700329T020000
+                      RRULE:FREQ=YEARLY;BYMONTH=3;BYDAY=-1SU
+                      END:DAYLIGHT
+                      BEGIN:STANDARD
+                      TZNAME:CET
+                      TZOFFSETFROM:+0200
+                      TZOFFSETTO:+0100
+                      DTSTART:19701025T030000
+                      RRULE:FREQ=YEARLY;BYMONTH=10;BYDAY=-1SU
+                      END:STANDARD
+                      END:VTIMEZONE\n`; // Added TZID parameter with Rome time zone
 
     // Iterate over the events and add each one to the ICS content
     Object.values(events).forEach(event => {
@@ -48,13 +69,14 @@ TZID:Europe/Rome\n`; // Added TZID parameter with Rome time zone
       let dtend = event.END_ISO8601.replace(/[-:]/g, '').split('.')[0] + 'Z';
   
       icsContent += `BEGIN:VEVENT
-DTSTART:${dtstart}
-DTEND:${dtend}
-SUMMARY:${event.TEACHING}
-DESCRIPTION:Professor: ${event.LECTURER_NAME}\nLocation: ${event.LOCATION_NAME}\nDetails: ${event.URLS_INSEGNAMENTO}
-LOCATION:${event.ADDRESS}
-URL:${event.URLS_INSEGNAMENTO}
-END:VEVENT\n`;
+                     DTSTART;TZID=Europe/Rome:${dtstart}
+                     DTEND;TZID=Europe/Rome:${dtend}
+                     SUMMARY:${event.TEACHING}
+                     TZID:Europe/Rome
+                     DESCRIPTION:Professor: ${event.LECTURER_NAME}\nLocation: ${event.LOCATION_NAME}\nDetails: ${event.URL_DOCENTE}
+                     LOCATION:${event.ADDRESS}
+                     URL:${event.URLS_INSEGNAMENTO}
+                     END:VEVENT\n`;
     });
 
     // Close the VCALENDAR

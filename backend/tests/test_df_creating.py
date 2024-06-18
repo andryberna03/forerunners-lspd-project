@@ -1,20 +1,19 @@
+"""
+Test module of the df_creating.py module.
+
+Execute this test by running on the terminal (from the app/) the command:
+pytest --cov=app --cov-report=html tests/
+"""
+
 import os
 import datetime
 from app.mymodules.df_creating import df_creating, create_new_dataframe
 import pandas as pd
 import pytest
-import subprocess
-import time
-
-"""
-Execute this test by running on the terminal (from the app/) the command:
-pytest --cov=app --cov-report=html tests/
-"""
 
 file_path = 'app/final.csv'
 
 
-# Test the function with an existing file that is more than a day old
 def test_existing_file_recent(mocker):
     """
     Test the df_creating function with an existing file
@@ -35,7 +34,7 @@ def test_existing_file_recent(mocker):
     now = datetime.datetime.now()
     delta = datetime.timedelta(hours=1)
     mocker.patch('os.path.getctime', return_value=(now - delta).timestamp())
-    
+
     # Mock pandas.read_csv to return a predefined DataFrame
     mock_df = pd.DataFrame({'A': [1, 2, 3]})
     mocker.patch('pandas.read_csv', return_value=mock_df)
@@ -47,7 +46,6 @@ def test_existing_file_recent(mocker):
     assert (result_df == mock_df).all().all()
 
 
-# Test the function with an existing file that is more than a day old
 def test_existing_file_old(mocker):
     """
     Test the df_creating function with
@@ -85,7 +83,6 @@ def test_existing_file_old(mocker):
     assert (result_df == mock_df).all().all()
 
 
-# Test the function when the file does not exist
 def test_non_existing_file(mocker):
     """
     Test the df_creating function when the file does not exist.
@@ -116,7 +113,6 @@ def test_non_existing_file(mocker):
     assert (result_df == mock_df).all().all()
 
 
-# TESTING create_new_dataframe
 def test_create_new_dataframe():
     """
     Test the create_new_dataframe function.
@@ -154,7 +150,6 @@ def test_create_new_dataframe():
     assert list(result_df.columns) == expected_header, outcome
 
 
-# Testing final.csv
 def test_file_is_csv():
     """
     Test to verify that the file at 'app/final.csv'

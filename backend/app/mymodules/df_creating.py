@@ -1,3 +1,7 @@
+"""
+Backend module to create calendar DataFrame
+"""
+
 import datetime
 import requests
 import pandas as pd
@@ -5,7 +9,7 @@ import os
 import datetime
 
 
-def df_creating(file_path_final) -> pd.DataFrame:
+def df_creating(file_path_final: str) -> pd.DataFrame:
     """
     Create or load a DataFrame from a CSV file.
 
@@ -28,7 +32,7 @@ def df_creating(file_path_final) -> pd.DataFrame:
         current_date = datetime.datetime.now()
 
         # If the file was created within the last 24 hours, load it
-        if current_date - file_creation_date < datetime.timedelta(seconds=1):
+        if current_date - file_creation_date < datetime.timedelta(days=1):
             final_urls_dataframe = pd.read_csv(file_path_final)
             return final_urls_dataframe
         # If not, create a new dataframe
@@ -93,8 +97,10 @@ def create_new_dataframe(file_path_final: str) -> pd.DataFrame:
     # Add course URL
     final_urls_dataframe = unive_teaching_urls(final_urls_dataframe)
 
+    # Format data in ISO8601
     final_urls_dataframe = format_iso8601(final_urls_dataframe)
 
+    # Modifiy values to make them more understandable
     final_urls_dataframe = modify_values(final_urls_dataframe)
 
     # Save the DataFrame to CSV
@@ -117,7 +123,6 @@ def get_data(urls: dict) -> dict:
         URLs to retrieve data from.
 
     Returns:
-        dict[str: pd.DataFrame]: Dictionary with retrieved
         dict[str: pd.DataFrame]: Dictionary with retrieved
         data as Pandas DataFrames.
     """
@@ -346,8 +351,34 @@ def unive_teaching_urls(final_urls_dataframe: pd.DataFrame) -> pd.DataFrame:
     return final_urls_dataframe
 
 
-def format_iso8601(final_urls_dataframe):
+def format_iso8601(final_urls_dataframe: pd.DataFrame) -> pd.DataFrame:
+    """
+    This function formats the 'LECTURE_DAY' and
+    'LECTURE_START'/'LECTURE_END' columns into ISO 8601 format and
+    adds new columns 'START_ISO8601' and 'END_ISO8601' to the DataFrame.
+
+    Parameters:
+    final_urls_dataframe (pd.DataFrame): The DataFrame to be processed.
+        The DataFrame should contain 'LECTURE_DAY',
+        'LECTURE_START', and 'LECTURE_END' columns.
+
+    Returns:
+    pd.DataFrame: The DataFrame with the new 'START_ISO8601'
+                  and 'END_ISO8601' columns.
+    """
+
     def format_to_iso8601(date_str, time_str):
+        """
+        This helper function formats a date and
+        time string into ISO 8601 format.
+
+        Parameters:
+        date_str (str): The date string in 'YYYY-MM-DD' format.
+        time_str (str): The time string in 'HH:MM' format.
+
+        Returns:
+        str: The date and time string in ISO 8601 format.
+        """
         # Create a datetime object from date and time strings
         full_datetime = datetime.datetime.strptime(
             f"{date_str} {time_str}", "%Y-%m-%d %H:%M"

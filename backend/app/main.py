@@ -33,7 +33,7 @@ app.add_middleware(
 
 
 @app.get('/')
-def read_root():
+def read_root() -> dict:
     """
     Root endpoint for the backend.
 
@@ -80,7 +80,6 @@ def get_csv_creation_date():
         The creation time is converted from a timestamp
         to a datetime object using datetime.fromtimestamp().
     """
-
     file_path_final = 'app/final.csv'
     if os.path.exists(file_path_final):
         # Get the creation time of the file
@@ -93,7 +92,7 @@ def get_csv_creation_date():
 
 
 @app.get("/csv_creation_date")
-async def csv_creation_date(response: Response):
+async def csv_creation_date():
     """
     Retrieve the creation date of the CSV file
     and set a cookie with the date.
@@ -102,9 +101,6 @@ async def csv_creation_date(response: Response):
     at the hardcoded path 'app/final.csv'.If the file exists,
     it formats the creation date in 'Day, DD-MMM-YYYY HH:MM:SS TZ' format,
     sets it as a cookie named 'creation_date', and returns the formatted date.
-
-    Parameters:
-        response (Response): The FastAPI Response object to set the cookie.
 
     Returns:
         str: The formatted creation date of the CSV file in 'Day,
@@ -123,7 +119,6 @@ async def csv_creation_date(response: Response):
         'Europe/Rome' timezone using pytz.timezone().
         The formatted date is set as a cookie using Response.set_cookie().
     """
-
     # Get the creation date of the CSV file
     creation_date = get_csv_creation_date()
     if creation_date:
@@ -142,7 +137,7 @@ async def csv_creation_date(response: Response):
 
 
 @app.get("/query/{location}/{degreetype}/{cycle}")
-def get_all_teachings(location, degreetype, cycle):
+def get_all_teachings(location: str, degreetype: str, cycle: str):
     """
     This function retrieves and returns a list of teachings
     based on the provided location, degree type, and cycle.
@@ -170,7 +165,6 @@ def get_all_teachings(location, degreetype, cycle):
     The function fills any missing values
     in the dataframe with the string 'null'.
     """
-
     filtered_df = final_urls_dataframe
 
     # Filter by location
@@ -203,13 +197,15 @@ def get_all_teachings(location, degreetype, cycle):
     for teaching in teachings:
         final_teachings[teaching] = teaching
 
+    final_teachings = dict(sorted(final_teachings.items()))
+
     final_teachings = json.dumps(final_teachings)
 
     return final_teachings
 
 
 @app.get("/query/{final_teaching}")
-def get_teaching(final_teaching):
+def get_teaching(final_teaching: str):
     """
     Retrieve and return a specific teaching record from the dataframe.
 
@@ -229,7 +225,6 @@ def get_teaching(final_teaching):
     with 'index' orientation,and a JSON response is created
     using the dictionary.The JSON response is then returned.
     """
-
     # Filter the dataframe based on the 'TEACHING' column
     # and on provided 'final_teaching' parameter
     filtered_df = final_urls_dataframe[
